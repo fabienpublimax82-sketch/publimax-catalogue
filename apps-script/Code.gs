@@ -77,14 +77,71 @@ function doPost(ev) {
         if (r.visuel) op.push('Visuel ' + r.visuel);
         return [d.id, d.ville || '', d.num || '', d.date || '', d.aut || '', r.rubrique || '', r.des || '', r.q || '', r.L || '', r.H || '', r.mat || '', r.cat || '', op.join('\n'), r.note || '', r.prix || '', (ph[r.k] || ph[r.id] || []).join('\n'), r.id, now];
       });
+      if (b.etat && b.etat.id === d.id) putJson_(fo, 'survey.json', b.etat);
       var ss = ss_();
       replace_(sheet_(ss, 'Lignes', HL), d.id, rows, HL.length);
       replace_(sheet_(ss, 'Dossiers', HD), d.id, [[d.id, d.ville || '', d.num || '', d.date || '', d.aut || '', L.length, np, now, fo.getUrl(), d.client || '', d.contact || '', d.tel || '', d.mail || '', d.adresse || '', d.cp || '', d.commune || '', d.pose || '', d.acces || '', d.note || '']], HD.length);
       return json_({ ok: true, lignes: L.length, photos: np });
     }
+    if (b.a === 'list') {
+      var sh = ss_().getSheetByName('Dossiers'), out = [], last = sh ? sh.getLastRow() : 0;
+      if (last > 1) sh.getRange(2, 1, last - 1, 8).getDisplayValues().forEach(function (r) { if (r[0]) out.push({ id: r[0], ville: r[1], num: r[2], date: r[3], aut: r[4], n: r[5], np: r[6], maj: r[7] }); });
+      return json_({ ok: true, list: out });
+    }
+    if (b.a === 'get') {
+      var fg = folder_({ id: String(b.did || '') }, false), et = fg ? getJson_(fg, 'survey.json') : null;
+      if (!et) return json_({ ok: false, err: 'Ce survey a été envoyé avec une ancienne version : il faut le rouvrir sur l\'appareil d\'origine pour qu\'il se renvoie.' });
+      return json_({ ok: true, etat: et });
+    }
+    if (b.a === 'phget') {
+      var fp = folder_({ id: String(b.did || '') }, false), ip = fp ? fp.getFilesByName(clean_(b.k).replace(/ /g, '_') + '.jpg') : null;
+      if (!ip || !ip.hasNext()) return json_({ ok: false, err: 'photo absente' });
+      var bl = ip.next().getBlob();
+      return json_({ ok: true, data: 'data:' + bl.getContentType() + ';base64,' + Utilities.base64Encode(bl.getBytes()) });
+    }
+    if (b.a === 'cat') { var cm = cat_(); return json_(Number(b.v) === cm.v ? { ok: true, same: true, ed: isEd_(b) } : { ok: true, cat: cm, ed: isEd_(b) }); }
+    if (b.a === 'catimg') {
+      var all = getJson_(root_(), 'catalogue-images.json') || {}, im = {};
+      (b.ids || []).slice(0, 8).forEach(function (k) { if (all[k]) im[k] = all[k]; });
+      return json_({ ok: true, imgs: im });
+    }
+    if (b.a === 'catset') return json_(catset_(b));
     return json_({ ok: false, err: 'action inconnue' });
   } catch (x) { return json_({ ok: false, err: String(x && x.message || x) }); }
   finally { try { lock.releaseLock(); } catch (e) {} }
+}
+
+/* ================= Modifications du catalogue (partagées par toutes les tablettes) =================
+ * catalogue-modifs.json : { v, maj, lock, lines: { idLigne: { c, n, p, img } } } ; catalogue-images.json : { idImage: dataURL }.
+ * Seuls les appareils autorisés « avec modification du catalogue » peuvent tout changer ;
+ * les autres ne peuvent que choisir une catégorie, tant que les catégories ne sont pas verrouillées.
+ */
+function putJson_(folder, name, obj) { var s = JSON.stringify(obj), it = folder.getFilesByName(name); if (it.hasNext()) it.next().setContent(s); else folder.createFile(name, s, 'application/json'); }
+function getJson_(folder, name) { var it = folder.getFilesByName(name); if (!it.hasNext()) return null; try { return JSON.parse(it.next().getBlob().getDataAsString()); } catch (e) { return null; } }
+function cat_() { var c = getJson_(root_(), 'catalogue-modifs.json'); if (!c || typeof c !== 'object') c = { v: 0, lock: false, lines: {} }; c.lines = c.lines || {}; c.v = Number(c.v) || 0; return c; }
+function isEd_(b) { var e = String(b.e || '').trim().toLowerCase(), t = String(b.t || ''); if (!e || !t) return false; var cur = P.getProperty(rid_(e, t)); if (!cur) return false; var r = JSON.parse(cur); return r.st === 'ok' && r.ed === true; }
+function catset_(b) {
+  var ed = isEd_(b), cm = cat_(), ch = b.ch || {}, n = 0, CATS = { '': 1, S: 1, M: 1, T: 1, L: 1 };
+  if (!ed && (b.lock != null || cm.lock)) return { ok: false, err: 'réservé : la modification du catalogue demande une autorisation.' };
+  for (var id in ch) {
+    if (!/^[A-Za-z0-9_\-]{1,80}$/.test(id)) continue;
+    var o = ch[id] || {}, m = cm.lines[id] || {};
+    if (!ed && (o.n != null || o.p != null || o.img != null)) return { ok: false, err: 'réservé : la modification du catalogue demande une autorisation.' };
+    if (o.c != null && CATS[o.c]) m.c = o.c;
+    if (o.n != null && /^[0-9.]{1,12}$/.test(String(o.n))) m.n = String(o.n);
+    if (o.p != null && isFinite(o.p)) m.p = Number(o.p);
+    if (o.img != null && /^o_[a-z0-9]{6,24}$/.test(String(o.img))) m.img = String(o.img);
+    cm.lines[id] = m; n++;
+  }
+  if (ed && b.lock != null) cm.lock = b.lock === true;
+  var im = b.imgs || {}, keys = Object.keys(im);
+  if (ed && keys.length) {
+    var all = getJson_(root_(), 'catalogue-images.json') || {};
+    keys.forEach(function (k) { var v = String(im[k] || ''); if (/^o_[a-z0-9]{6,24}$/.test(k) && /^data:image\/(jpeg|webp|png);base64,/.test(v) && v.length < 400000) all[k] = v; });
+    putJson_(root_(), 'catalogue-images.json', all);
+  }
+  cm.v++; cm.maj = new Date().toISOString(); putJson_(root_(), 'catalogue-modifs.json', cm);
+  return { ok: true, cat: cm, ed: ed, n: n };
 }
 
 /* ================= Demandes d'accès =================
@@ -99,26 +156,32 @@ function req_(b) {
   var e = String(b.e || '').trim().toLowerCase(), t = String(b.t || ''), n = String(b.n || '').slice(0, 60);
   if (!mailOk_(e) || t.length < 16 || t.length > 64) return { ok: false, st: 'err', err: 'Demande invalide.' };
   var id = rid_(e, t), cur = P.getProperty(id), r = cur ? JSON.parse(cur) : null;
-  if (r && r.st === 'ok') { var k = P.getProperty('K'); return k ? { ok: true, st: 'ok', k: k } : { ok: true, st: 'ok' }; }
   var cache = CacheService.getScriptCache();
+  if (r && r.st === 'ok') {
+    if (b.ed === true && !r.ed && !cache.get('rq_' + e)) { cache.put('rq_' + e, '1', 90); mail_(id, r, true); }
+    var k = P.getProperty('K'); return k ? { ok: true, st: 'ok', k: k, ed: !!r.ed } : { ok: true, st: 'ok', ed: !!r.ed };
+  }
   if (cache.get('rq_' + e)) return { ok: true, st: 'att' };
   var nb = P.getKeys().filter(function (x) { return x.indexOf('R_') === 0; }).length;
   if (!r && nb >= 60) return { ok: false, st: 'err', err: 'Trop de demandes en attente : contacte Publimax.' };
   r = { e: e, t: t, n: n, ua: String(b.ua || '').slice(0, 120), st: 'att', at: new Date().toISOString(), nonce: Utilities.getUuid() };
   P.setProperty(id, JSON.stringify(r)); cache.put('rq_' + e, '1', 90);
+  mail_(id, r, b.ed === true);
+  return { ok: true, st: 'att' };
+}
+function mail_(id, r, edit) {
   var url = SITE + 'decision.html#id=' + id + '&n=' + r.nonce;
-  MailApp.sendEmail({ to: Session.getEffectiveUser().getEmail(), subject: 'Survey Publimax : demande d\'accès de ' + (n || e),
-    htmlBody: '<div style="font:16px Arial,sans-serif;color:#10242B"><p><b>' + html_(n) + '</b> (' + html_(e) + ') demande l\'accès à l\'appli Survey.</p>' +
+  MailApp.sendEmail({ to: Session.getEffectiveUser().getEmail(), subject: 'Survey Publimax : ' + (edit ? 'demande de modification du catalogue de ' : 'demande d\'accès de ') + (r.n || r.e),
+    htmlBody: '<div style="font:16px Arial,sans-serif;color:#10242B"><p><b>' + html_(r.n) + '</b> (' + html_(r.e) + ') ' + (edit ? 'demande le droit de modifier le catalogue de l\'appli Survey.' : 'demande l\'accès à l\'appli Survey.') + '</p>' +
       '<p style="color:#5B6B72;font-size:13px">Appareil : ' + html_(r.ua) + '</p>' +
       '<p><a href="' + url + '" style="display:inline-block;padding:14px 22px;background:#00849B;color:#fff;border-radius:10px;text-decoration:none;font-weight:bold">Voir la demande et décider</a></p>' +
-      '<p style="color:#5B6B72;font-size:13px">Ouvrir ce lien ne décide rien : il faut ensuite appuyer sur Autoriser ou Refuser.</p></div>' });
-  return { ok: true, st: 'att' };
+      '<p style="color:#5B6B72;font-size:13px">Ouvrir ce lien ne décide rien : il faut ensuite appuyer sur un des boutons.</p></div>' });
 }
 function st_(b) {
   var e = String(b.e || '').trim().toLowerCase(), t = String(b.t || ''), cur = P.getProperty(rid_(e, t));
   if (!cur) return { ok: true, st: 'inconnu' };
   var r = JSON.parse(cur);
-  if (r.st === 'ok') { var k = P.getProperty('K'); return k ? { ok: true, st: 'ok', k: k } : { ok: true, st: 'ok' }; }
+  if (r.st === 'ok') { var k = P.getProperty('K'); return k ? { ok: true, st: 'ok', k: k, ed: !!r.ed } : { ok: true, st: 'ok', ed: !!r.ed }; }
   return { ok: true, st: r.st };
 }
 /** Appelée par la page de décision (bouton Autoriser / Refuser). */
@@ -133,8 +196,8 @@ var SITE = 'https://fabienpublimax82-sketch.github.io/publimax-catalogue/';
 function dec_(b) {
   var id = String(b.id || ''), cur = id.indexOf('R_') === 0 ? P.getProperty(id) : null, r = cur ? JSON.parse(cur) : null;
   if (!r || !b.n || r.nonce !== String(b.n)) return { ok: false, err: 'Lien invalide ou demande supprimée.' };
-  if (b.a === 'dec') { r.st = b.yes === true ? 'ok' : 'refus'; r.dec = new Date().toISOString(); P.setProperty(id, JSON.stringify(r)); }
-  return { ok: true, r: { n: r.n, e: r.e, ua: r.ua, at: r.at, st: r.st } };
+  if (b.a === 'dec') { r.st = b.yes === true ? 'ok' : 'refus'; r.ed = b.yes === true && b.ed === true; r.dec = new Date().toISOString(); P.setProperty(id, JSON.stringify(r)); }
+  return { ok: true, r: { n: r.n, e: r.e, ua: r.ua, at: r.at, st: r.st, ed: !!r.ed } };
 }
 function doGet(ev) {
   var q = ev.parameter || {};
