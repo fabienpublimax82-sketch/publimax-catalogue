@@ -118,20 +118,32 @@ function doPost(ev) {
  */
 function putJson_(folder, name, obj) { var s = JSON.stringify(obj), it = folder.getFilesByName(name); if (it.hasNext()) it.next().setContent(s); else folder.createFile(name, s, 'application/json'); }
 function getJson_(folder, name) { var it = folder.getFilesByName(name); if (!it.hasNext()) return null; try { return JSON.parse(it.next().getBlob().getDataAsString()); } catch (e) { return null; } }
-function cat_() { var c = getJson_(root_(), 'catalogue-modifs.json'); if (!c || typeof c !== 'object') c = { v: 0, lock: false, lines: {} }; c.lines = c.lines || {}; c.v = Number(c.v) || 0; return c; }
+function cat_() { var c = getJson_(root_(), 'catalogue-modifs.json'); if (!c || typeof c !== 'object') c = { v: 0, lock: false, lines: {} }; c.lines = c.lines || {}; c.add = c.add || {}; c.v = Number(c.v) || 0; return c; }
 function isEd_(b) { var e = String(b.e || '').trim().toLowerCase(), t = String(b.t || ''); if (!e || !t) return false; var cur = P.getProperty(rid_(e, t)); if (!cur) return false; var r = JSON.parse(cur); return r.st === 'ok' && r.ed === true; }
+function line_(o, m) {
+  var CATS = { '': 1, S: 1, M: 1, T: 1, L: 1 }, TXT = { des: 160, mat: 160, info: 600 };
+  ['c', 'n', 'p', 'img', 'des', 'mat', 'info', 'L', 'H', 'rl'].forEach(function (k) { if (o[k] === null) delete m[k]; });
+  if (o.c != null && CATS[o.c]) m.c = o.c;
+  if (o.n != null && /^[0-9.]{1,12}$/.test(String(o.n))) m.n = String(o.n);
+  if (o.p != null && isFinite(o.p)) m.p = Number(o.p);
+  if (o.img != null && /^[a-z0-9_]{1,30}$/.test(String(o.img))) m.img = String(o.img);
+  for (var k in TXT) if (typeof o[k] === 'string') m[k] = o[k].slice(0, TXT[k]);
+  ['L', 'H'].forEach(function (k) { if (o[k] != null && isFinite(o[k])) m[k] = Math.max(0, Math.round(Number(o[k]))); });
+  if (o.rl && typeof o.rl === 'object') { var q = {}; for (var r in o.rl) if (/^[a-z0-9_]{1,24}$/.test(r) && (o.rl[r] === 0 || o.rl[r] === 1)) q[r] = o.rl[r]; m.rl = q; }
+  return m;
+}
 function catset_(b) {
-  var ed = isEd_(b), cm = cat_(), ch = b.ch || {}, n = 0, CATS = { '': 1, S: 1, M: 1, T: 1, L: 1 };
-  if (!ed && (b.lock != null || cm.lock)) return { ok: false, err: 'réservé : la modification du catalogue demande une autorisation.' };
+  var ed = isEd_(b), cm = cat_(), ch = b.ch || {}, add = b.add || {}, n = 0, NO = { ok: false, err: 'réservé : la modification du catalogue demande une autorisation.' };
+  if (!ed && (b.lock != null || cm.lock || Object.keys(add).length)) return NO;
   for (var id in ch) {
     if (!/^[A-Za-z0-9_\-]{1,80}$/.test(id)) continue;
-    var o = ch[id] || {}, m = cm.lines[id] || {};
-    if (!ed && (o.n != null || o.p != null || o.img != null)) return { ok: false, err: 'réservé : la modification du catalogue demande une autorisation.' };
-    if (o.c != null && CATS[o.c]) m.c = o.c;
-    if (o.n != null && /^[0-9.]{1,12}$/.test(String(o.n))) m.n = String(o.n);
-    if (o.p != null && isFinite(o.p)) m.p = Number(o.p);
-    if (o.img != null && /^o_[a-z0-9]{6,24}$/.test(String(o.img))) m.img = String(o.img);
-    cm.lines[id] = m; n++;
+    var o = ch[id] || {};
+    if (!ed && Object.keys(o).some(function (k) { return k !== 'c'; })) return NO;
+    cm.lines[id] = line_(o, cm.lines[id] || {}); n++;
+  }
+  for (var ia in add) {
+    if (!/^x_[a-z0-9]{6,24}$/.test(ia)) continue;
+    cm.add[ia] = add[ia] && add[ia].del ? { del: 1 } : line_(add[ia] || {}, {}); n++;
   }
   if (ed && b.lock != null) cm.lock = b.lock === true;
   var im = b.imgs || {}, keys = Object.keys(im);

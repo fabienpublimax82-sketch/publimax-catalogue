@@ -350,6 +350,35 @@ label.l{font-weight:600;color:var(--mute)}
 #chaps.inf .seg,#chaps.inf .sep,#chaps.inf .prog{display:none}#chaps #b_recap{flex:none;margin-left:12px}#chaps.inf #b_recap,#chaps .prog[style]+#b_recap{margin-left:auto}
 @media(max-width:900px){#chaps #b_recap{margin-left:auto}}
 
+
+/* ---- équipe (compact) ---- */
+#t_list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;align-items:start}
+.tg{background:rgba(255,255,255,.86);border-radius:16px;padding:10px;display:flex;flex-direction:column;gap:6px;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.tn{font-weight:800;color:var(--acc2);font-size:16px;display:flex;justify-content:space-between;align-items:baseline;padding:2px 4px}.tn span{font-size:12px;font-weight:600;color:#5B6B72}
+.tr{border:0;border-radius:10px;background:#fff;box-shadow:0 0 0 1px #DCE6EA inset;font:inherit;text-align:left;padding:8px 10px;cursor:pointer;display:flex;flex-direction:column;gap:1px;color:var(--ink)}.tr b{font-size:14.5px}.tr span{font-size:12px;color:#5B6B72}.tr.ld{opacity:.5}
+/* ---- réglages ---- */
+#setp{position:fixed;inset:0;background:#0007;z-index:40;display:flex;align-items:center;justify-content:center;padding:14px}
+#setp .pp{background:#F4F8F9;border-radius:20px;width:min(560px,100%);max-height:90%;overflow:auto;display:flex;flex-direction:column;padding:16px;gap:12px}#setp .hd{display:flex;align-items:center}#setp .hd h2{flex:1;margin:0;font-size:22px;color:var(--ink)}
+.sc{background:#fff;border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px;box-shadow:0 1px 3px rgba(16,36,43,.1)}.sc b{font-size:17px;color:var(--acc2)}.sc .mute{color:#3F5158;font-size:14px;line-height:1.5;overflow-wrap:anywhere}
+/* ---- mode édition : écran dédié ---- */
+#edit{background:#EEF3F5;color:var(--ink)}
+#edit .top{background:#FFF7DF;color:var(--ink);border-bottom:3px solid #F0B429}#edit .top .btn.sec{background:#fff;color:#5C4500;box-shadow:0 0 0 1.5px #E3C877 inset}
+.ebar{position:sticky;top:66px;z-index:4;display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 14px;background:#EEF3F5;border-bottom:1px solid #D6E0E4}
+.ebar .in{height:44px;min-height:44px;background:#fff;color:var(--ink);border:1.5px solid #C9DCE1;border-radius:12px}.ebar #ed_q{flex:1;min-width:180px}.ebar select{width:auto;flex:none}.eck{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:600}.eck input{width:20px;height:20px}
+#ed_list{padding:10px 14px 60px;max-width:1180px;margin:0 auto}
+.egr{margin-bottom:8px}.egh{width:100%;border:0;border-radius:12px;background:#fff;box-shadow:0 1px 2px rgba(16,36,43,.08);font:inherit;font-size:16px;font-weight:700;text-align:left;padding:12px 14px;cursor:pointer;display:flex;gap:8px;align-items:baseline;color:var(--ink)}.egh b{color:var(--acc)}.egh small{margin-left:auto;font-weight:600;color:#5B6B72;font-size:13px}.egh .cv{color:var(--acc)}
+.erow{display:grid;grid-template-columns:150px 1fr;gap:14px;background:#fff;border-radius:14px;margin:8px 0 0;padding:12px;border-left:7px solid #C9D6DA;box-shadow:0 1px 3px rgba(16,36,43,.08)}
+.erow.cS{border-left-color:var(--cS)}.erow.cM{border-left-color:var(--cM)}.erow.cT{border-left-color:var(--cT)}.erow.cL{border-left-color:var(--cL)}.erow.mod{box-shadow:0 0 0 2px #F0B429,0 1px 3px rgba(16,36,43,.08)}
+.ev{display:flex;flex-direction:column;gap:6px}.evi{height:110px;border-radius:10px;background:#F4F7F8;box-shadow:0 0 0 1px #DCE6EA inset;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden}.evi img{max-width:100%;max-height:100%}.evi span{font-size:12px;color:#7B8A90}
+.eord{display:grid;grid-template-columns:1fr 1fr;gap:6px}.ev .eb{flex:none;height:38px}
+.ef{display:flex;flex-direction:column;gap:8px;min-width:0}.ef .in{height:42px;min-height:42px;background:#fff;color:var(--ink);border:1.5px solid #C9DCE1;border-radius:10px;font-size:15px;width:100%}.ef textarea.in{height:auto;min-height:56px;padding-top:8px;line-height:1.35}.ef .ed1{font-weight:700;font-size:16px}
+.ef label{font-size:12px;font-weight:600;color:#5B6B72;display:flex;flex-direction:column;gap:3px;min-width:0}
+.eg3{display:grid;grid-template-columns:120px 120px 1fr;gap:8px}.eg2{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:end}.ecs{display:flex;gap:5px;flex-wrap:wrap}.ecs .eb{flex:none;height:42px;padding:0 12px!important;font-size:13.5px}
+.erl{border:1px solid #E3EAED;border-radius:10px;background:#FAFCFC}.erl summary{cursor:pointer;padding:9px 12px;font-size:13.5px;font-weight:600;color:#33474E}.erb{padding:4px 12px 10px;display:flex;flex-direction:column;gap:5px}.erf{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--acc);margin-top:6px}
+.ef .erc{flex-direction:row;gap:9px;align-items:flex-start;font-size:13.5px;font-weight:400;color:var(--ink)}.erc input{width:20px;height:20px;flex:none;margin-top:1px}.erc i{color:var(--acc);font-size:12px}.erc small{display:block;color:#6B7B81;font-size:12px;line-height:1.3}
+.einf{font-size:12.5px;color:#5B6B72;display:flex;gap:6px;align-items:center;flex-wrap:wrap}.einf .esp{flex:1}.einf .eb{flex:none;height:32px;padding:0 10px!important}.eb.bad{color:#B3261E;box-shadow:0 0 0 1.5px #E9B5B0 inset}
+#pk_l.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}.gi{border:0;border-radius:10px;background:#F4F7F8;box-shadow:0 0 0 1px #DCE6EA inset;height:90px;padding:4px;cursor:pointer;display:flex;align-items:center;justify-content:center}.gi img{max-width:100%;max-height:100%}
+@media (max-width:640px){.erow{grid-template-columns:1fr}.ev{flex-direction:row;flex-wrap:wrap}.evi{flex:1 0 100%}.ev>.eb{flex:1}.eord{flex:1}.eg3{grid-template-columns:1fr 1fr}.eg3 .w{grid-column:1/-1}.eg2{grid-template-columns:1fr}.ebar{top:52px;padding:8px 10px}#ed_list{padding:8px 8px 50px}#t_list{grid-template-columns:1fr}}
 /* ---- équipe, mode édition ---- */
 .thd{display:flex;align-items:center;gap:12px;margin:26px 0 10px}.thd h2{margin:0;flex:1}#t_msg{color:#D5E4E8;margin:0 0 10px}#t_msg:empty{display:none}
 .edz{border-top:2px dashed #F0B429;background:#FFF9E8;padding:8px;display:flex;flex-direction:column;gap:6px}
@@ -429,7 +458,7 @@ body.edit #cat .top{box-shadow:0 0 0 3px #F0B429 inset}#b_edit:not(.sec){backgro
 <button class="lnk" id="b_alt" style="color:#10242B;text-shadow:0 1px 8px rgba(255,255,255,.8)">J’ai un lien ou une clé d’accès</button>
 <div id="g_alt" class="pane hid"><label class="l" style="color:#1E2124;font-weight:600">Lien ou clé d’accès<input class="in" id="g_key" placeholder="Colle ici le lien reçu de Publimax"></label><button class="btn" id="b_key" style="width:100%">Continuer ›</button></div>
 <div id="g_msg" class="msg hid"></div>
-<p class="ver">Catalogue 20261117-223339 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261117-225424 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- CODE -->
@@ -441,7 +470,7 @@ body.edit #cat .top{box-shadow:0 0 0 3px #F0B429 inset}#b_edit:not(.sec){backgro
 <button class="btn" id="b_pin">Ouvrir ›</button><div id="p_msg" class="msg err hid"></div>
 <button class="btn gr inst hid" data-inst>Installer l’application</button>
 <button class="lnk hid" id="b_forget">Code oublié ?</button></div>
-<p class="ver">Catalogue 20261117-223339 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261117-225424 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- DOSSIERS -->
@@ -454,16 +483,20 @@ body.edit #cat .top{box-shadow:0 0 0 3px #F0B429 inset}#b_edit:not(.sec){backgro
 <div class="f2"><label class="l">Date de visite<input class="in" id="n_date" type="date"></label><label class="l">Saisi par<input class="in" id="n_aut" placeholder="prénom"></label></div>
 <div class="row"><button class="btn" id="b_create">Créer et ouvrir</button><button class="btn sec" id="b_ncancel">Annuler</button></div></div>
 <div id="d_list" class="dl"></div>
-<div class="thd"><h2>Surveys de l’équipe</h2><button class="btn sm sec" id="t_ref">Actualiser</button></div><p class="mute" id="t_msg"></p><div id="t_list" class="dl"></div>
-<div id="e_box"></div></div></div>
+<div class="thd"><h2>Surveys de l’équipe</h2><button class="btn sm sec" id="t_ref">Actualiser</button></div><p class="mute" id="t_msg"></p><div id="t_list"></div></div></div>
+
+<!-- ÉDITION DU CATALOGUE -->
+<div id="edit" class="scr hid" style="padding:0"><div class="top"><button class="btn sm sec" id="ed_back">← Menu</button><span class="t">Édition du catalogue</span><button class="btn sm sec" id="b_lockc"></button></div>
+<div class="ebar"><input class="in" id="ed_q" type="search" placeholder="Rechercher un article…"><select class="in" id="ed_c"><option value="">Toutes les catégories</option><option value="S">Standard</option><option value="M">Sur mesure</option><option value="T">Sous-traitance</option><option value="L">Livrée</option><option value="N">Non attribué</option></select><label class="eck"><input type="checkbox" id="ed_m"> Modifiés seulement</label><button class="btn sm sec" id="ed_all">Tout déplier</button><span class="mute" id="ed_st"></span></div>
+<div id="ed_list"></div></div>
 
 <!-- CATALOGUE -->
 <div id="cat" class="hid">
-<div class="top"><span class="t" id="c_title"></span><button class="btn sm sec hid" id="b_edit">Édition</button><button class="btn sm sec" id="b_back">Menu</button></div>
+<div class="top"><span class="t" id="c_title"></span><button class="btn sm sec" id="b_back">Menu</button></div>
 <div class="cbody"><div id="tabs"></div><div class="ccol">
 <div id="chaps"></div>
 <div id="subs" class="hid"></div>
-<div class="bar" id="c_bar"><input class="in" id="c_q" type="search" placeholder="Rechercher une ligne…"><button class="chip on" data-f="all">Tout</button><button class="chip" data-f="on">Retenu</button><button class="chip" data-f="off">Non traité</button><button class="btn sm sec" id="b_fold">Tout replier</button><button class="btn sm" id="b_free">+ Hors catalogue</button><button class="btn sm sec hid" id="b_lockc"></button></div>
+<div class="bar" id="c_bar"><input class="in" id="c_q" type="search" placeholder="Rechercher une ligne…"><button class="chip on" data-f="all">Tout</button><button class="chip" data-f="on">Retenu</button><button class="chip" data-f="off">Non traité</button><button class="btn sm sec" id="b_fold">Tout replier</button><button class="btn sm" id="b_free">+ Hors catalogue</button></div>
 <div class="main"><div id="side" class="hid"></div><button id="b_menu" class="hid"></button><div id="list"></div>
 <div id="info" class="hid"><div class="ibox">
 <h2>Infos client / dossier</h2>
@@ -486,7 +519,9 @@ body.edit #cat .top{box-shadow:0 0 0 3px #F0B429 inset}#b_edit:not(.sec){backgro
 
 <div id="sheet" class="hid"><div class="p" id="sh_p"></div></div>
 <div id="zoom" class="hid"><img alt=""></div>
-<div id="pick" class="hid"><div class="pp"><div class="hd"><h2>Déplacer vers…</h2><button class="btn sm sec" id="pk_x">Annuler</button></div><div id="pk_l"></div></div></div>
+<div id="pick" class="hid"><div class="pp"><div class="hd"><h2 id="pk_t"></h2><button class="btn sm sec" id="pk_x">Annuler</button></div><div id="pk_l"></div></div></div>
+<div id="setp" class="hid"><div class="pp"><div class="hd"><h2>Réglages</h2><button class="btn sm sec" id="set_x">Fermer</button></div><div class="sc"><b>Édition du catalogue</b><span class="mute" id="set_ed"></span><div class="row"><button class="btn" id="set_go"></button></div></div><div class="sc"><b>Connexion</b><span class="mute" id="set_co"></span><div class="row"><button class="btn sec sm" id="set_url">Adresse du script Google</button><button class="btn sec sm" id="set_sy">Synchroniser maintenant</button></div></div></div></div>
+<datalist id="matl"></datalist>
 <input type="file" accept="image/*" id="e_file" class="hid">
 <div id="print"></div>
 
@@ -494,11 +529,11 @@ body.edit #cat .top{box-shadow:0 0 0 3px #F0B429 inset}#b_edit:not(.sec){backgro
 (function(){'use strict';
 var $=function(s){return document.querySelector(s)},$$=function(s){return [].slice.call(document.querySelectorAll(s))};
 var CFG={apps:''},CAT=null,IMG={},KEY=null,DB={d:[],cur:null},NM={},CH={},PENDKEY=null,NSHARD=0,LB={};
-var KS='',VER='20261117-223339',NFILES=15,SYH='',SYB=false,SYT=null;
+var KS='',VER='20261117-225424',NFILES=15,SYH='',SYB=false,SYT=null;
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function ls(k,v){try{if(v===undefined){var r=localStorage.getItem(k);return r?JSON.parse(r):null}if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v));return true}catch(e){if(v!==undefined&&k==='pm_dos')saveErr();return null}}
 function saveErr(){var b=document.getElementById('serr');if(!b){b=document.createElement('div');b.id='serr';b.style.cssText='position:fixed;left:0;right:0;top:0;z-index:99;background:#C62828;color:#fff;padding:12px 16px;font-weight:700;text-align:center';document.body.appendChild(b)}b.textContent='⚠ ENREGISTREMENT IMPOSSIBLE sur cette tablette (mémoire pleine ?). Exporte ton dossier tout de suite : Récap → Exporter.'}
-function show(id){['gate','pin','dossiers','cat','recap'].forEach(function(s){$('#'+s).classList.toggle('hid',s!==id)});if(id!=='cat'&&id!=='recap')closeSheet()}
+function show(id){['gate','pin','dossiers','cat','recap','edit'].forEach(function(s){$('#'+s).classList.toggle('hid',s!==id)});if(id!=='cat'&&id!=='recap')closeSheet()}
 function msg(el,t,c){el=$(el);el.className='msg'+(c?' '+c:'');el.textContent=t;el.classList.toggle('hid',!t)}
 /* ---------- crypto ---------- */
 function b64d(s){s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';var b=atob(s),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a}
@@ -553,7 +588,7 @@ $('#b_forget').onclick=function(){if(confirm('Code oublié : l’accès sera eff
 function startWith(raw){KS=b64e(raw).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');crypto.subtle.digest('SHA-256',new TextEncoder().encode(KS+'|sync')).then(function(h){SYH=[].map.call(new Uint8Array(h),function(x){return ('0'+x.toString(16)).slice(-2)}).join('')});return ckey(raw,['decrypt']).then(function(k){KEY=k;return fetch('data/cat.bin',{cache:'no-cache'}).catch(function(){return fetch('data/cat.bin')})}).then(function(r){if(!r.ok)throw new Error('catalogue introuvable');return r.arrayBuffer()}).then(function(b){return dec(b,KEY)}).then(function(p){CAT=JSON.parse(new TextDecoder().decode(p));prep();loadImgs();openDossiers()}).catch(function(e){msg('#p_msg','Clé refusée ou catalogue illisible : '+e.message,'err');$('#p_msg').classList.remove('hid')})}
 function loadImgs(){var n=CAT.shards||0;for(var i=0;i<n;i++)(function(i,t){(function go(){fetch('data/img'+i+'.bin').then(function(r){if(!r.ok)throw 0;return r.arrayBuffer()}).then(function(b){return dec(b,KEY)}).then(function(p){var o=JSON.parse(new TextDecoder().decode(p));for(var k in o)IMG[k]='data:image/webp;base64,'+o[k];setImgs(document)}).catch(function(){if(t++<5)setTimeout(go,2000*t)})})()})(i,0)}
 function setImgs(root){[].forEach.call(root.querySelectorAll('img[data-i]'),function(im){var s=IMG[im.dataset.i];if(s&&im.src!==s){im.src=s;im.style.visibility='visible'}})}
-function prep(){NM={};CH={};CAT.nodes.forEach(function(n){NM[n.code]=n;CH[n.code]=[]});CAT.nodes.forEach(function(n){if(n.par&&CH[n.par])CH[n.par].push(n.code)});CAT.lines.forEach(function(l,i){l._o=i;l.c0=l.c||'';l.n0=l.n;l.p0=l.p;l.img0=l.img||''});CAT.byId={};CAT.lines.forEach(function(l){CAT.byId[l.id]=l});migOv();applyCM();catImgLoad();$('#d_ver').textContent='Catalogue du '+String(CAT.at).slice(0,10);offUi()}
+function prep(){NM={};CH={};CAT.nodes.forEach(function(n){NM[n.code]=n;CH[n.code]=[]});CAT.nodes.forEach(function(n){if(n.par&&CH[n.par])CH[n.par].push(n.code)});if(!CAT.lines0){CAT.lines0=CAT.lines;CAT.lines0.forEach(baseL)}migOv();applyCM();catImgLoad();$('#d_ver').textContent='Catalogue du '+String(CAT.at).slice(0,10);offUi()}
 function offUi(){if(!('caches' in window))return;caches.keys().then(function(ks){return Promise.all(ks.map(function(k){return caches.open(k).then(function(c){return c.keys()})}))}).then(function(a){var n=0;a.forEach(function(x){n+=x.length});var ok=n>=NFILES;$('#d_ver').textContent='Catalogue du '+String(CAT.at).slice(0,10)+(ok?' · ✔ prêt hors ligne':' · ⏳ préparation hors ligne…');if(!ok)setTimeout(offUi,3000)}).catch(function(){})}
 /* ---------- photos (IndexedDB) ---------- */
 var PH={},IDB=null;
@@ -682,6 +717,7 @@ function optRow(o,v,k,chk){var im=o.img?'<div class="th" data-s="z" data-i="'+o.
 function drawSheet(){var l=SL,s=ST(l);if(l.free){l.des=s.des||'';l.c=s.c||''}var h='<div class="hd"><h2>'+(l.free?'Article hors catalogue':esc(l.des))+'</h2><button class="btn sm sec" data-s="x">'+(SNEW?'Annuler':'Fermer')+'</button></div>'+(SNEW?'':'<p class="tag g" style="align-self:flex-start;font-size:13px;padding:4px 10px">Déjà dans le survey : tu modifies cette fiche</p>');
  if(l.img)h+='<div class="o" style="justify-content:center"><div class="th" data-s="z" data-i="'+l.img+'" style="width:100%;height:170px"><img data-i="'+l.img+'" alt=""></div></div>';
  if(l.info)h+='<p class="mute">'+esc(l.info)+'</p>';
+ if(l.free)h+='<div class="o" style="justify-content:center"><label class="th" style="width:100%;height:170px;cursor:pointer;display:flex;align-items:center;justify-content:center">'+(s.ap?'<img src="'+s.ap+'" alt="" style="max-width:100%;max-height:100%">':'<span class="btn sec sm" style="pointer-events:none">Choisir la photo d’aperçu</span>')+'<input type="file" accept="image/*" data-s="fap" class="hid"></label></div>';
  if(l.free)h+='<label class="l">Désignation<input class="in" data-s="fd" value="'+esc(s.des||'')+'" placeholder="ex. panneau directionnel parking"></label><label class="l">Matière / fabrication<input class="in" data-s="fm" value="'+esc(s.mat||'')+'" placeholder="ex. Alucobond 3 mm, adhésif…"></label>';
  var o=s.o||{};
  if(l.kind==='single'&&!l.opts&&l.id!=='n_local_region'&&!l.zones){h+='<div class="row"><b>Quantité</b>'+stp(l.id,s.q,'q')+'</div>'}
@@ -700,11 +736,13 @@ function drawSheet(){var l=SL,s=ST(l);if(l.free){l.des=s.des||'';l.c=s.c||''}var
  if(l.kind==='single'&&!l.opts){h+='<div class="f2"><label class="l">Largeur (mm)<input class="in" inputmode="numeric" data-s="dim" data-k="L" value="'+(s.L||l.L||'')+'"></label><label class="l">Hauteur (mm)<input class="in" inputmode="numeric" data-s="dim" data-k="H" value="'+(s.H||l.H||'')+'"></label></div>'}
  if(l.free||!cmLock()||EDIT)h+='<div class="sl">Catégorie de l’article'+(l.c?'':' <small style="color:var(--warn)">(à attribuer)</small>')+'</div><div class="row">'+['S','M','T','L'].map(function(c){return '<button class="chip kc c'+c+(l.c===c?' on':'')+'" data-s="kc" data-v="'+c+'">'+CN[c]+'</button>'}).join('')+'</div>';
  h+='<div class="sl">Photos</div><div class="row"><label class="btn sec" style="cursor:pointer">Prendre une photo<input type="file" accept="image/*" capture="environment" data-s="ph" class="hid"></label><label class="btn sec sm" style="cursor:pointer">Depuis la galerie<input type="file" accept="image/*" multiple data-s="ph" class="hid"></label></div>'+phHtml(s.k);
+ if(l.free&&cfg().ed)h+='<button class="btn sec" data-s="tocat">Ajouter cet article au catalogue…</button>';
  h+='<label class="l">Remarque<textarea class="in" rows="2" data-s="note" placeholder="ex. support abîmé, dimension relevée sur place…">'+esc(s.note||'')+'</textarea></label>';
  h+='<div class="foot">'+(SNEW?'<button class="btn" data-s="add" style="width:100%;height:58px;font-size:18px">Ajouter au survey ›</button>':'<div class="row" style="flex-wrap:nowrap"><button class="btn bad" data-s="rm">Retirer</button><button class="btn" data-s="x" style="flex:1">Enregistrer</button></div>')+'</div>';
  var p=$('#sh_p'),st=p.scrollTop;p.innerHTML=h;p.scrollTop=st;setImgs(p)}
 $('#sh_p').onclick=function(e){if(e.target.dataset.z){zoom(e.target.src);return}var b=e.target.closest('[data-s]');if(!b||b.tagName==='INPUT'||b.tagName==='TEXTAREA')return;var l=SL,s=ST(l),a=b.dataset.s,id=b.dataset.id,k=b.dataset.k;
  if(a==='x'){doneSheet();return}
+ if(a==='tocat'){if(!String(s.des||'').trim()){alert('Donne d’abord une désignation à cet article.');return}pickNode('Ajouter au catalogue dans…','',function(c){toCat(c)});return}
  if(a==='kc'&&l.free){s.c=(s.c===b.dataset.v?'':b.dataset.v);if(!SNEW)touch();drawSheet();return}
  if(a==='kc'){var v=b.dataset.v;cmSet(l.id,{c:l.c===v?'':v});if(DB.cur.e.some(function(x){return x.id===l.id}))touch();drawSheet();if(!l.orph)refresh(l);return}
  if(a==='add'){addSheet();return}
@@ -718,6 +756,7 @@ $('#sh_p').onclick=function(e){if(e.target.dataset.z){zoom(e.target.src);return}
  else if(a==='rgadd'){var v=$('#rg_new').value.trim();if(!v)return;var key='c_'+v.toLowerCase().replace(/[^a-z0-9]/g,'');s.rgc=s.rgc||{};s.rgc[key]=v;s.rg=s.rg||{};s.rg[key]={b:1}}
  touch();drawSheet()};
 $('#sh_p').onchange=function(e){var t=e.target,l=SL,s=ST(l),a=t.dataset.s;if(!a)return;
+ if(a==='fap'){var ff=t.files&&t.files[0];if(ff)shrink2(ff,480,.78).then(function(b){s.ap=b;if(!SNEW)touch();drawSheet()}).catch(function(x){alert('Image non enregistrée : '+(x&&x.message||x))});return}
  if(a==='ph'){var fs=[].slice.call(t.files||[]),did=DB.cur.id;Promise.all(fs.map(function(f){return shrink(f).then(function(b){return phAdd(did,s.k,b)})})).then(function(){touch();drawSheet()}).catch(function(x){alert('Photo non enregistrée : '+(x&&x.message||x))});t.value='';return}
  if(a==='c'){var m=s[t.dataset.k]=s[t.dataset.k]||{};if(t.checked){m[t.dataset.id]=1;if(l.kind==='single'&&!s.q)s.q=1}else delete m[t.dataset.id]}
  else if(a==='rg'){s.rg=s.rg||{};var r=s.rg[t.dataset.k]=s.rg[t.dataset.k]||{};if(t.checked)r[t.dataset.v]=1;else delete r[t.dataset.v]}
@@ -740,18 +779,19 @@ function sync(silent){if(SYB||!CAT)return Promise.resolve();var say=function(t,c
  return phAll().then(function(all){var todo=all.filter(function(x){return !x.up&&by[x.d]}),i=0;
   function nx(){if(i>=todo.length)return;var x=todo[i++],d=by[x.d],en=(d.e||[]).filter(function(z){return z.k===x.l})[0],l=CAT.byId[en?en.id:x.l]||{des:en?(en.des||en._des):''};return post({a:'photo',did:d.id,ville:d.ville,date:d.date,num:d.num,lid:x.l,des:l.des||'',k:x.k,data:x.b}).then(function(r){x.up=1;x.id=r.id;d.dirty=1;nb++;var c=(PH[x.d]||{})[x.l]||[];c.forEach(function(y){if(y.k===x.k){y.up=1;y.id=r.id}});return phTx('readwrite',function(st){st.put(x)})}).then(function(){syUi();return nx()})}
   return nx()}).then(function(){var q=ls('pm_del')||[];function dn(){if(!q.length)return;var x=q[0];return post({a:'photoDel',did:x.d,k:x.k}).then(function(){q.shift();ls('pm_del',q);return dn()})}return dn()})
- .then(function(){var ds=DB.d.filter(function(d){return d.dirty}),i=0;function nd(){if(i>=ds.length)return;var d=ds[i++],u=d.upd;return phLoad(d.id).then(function(o){var pk={};for(var q in o)pk[q]=o[q].map(function(x){return x.k});return post({a:'lignes',dossier:Object.assign({id:d.id,ville:d.ville,num:d.num,date:d.date,aut:d.aut,upd:d.upd},d.info||{}),lignes:flat(d),etat:{id:d.id,ville:d.ville,num:d.num,date:d.date,aut:d.aut,upd:d.upd,info:d.info||{},e:d.e||[],pk:pk}})}).then(function(){if(d.upd===u)delete d.dirty;d.sy=new Date().toISOString();save();return nd()})}return nd()})
+ .then(function(){var ds=DB.d.filter(function(d){return d.dirty}),i=0;function nd(){if(i>=ds.length)return;var d=ds[i++],u=d.upd;return phLoad(d.id).then(function(o){var pk={};for(var q in o)pk[q]=o[q].map(function(x){return x.k});return post({a:'lignes',dossier:Object.assign({id:d.id,ville:d.ville,num:d.num,date:d.date,aut:d.aut,upd:d.upd},d.info||{}),lignes:flat(d).map(function(r){if(r.ap){r=Object.assign({},r);delete r.ap}return r}),etat:{id:d.id,ville:d.ville,num:d.num,date:d.date,aut:d.aut,upd:d.upd,info:d.info||{},e:d.e||[],pk:pk}})}).then(function(){if(d.upd===u)delete d.dirty;d.sy=new Date().toISOString();save();return nd()})}return nd()})
  .then(function(){if(ls('pm_ks')===SYH||!KS)return;return post({a:'key',k:KS}).then(function(){ls('pm_ks',SYH)},function(){})})
  .then(function(){SYB=false;syUi();say('Synchronisé avec le Drive'+(nb?' ('+nb+' photo'+(nb>1?'s':'')+' envoyée'+(nb>1?'s':'')+')':'')+'.','ok')},function(e){SYB=false;syUi();say('Synchronisation interrompue : '+(e&&e.message||e)+'. Rien n’est perdu, ça repartira.','err')})}
 function load0(){if(!DB.d.length)load()}
 window.addEventListener('online',function(){sync(true)});window.addEventListener('offline',function(){syUi()});
 $('#b_sy').onclick=function(){sync(false)};
-$('#b_set').onclick=function(){var v=prompt('Adresse du script Google (…/exec) pour l’envoi vers le Drive :',appsUrl());if(v===null)return;v=v.trim();if(v&&!/^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_\-]+\/exec$/.test(v)){alert('Adresse non reconnue : elle doit ressembler à https://script.google.com/macros/s/…/exec');return}ls('pm_apps',v||null);syUi();if(v)sync(false)};
+$('#b_set').onclick=function(){setUi();$('#setp').classList.remove('hid')};
+$('#set_url').onclick=function(){var v=prompt('Adresse du script Google (…/exec) pour l’envoi vers le Drive :',appsUrl());if(v===null)return;v=v.trim();if(v&&!/^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_\-]+\/exec$/.test(v)){alert('Adresse non reconnue : elle doit ressembler à https://script.google.com/macros/s/…/exec');return}ls('pm_apps',v||null);syUi();setUi();if(v)sync(false)};
 /* ---------- récap & export ---------- */
 var LO=null;
 function flat(d){var out=[];if(!LO){LO={};var z=0;CAT.nodes.forEach(function(n){(CAT.byNode[n.code]||[]).forEach(function(l){LO[l.id]=z++})})}
  var E=(d.e||[]).map(function(s,i){return [s,i]});E.sort(function(a,b){var x=LO[a[0].id],y=LO[b[0].id];return ((x==null?1e9:x)-(y==null?1e9:y))||(a[1]-b[1])});
- E.forEach(function(p){var s=p[0],l=CAT.byId[s.id];if(s.id==='libre'){out.push({k:s.k,id:'libre',rubrique:'Hors catalogue',des:s.des||'Article hors catalogue',q:+s.q||0,L:+s.L||0,H:+s.H||0,mat:s.mat||'',cat:s.c||'',prix:'',note:s.note||'',libre:1});return}if(!l){out.push({k:s.k,id:s.id,rubrique:'Lignes absentes du catalogue actuel',des:s._des||s.id,q:+s.q||0,L:s.L||0,H:s.H||0,mat:'',cat:'',prix:'',note:s.note||'',orpheline:1});return}var n=NM[l.n],q=qOf(l,s);var r={k:s.k,id:l.id,rubrique:n.num+' '+n.title,des:l.des,q:q,L:s.L||l.L||0,H:s.H||l.H||0,mat:l.mat||'',cat:l.c||'',prix:'',note:s.note||''};var op=[];
+ E.forEach(function(p){var s=p[0],l=CAT.byId[s.id];if(s.id==='libre'){out.push({k:s.k,id:'libre',rubrique:'Hors catalogue',des:s.des||'Article hors catalogue',q:+s.q||0,L:+s.L||0,H:+s.H||0,mat:s.mat||'',cat:s.c||'',prix:'',note:s.note||'',libre:1,ap:s.ap||''});return}if(!l){out.push({k:s.k,id:s.id,rubrique:'Lignes absentes du catalogue actuel',des:s._des||s.id,q:+s.q||0,L:s.L||0,H:s.H||0,mat:'',cat:'',prix:'',note:s.note||'',orpheline:1});return}var n=NM[l.n],q=qOf(l,s);var r={k:s.k,id:l.id,rubrique:n.num+' '+n.title,des:l.des,q:q,L:s.L||l.L||0,H:s.H||l.H||0,mat:l.mat||'',cat:l.c||'',prix:'',note:s.note||''};var op=[];
   function add(arr,m){(arr||[]).forEach(function(x){if(+m[x.id]>0)op.push({id:x.id,l:x.l,q:+m[x.id],prix:''})})}
   var o=s.o||{};add(l.opts,o);if(l.zones)l.zones.forEach(function(z){add(z.b.concat(z.n),o)});if(l.slots)l.slots.forEach(function(z){add(z.o,o)});if(l.comps)add(l.comps,o);
   if(l.canopy){CAT.cano.forEach(function(c){if(+(s.can||{})[c[0]]>0)op.push({id:c[0],l:'Canopée '+c[1]+' '+c[2]+' × 150 mm',q:+s.can[c[0]],prix:''})})}
@@ -773,7 +813,7 @@ function drawRecap(){var d=DB.cur,i=d.info||{},F=flat(d),num=d.num||d.ville,ph=P
  var g={},ord=[];F.forEach(function(r){if(!g[r.rubrique]){g[r.rubrique]=[];ord.push(r.rubrique)}g[r.rubrique].push(r)});
  ord.forEach(function(k){var L=g[k];h+='<div class="rblk"><div class="rh">'+esc(k)+'<span>'+L.length+' fiche'+(L.length>1?'s':'')+'</span></div><table class="lt"><tr><th class="vi">Visuel</th><th>Élément</th><th class="ca">Catégorie</th><th class="q">Qté</th><th class="op">Options / composition</th><th class="no">Remarque</th><th class="pp">Photos</th><th class="ac"></th></tr>'+L.map(function(r){var l=CAT.byId[r.id]||{};
   var op=(r.composition?['Composition : '+r.composition.contenu+', '+r.composition.eclairage+', format '+r.composition.format]:[]).concat((r.options||[]).map(function(o){return o.l+(o.q>1?' × '+o.q:'')})).concat(r.visuel?['Visuel '+r.visuel]:[]),opx=op.map(function(x){return esc(x).replace(/\?/g,'à préciser')});
-  return '<tr class="rl" data-id="'+esc(r.k)+'"><td class="vi">'+(l.img?'<img data-i="'+l.img+'" data-z="1" alt="">':'')+'</td><td class="des"><b>'+esc(r.des)+'</b><small>'+esc([(r.L&&r.H)?r.L+' × '+r.H+' mm':'',r.mat].filter(Boolean).join(' · '))+'</small><div class="sub">'+opx.map(function(x){return '<small>• '+x+'</small>'}).join('')+(r.note?'<small><i>'+esc(r.note)+'</i></small>':'')+'</div></td><td class="ca">'+(r.cat?'<span class="pt c'+r.cat+'">'+CN[r.cat]+'</span>':'<span class="pt">Non attribué</span>')+'</td><td class="q">'+(r.q?'× '+r.q:'à voir')+'</td><td class="op">'+opx.join('<br>')+'</td><td class="no">'+esc(r.note||'')+'</td><td class="pp">'+phHtml(r.k,1)+'</td><td class="ac">'+(ro?'':'<button class="ib" data-r="edit" title="Modifier" aria-label="Modifier"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg></button><button class="ib d" data-r="del" title="Supprimer" aria-label="Supprimer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg></button>')+'</td></tr>'}).join('')+'</table></div>'});
+  return '<tr class="rl" data-id="'+esc(r.k)+'"><td class="vi">'+(l.img?'<img data-i="'+l.img+'" data-z="1" alt="">':(r.ap?'<img src="'+r.ap+'" data-z="1" alt="">':''))+'</td><td class="des"><b>'+esc(r.des)+'</b><small>'+esc([(r.L&&r.H)?r.L+' × '+r.H+' mm':'',r.mat].filter(Boolean).join(' · '))+'</small><div class="sub">'+opx.map(function(x){return '<small>• '+x+'</small>'}).join('')+(r.note?'<small><i>'+esc(r.note)+'</i></small>':'')+'</div></td><td class="ca">'+(r.cat?'<span class="pt c'+r.cat+'">'+CN[r.cat]+'</span>':'<span class="pt">Non attribué</span>')+'</td><td class="q">'+(r.q?'× '+r.q:'à voir')+'</td><td class="op">'+opx.join('<br>')+'</td><td class="no">'+esc(r.note||'')+'</td><td class="pp">'+phHtml(r.k,1)+'</td><td class="ac">'+(ro?'':'<button class="ib" data-r="edit" title="Modifier" aria-label="Modifier"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg></button><button class="ib d" data-r="del" title="Supprimer" aria-label="Supprimer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg></button>')+'</td></tr>'}).join('')+'</table></div>'});
  if(!F.length)h+='<p class="ment">Aucune fiche pour l’instant : ouvre un article dans le catalogue, configure-le, puis « Ajouter au survey ».</p>';
  h+='<div class="dfoot"><span>Publimax · Enseignes &amp; Publicité</span><span>Catalogue du '+String(CAT.at).slice(0,10)+'</span></div></div>';
  $('#r_body').innerHTML=h;setImgs($('#r_body'))}
@@ -791,7 +831,7 @@ function printDoc(){var d=DB.cur,i=d.info||{},F=flat(d),num=d.num||d.ville,ph=PH
  b+='<div class="kp"><div><b>'+F.length+'</b><span>fiches</span></div><div><b>'+pcs+'</b><span>pièces</span></div><div><b>'+cc.S+'</b><span>standard</span></div><div><b>'+cc.M+'</b><span>sur mesure</span></div><div><b>'+cc.T+'</b><span>sous-trait.</span></div><div><b>'+cc.L+'</b><span>livrée</span></div><div><b>'+cc.N+'</b><span>non attr.</span></div><div><b>'+np+'</b><span>photos</span></div></div>';
  b+=H2('Éléments relevés',F.length+' fiche'+(F.length>1?'s':'')+' · par rubrique');
  var g={},ord=[];F.forEach(function(r){if(!g[r.rubrique]){g[r.rubrique]=[];ord.push(r.rubrique)}g[r.rubrique].push(r)});
- ord.forEach(function(k){var L=g[k];b+='<div class="rblk"><div class="rh">'+esc(k)+'<span>'+L.length+' fiche'+(L.length>1?'s':'')+'</span></div><table class="lt"><tr><th>Visuel</th><th>Élément</th><th>Catégorie</th><th>Qté</th><th>Options / composition</th><th>Remarque</th><th>Photos</th></tr>'+L.map(function(r){var l=CAT.byId[r.id]||{},im=l.img&&IMG[l.img]?'<img src="'+IMG[l.img]+'" alt="">':'';
+ ord.forEach(function(k){var L=g[k];b+='<div class="rblk"><div class="rh">'+esc(k)+'<span>'+L.length+' fiche'+(L.length>1?'s':'')+'</span></div><table class="lt"><tr><th>Visuel</th><th>Élément</th><th>Catégorie</th><th>Qté</th><th>Options / composition</th><th>Remarque</th><th>Photos</th></tr>'+L.map(function(r){var l=CAT.byId[r.id]||{},im=l.img&&IMG[l.img]?'<img src="'+IMG[l.img]+'" alt="">':(r.ap?'<img src="'+r.ap+'" alt="">':'');
   var op=(r.composition?['Composition : '+r.composition.contenu+', '+r.composition.eclairage+', format '+r.composition.format]:[]).concat((r.options||[]).map(function(o){return o.l+(o.q>1?' × '+o.q:'')})).concat(r.visuel?['Visuel '+r.visuel]:[]);
   return '<tr><td class="vi">'+im+'</td><td class="des"><b>'+esc(r.des)+'</b><small>'+esc([(r.L&&r.H)?r.L+' × '+r.H+' mm':'',r.mat].filter(Boolean).join(' · '))+'</small></td><td class="ca">'+(r.cat?'<span class="pt c'+r.cat+'">'+CN[r.cat]+'</span>':'<span class="pt">Non attribué</span>')+'</td><td class="q">'+(r.q?'× '+r.q:'à voir')+'</td><td>'+op.map(function(x){return esc(x).replace(/\?/g,'à préciser')}).join('<br>')+'</td><td>'+esc(r.note||'')+'</td><td class="pp">'+(ph[r.k]||[]).map(function(x){return '<img src="'+x.b+'" alt="">'}).join('')+'</td></tr>'}).join('')+'</table></div>'});
  if(!F.length)b+='<p class="ment">Aucune fiche dans ce survey.</p>';
@@ -820,24 +860,29 @@ setTimeout(function(){sessionStorage.removeItem('pm_rl')},8000);
 if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(function(){});
 
 /* ---------- modifications du catalogue, partagées par le Drive ---------- */
-var CM=ls('pm_cm')||{v:0,lines:{}},CP=ls('pm_cmp')||{ch:{},imgs:[]},EDIT=false,CSB=false,CST=0,EIMG=null;
+var CM=ls('pm_cm')||{v:0,lines:{}},CP=ls('pm_cmp')||{ch:{},imgs:[]};CP.ch=CP.ch||{};CP.imgs=CP.imgs||[];CP.add=CP.add||{};var CP0=function(){return {ch:{},imgs:[],add:{}}},EDIT=false,CSB=false,CST=0,EIMG=null;
 function cmLock(){return CP.lock!=null?!!CP.lock:!!CM.lock}
 function cmSaveP(){ls('pm_cmp',CP)}
 function migOv(){var o=ls('pm_ov');if(!o)return;for(var k in o)(CP.ch[k]=CP.ch[k]||{}).c=o[k];cmSaveP();ls('pm_ov',null)}
-function applyCM(){if(!CAT)return;CAT.lines.forEach(function(l){var m=Object.assign({},(CM.lines||{})[l.id],CP.ch[l.id]);l.c=m.c!=null?m.c:l.c0;l.n=(m.n!=null&&NM[m.n])?m.n:l.n0;l.p=m.p!=null?m.p:l.p0;l.img=m.img?m.img:l.img0});
- CAT.byNode={};CAT.lines.forEach(function(l){(CAT.byNode[l.n]=CAT.byNode[l.n]||[]).push(l)});for(var k in CAT.byNode)CAT.byNode[k].sort(function(a,b){return (a.p-b.p)||(a._o-b._o)});LO=null}
+function baseL(l,i){l._o=i;l.c0=l.c||'';l.n0=l.n;l.p0=l.p;l.img0=l.img||'';l.des0=l.des;l.L0=l.L;l.H0=l.H;l.mat0=l.mat||'';l.info0=l.info||''}
+var CUS={};
+function applyCM(){if(!CAT||!CAT.lines0)return;var ADD=Object.assign({},CM.add||{},CP.add||{}),L=CAT.lines0.slice(),i=L.length;
+ Object.keys(ADD).forEach(function(k){var a=ADD[k];if(!a||a.del)return;var l=CUS[k]||(CUS[k]={id:k,kind:'single',custom:1});l.n=a.n;l.p=+a.p||0;l.des=a.des||'Article';l.L=+a.L||0;l.H=+a.H||0;l.mat=a.mat||'';l.info=a.info||'';l.c=a.c||'';l.img=a.img||'';baseL(l,i++);L.push(l)});
+ CAT.lines=L;CAT.byId={};L.forEach(function(l){CAT.byId[l.id]=l});
+ L.forEach(function(l){var m=Object.assign({},(CM.lines||{})[l.id],(CP.ch||{})[l.id]);l.c=m.c!=null?m.c:l.c0;l.n=(m.n!=null&&NM[m.n])?m.n:(NM[l.n0]?l.n0:CAT.nodes[0].code);l.p=m.p!=null?m.p:l.p0;l.img=m.img?m.img:l.img0;l.des=(m.des!=null&&m.des!=='')?m.des:l.des0;l.L=m.L!=null?m.L:l.L0;l.H=m.H!=null?m.H:l.H0;l.mat=m.mat!=null?m.mat:l.mat0;l.info=m.info!=null?m.info:l.info0;l.rl=m.rl||null;l.mod=Object.keys(m).some(function(k){return m[k]!=null});l._t=null});
+ CAT.byNode={};L.forEach(function(l){(CAT.byNode[l.n]=CAT.byNode[l.n]||[]).push(l)});for(var k in CAT.byNode)CAT.byNode[k].sort(function(a,b){return (a.p-b.p)||(a._o-b._o)});LO=null}
 function cmSet(id,o){CP.ch[id]=Object.assign(CP.ch[id]||{},o);cmSaveP();applyCM();catLater()}
 function catImgLoad(){return phTx('readonly',function(st){return st.index('d').getAll('__cat')}).then(function(a){(a||[]).forEach(function(x){IMG[x.l]=x.b});setImgs(document)}).catch(function(){})}
 function catLater(){clearTimeout(CST);CST=setTimeout(syncCat,1500)}
 function ident(){var c=cfg();return c.e?{e:c.e,t:tok()}:{}}
-function redrawCat(){edUi();if(!$('#cat').classList.contains('hid')&&!SL&&VIEW.cat!=='info'){var y=$('#list').scrollTop;drawSide();drawView();$('#list').scrollTop=y}}
+function redrawCat(){edUi();if(!$('#edit').classList.contains('hid')&&document.activeElement&&!/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName))drawEdit();if(!$('#cat').classList.contains('hid')&&!SL&&VIEW.cat!=='info'){var y=$('#list').scrollTop;drawSide();drawView();$('#list').scrollTop=y}}
 function syncCat(){if(CSB||!CAT||!SYH||!appsUrl()||!navigator.onLine)return Promise.resolve();CSB=true;
- var has=Object.keys(CP.ch).length>0||CP.lock!=null,sent=JSON.stringify(CP),v0=CM.v||0;
- var p=has?phTx('readonly',function(st){return st.index('d').getAll('__cat')}).then(function(a){var im={};(a||[]).forEach(function(x){if((CP.imgs||[]).indexOf(x.l)>=0)im[x.l]=x.b});return post(Object.assign({a:'catset',ch:CP.ch,lock:CP.lock,imgs:im},ident()))}):post(Object.assign({a:'cat',v:v0},ident()));
- return p.then(function(r){if(has){if(JSON.stringify(CP)===sent){CP={ch:{},imgs:[]};cmSaveP()}else catLater()}
+ var has=Object.keys(CP.ch).length>0||Object.keys(CP.add).length>0||CP.lock!=null,sent=JSON.stringify(CP),v0=CM.v||0;
+ var p=has?phTx('readonly',function(st){return st.index('d').getAll('__cat')}).then(function(a){var im={};(a||[]).forEach(function(x){if((CP.imgs||[]).indexOf(x.l)>=0)im[x.l]=x.b});return post(Object.assign({a:'catset',ch:CP.ch,add:CP.add,lock:CP.lock,imgs:im},ident()))}):post(Object.assign({a:'cat',v:v0},ident()));
+ return p.then(function(r){if(has){if(JSON.stringify(CP)===sent){CP=CP0();cmSaveP()}else catLater()}
   if(r.cat){CM=r.cat;ls('pm_cm',CM)}var c=cfg();if(!!r.ed!==!!c.ed){c.ed=r.ed?1:0;ls('pm_cfg',c)}applyCM();return catImgs().then(function(){CSB=false;if(has||(CM.v||0)!==v0)redrawCat();else edUi()})})
- .catch(function(e){CSB=false;if(has&&/réservé/.test((e&&e.message)||'')){CP={ch:{},imgs:[]};cmSaveP();applyCM();redrawCat();toast('Modification du catalogue réservée')}})}
-function catImgs(){var need={};for(var k in (CM.lines||{})){var g=CM.lines[k].img;if(g&&!IMG[g])need[g]=1}var ids=Object.keys(need);
+ .catch(function(e){CSB=false;if(has&&/réservé/.test((e&&e.message)||'')){CP=CP0();cmSaveP();applyCM();redrawCat();toast('Modification du catalogue réservée')}})}
+function catImgs(){var need={};for(var k in (CM.lines||{})){var g=CM.lines[k].img;if(g&&/^o_/.test(g)&&!IMG[g])need[g]=1}for(var k2 in (CM.add||{})){var g2=CM.add[k2].img;if(g2&&/^o_/.test(g2)&&!IMG[g2])need[g2]=1}var ids=Object.keys(need);
  function nx(){var b=ids.splice(0,6);if(!b.length)return Promise.resolve();return post({a:'catimg',ids:b}).then(function(r){var im=r.imgs||{};for(var k in im)IMG[k]=im[k];return phTx('readwrite',function(st){for(var k in im)st.put({k:'cat|'+k,d:'__cat',l:k,b:im[k],up:1})})}).then(nx)}
  return nx().then(function(){setImgs(document)},function(){})}
 function rules(l){var K={single:'article simple (quantité)',qty:'quantité par option',multi:'choix multiples',kit:'kit',monde:'monde'},a=[K[l.kind]||l.kind];if(l.opts)a.push(l.opts.length+' option'+(l.opts.length>1?'s':''));if(l.cp)a.push('composition d’enseigne');if(l.canopy)a.push('canopée associée');if(l.zones)a.push(l.zones.length+' zones');if(l.slots)a.push(l.slots.length+' emplacements');if(l.comps)a.push('compositions');if(l.contents)a.push('kit de '+l.contents.length+' éléments');if(l.pages&&l.pages.length)a.push(l.pages.length+' page'+(l.pages.length>1?'s':'')+' du book');
@@ -846,29 +891,113 @@ function shrink2(file,m,q){return new Promise(function(ok,ko){var u=URL.createOb
 function edAct(l,a,el){if(!EDIT)return;var y=$('#list').scrollTop;
  if(a==='ecat'){var v=el.dataset.v;cmSet(l.id,{c:l.c===v?'':v});drawSide();drawList();$('#list').scrollTop=y;return}
  if(a==='eimg'){EIMG=l.id;$('#e_file').value='';$('#e_file').click();return}
- if(a==='emv'){EIMG=l.id;$('#pk_l').innerHTML=CAT.nodes.map(function(n){return '<button class="pk'+(n.code===l.n?' on':'')+'" data-c="'+esc(n.code)+'"><b>'+esc(n.num)+'</b> '+esc(n.title)+'</button>'}).join('');$('#pick').classList.remove('hid');return}
+ if(a==='emv'){pickNode('Déplacer vers…',l.n,function(c){moveTo(l,c);drawSide();drawList()});return}
  var L=(CAT.byNode[l.n]||[]).slice(),V=L.filter(hit),i=V.indexOf(l),o=V[i+(a==='eup'?-1:1)];if(i<0||!o)return;
  L.splice(L.indexOf(l),1);var j=L.indexOf(o);L.splice(a==='eup'?j:j+1,0,l);L.forEach(function(x,k){if(x.p!==k*10)(CP.ch[x.id]=CP.ch[x.id]||{}).p=k*10});cmSaveP();applyCM();catLater();drawList();$('#list').scrollTop=y}
 $('#e_file').onchange=function(){var f=this.files&&this.files[0],id=EIMG;if(!f||!id)return;shrink2(f,560,.82).then(function(b){var g='o_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);IMG[g]=b;(CP.imgs=CP.imgs||[]).push(g);return phTx('readwrite',function(st){st.put({k:'cat|'+g,d:'__cat',l:g,b:b,up:1})}).then(function(){cmSet(id,{img:g});var l=CAT.byId[id];if(l)refresh(l);toast('Aperçu changé')})}).catch(function(x){alert('Image non enregistrée : '+(x&&x.message||x))})};
 $('#pk_x').onclick=function(){$('#pick').classList.add('hid')};
-$('#pick').onclick=function(e){if(e.target===this){this.classList.add('hid');return}var b=e.target.closest('.pk');if(!b)return;var l=CAT.byId[EIMG],c=b.dataset.c;this.classList.add('hid');if(!l||c===l.n)return;var mx=0;(CAT.byNode[c]||[]).forEach(function(x){if(x.p>mx)mx=x.p});cmSet(l.id,{n:c,p:mx+10});drawSide();drawList();toast('Déplacé vers '+((NM[c]||{}).num||c))};
-function edUi(){var ed=!!cfg().ed;if(!ed&&EDIT)EDIT=false;document.body.classList.toggle('edit',EDIT);var b=$('#b_edit');b.classList.toggle('hid',!ed);b.textContent=EDIT?'Quitter l’édition':'Édition';b.classList.toggle('sec',!EDIT);
- var k=$('#b_lockc');k.classList.toggle('hid',!EDIT);k.textContent=cmLock()?'Catégories : verrouillées':'Catégories : libres';
- var x=$('#e_box');if(x)x.innerHTML='<div class="dc" style="margin-top:18px"><b>Catalogue</b><span class="mute">'+(ed?'Cet appareil peut modifier le catalogue : bouton « Édition » en haut du catalogue. Tout ce que tu changes est partagé avec les autres appareils.':'Cet appareil ne peut pas modifier le catalogue (aperçus, ordre, rubriques).')+'</span><span class="mute">Catégories dans les fiches : '+(cmLock()?'verrouillées':'libres')+' · modifications reçues : n° '+(CM.v||0)+'</span>'+(ed?'':'<div class="row"><button class="btn sec sm" id="e_ask">Demander le droit de modifier</button></div>')+'</div>'}
-$('#b_edit').onclick=function(){EDIT=!EDIT;edUi();var y=$('#list').scrollTop;drawView();$('#list').scrollTop=y};
+
+
+/* ---------- règles de débit (reprises de la page de tri) ---------- */
+var RF=['PVC 30 mm habillé bois','Suspension','Barres de cimaise','Bandeau, canopées, lisse','Sous-traitance','Pochettes'];
+var RULES=[
+{id:'cadre30',f:0,l:'Cadre PVC 30×30 habillé chêne autour du panneau',t:'Baguettes sur le pourtour (haut, bas, gauche, droite, intérieur selon le visuel). Les longueurs se relèvent sur le visuel, elles ne sont pas calculées.',s:'cdc',q:'Longueurs de baguettes non calculées',d:/encadrement[^.;]{0,25}pvc\s*30/},
+{id:'socle',f:0,l:'Socle PVC 30 rainuré habillé chêne',t:'Longueur du socle = largeur du panneau + la valeur ci-dessous.',s:'page',p:[['Ajout à la largeur (mm)',40]],d:/socle[^.;]{0,25}pvc\s*30/},
+{id:'etagere',f:0,l:'Étagères « L » PVC 30 habillées chêne',t:'Repère du poste + longueurs. Nombre et longueur saisis à la main.',s:'cdc',d:/etager[ea]/},
+{id:'semelle',f:0,l:'Semelle d’enseigne PVC 30 habillée chêne',t:'Partie texte (ht 280) + visuel facultatif de taille A = 900, B = 700 ou C = 550 mm. Inerte ou lumineuse : même taille. Texte seul ou texte + visuel.',s:'cdc',d:'ens'},
+{id:'filins',f:1,l:'Filins et bloque-filins d’enseigne',t:'Nombre de base par rayon (table des réglages de la page Débits : boucherie 4, marché 3, bio 2…), plus la valeur ci-dessous si l’enseigne a un visuel.',s:'page',p:[['En plus si visuel',3]],d:'ens'},
+{id:'crochets',f:1,l:'Crochets de suspension',t:'Nombre par élément qui en a besoin (2 par défaut, ou le nombre écrit dans le descriptif).',s:'cdc',p:[['Par élément',2]],d:/(\d+)?\s*crochets?\s*de\s*suspension/},
+{id:'texsusp',f:2,l:'Texxalis noir en suspension (habillé bois si précisé)',t:'Barres de 3 m. Longueur en ml du tableur arrondie au multiple de 3 supérieur (5 ml → 6 ml, 12 ml reste 12 ml).',s:'cdc',p:[['Longueur d’une barre (mm)',3000]],d:/texxalis|cimaise/},
+{id:'texenc',f:2,l:'Texxalis noir habillé bois en encadrement',t:'Encadrement d’un panneau : 2 barres de la largeur + 2 barres de la hauteur (2000×500 → 2×2000 + 2×500).',s:'cdc',q:'Arrondi aux barres de 3 m non appliqué dans la page',d:/crossile/},
+{id:'texbl',f:2,l:'Texxalis blanc (barre du bandeau)',t:'Découpé en barres de 3 m + reste à couper.',s:'page',d:/crossline/},
+{id:'equerres',f:2,l:'Équerres de fixation Texxalis noir pré-percées',t:'Nombre global, déduit des profilés.',s:'cdc',p:[['Par profilé',2]],d:'tex'},
+{id:'pattes',f:2,l:'Pattes de jonction Texxalis',t:'Nombre global : 1 patte entre deux profilés qui se suivent.',s:'cdc',q:'Calcul à relire dans la page',p:[['Entre deux profilés',1]],d:'tex'},
+{id:'bandeau',f:3,l:'Bandeau « les offres market » (dibond 3 mm rouge RAL 3020, verso bois)',t:'Longueur totale redécoupée en tronçons de 3000 mm + reste à couper sur mesure (11970 = 3 × 3000 + 1 × 2970).',s:'cdc',p:[['Tronçon (mm)',3000]],d:/bandeau\s*aerien/},
+{id:'canopee',f:3,l:'Canopée carton alvéolaire 16 mm R/V',t:'Effet bois ou rouge RAL 3020. Une ligne par format, repère du poste.',s:'cdc',d:/alveolaire/},
+{id:'lisse',f:3,l:'Lisse de façade alu plié + habillage bois',t:'Découpée en barres de 3000 + reste.',s:'cdc',d:/lisse\s*bois|lisse\s*de\s*facade/},
+{id:'rehausse',f:4,l:'Rehausses de TG laquées noir',t:'Nombre global, à confirmer au lancement.',s:'cdc',p:[['Exemplaires à chaque fois',10]],d:/re?hausses?\s*de\s*tg/},
+{id:'fronton',f:4,l:'Frontons de TG',t:'Nombre global ; format à mesurer selon la taille de la TG.',s:'cdc',d:/fronton\s*tg/},
+{id:'joue',f:4,l:'Joues de TG (bâche)',t:'Nombre global, format du tableur.',s:'cdc',d:/joue\s*de\s*tg\s*bache/},
+{id:'rue',f:4,l:'Panneaux de rue acier plié laqué blanc',t:'Nombre global, 1 pochette A3 portrait par panneau.',s:'cdc',d:/panneau\s*de\s*rue/},
+{id:'cadrepoch',f:5,l:'Cadres pochettes (+ câbles et attaches)',t:'Format et nombre lus dans le descriptif. Câbles de fixation haut/bas : 2 par colonne de cadres. Attaches cadre-câbles : par cadre.',s:'cdc',p:[['Câbles par colonne',2],['Attaches par cadre',4]],d:/(\d+(?:\s*ou\s*\d+)?)\s*cadres?\s+pochettes?\s*a\d/},
+{id:'pochette',f:5,l:'Pochettes sur panneaux (A3 / A4)',t:'Nombre lu dans le descriptif (« 2 pochettes A4 »), le plus grand retenu si plusieurs.',s:'page',d:/(\d+(?:\s*ou\s*\d+)?)\s*pochettes?\s*a\d/},
+{id:'pocha5',f:5,l:'Pochette A5',t:'1 par panneau.',s:'page',d:/\bpochette\s*a5\b/}
+];
+function rNrm(s){return String(s==null?'':s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase()}
+function rHit(r,e){var t=rNrm((e.des||'')+' '+(e.info||'')+' '+(e.mat||''));
+ if(r.d==='ens'){return /^enseigne/.test(rNrm(e.des))&&!/drive murale|joue de meuble/.test(rNrm(e.des))}
+ if(r.d==='tex'){return /texxalis|cimaise|crossile|crossline/.test(t)}
+ return r.d?r.d.test(t):false}
+var MAT_BASE=['PVC 3 mm','PVC 300 microns','Alucobond 3 mm','Adhésif','Adhésif translucide','Adhésif dépoli','Yupo tako','Carton alvéolaire 16 mm','Bâche 510 g/m²','Magnétique','Profil Texxalis','Double U aluminium','Structure tubulaire acier','Acier laqué','Lettrage PVC 19 mm','Selon cahier des charges','Selon charte graphique'];
+function rSet(l){return RULES.map(function(r){var m=l.rl&&l.rl[r.id],auto=rHit(r,l);return {r:r,auto:auto,on:m===1?true:m===0?false:auto}})}
+/* ---------- sélecteur de rubrique ---------- */
+var PKF=null;
+function pickNode(title,cur,fn){PKF=fn;$('#pk_t').textContent=title;$('#pk_l').className='';$('#pk_l').innerHTML=CAT.nodes.map(function(n){return '<button class="pk'+(n.code===cur?' on':'')+'" data-c="'+esc(n.code)+'"><b>'+esc(n.num)+'</b> '+esc(n.title)+'</button>'}).join('');$('#pick').classList.remove('hid')}
+function moveTo(l,c){if(!l||c===l.n)return;var mx=0;(CAT.byNode[c]||[]).forEach(function(x){if(x.p>mx)mx=x.p});cmSet(l.id,{n:c,p:mx+10});toast('Déplacé vers '+((NM[c]||{}).num||c))}
+$('#pick').onclick=function(e){if(e.target===this){this.classList.add('hid');return}var g=e.target.closest('[data-g]');if(g){this.classList.add('hid');if(PKF)PKF(g.dataset.g);return}if(e.target.closest('#pk_more')){galFill(true);return}var b=e.target.closest('.pk');if(!b)return;this.classList.add('hid');if(PKF)PKF(b.dataset.c)};
+function newImg(b){var g='o_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);IMG[g]=b;CP.imgs.push(g);cmSaveP();return phTx('readwrite',function(st){st.put({k:'cat|'+g,d:'__cat',l:g,b:b,up:1})}).then(function(){return g})}
+function toCat(c){var s=SD,l=SL;if(!s||!l||!l.free)return;var id='x_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),mx=0;(CAT.byNode[c]||[]).forEach(function(x){if(x.p>mx)mx=x.p});
+ (s.ap?newImg(s.ap):Promise.resolve('')).then(function(g){CP.add[id]={n:c,des:String(s.des).trim(),L:+s.L||0,H:+s.H||0,mat:s.mat||'',info:'',c:s.c||'',img:g,p:mx+10};cmSaveP();applyCM();catLater();
+  s.id=id;s._des=CP.add[id].des;delete s.des;delete s.mat;delete s.ap;delete s.c;delete s.L;delete s.H;SL=CAT.byId[id];if(!SNEW)touch();drawSheet();drawSide();drawList();toast('Ajouté au catalogue, rubrique '+((NM[c]||{}).num||c))})}
+/* ---------- réglages ---------- */
+function askEd(){var c=cfg(),n=c.n,m=c.e;if(!m){n=prompt('Ton prénom et ton nom :',n||'');if(!n)return;m=prompt('Ton adresse e-mail :','');if(!m)return;m=m.trim().toLowerCase();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m)){alert('Adresse e-mail non reconnue.');return}c.n=n.trim();c.e=m;ls('pm_cfg',c)}
+ appsRaw({a:'req',e:c.e,n:c.n||'',t:tok(),ua:navigator.userAgent,ed:true}).then(function(r){if(r&&r.ed){c.ed=1;ls('pm_cfg',c);setUi();toast('Droit de modification accordé')}else alert('Demande envoyée à Publimax. Dès qu’elle est acceptée, reviens dans Réglages : le mode édition sera ouvert.')},function(x){alert('Demande non envoyée : '+(x&&x.message||x))})}
+function setUi(){var c=cfg(),ed=!!c.ed,u=appsUrl();$('#set_ed').textContent=ed?'Cet appareil peut modifier le catalogue : aperçus, textes, dimensions, matières, catégories, rubriques, ordre, règles de débit. Tout est partagé avec les autres appareils.':'Cet appareil n’a pas le droit de modifier le catalogue. Tu peux le demander à Publimax.';$('#set_go').textContent=ed?'Ouvrir le mode édition':'Demander l’accès';
+ $('#set_co').innerHTML='Script Google : '+(u?esc(u.replace(/^https:\/\/script\.google\.com\/macros\/s\//,'…/').replace(/(.{14}).+(.{10}\/exec)$/,'$1…$2')):'<b>non réglé</b>')+'<br>'+esc($('#b_sy').textContent)+'<br>Appareil : '+esc([c.n,c.e].filter(Boolean).join(' · ')||'entré par lien, sans nom')+'<br>Modifications du catalogue reçues : n° '+(CM.v||0)+' · catégories dans les fiches : '+(cmLock()?'verrouillées':'libres')}
+function edUi(){$('#b_lockc').textContent=cmLock()?'Catégories : verrouillées':'Catégories : libres';if(!$('#setp').classList.contains('hid'))setUi()}
+$('#set_x').onclick=function(){$('#setp').classList.add('hid')};$('#setp').onclick=function(e){if(e.target===this)this.classList.add('hid')};
+$('#set_sy').onclick=function(){sync(false).then(function(){return syncCat()}).then(function(){teamLoad();setUi()})};
+$('#set_go').onclick=function(){if(!cfg().ed){syncCat().then(function(){if(cfg().ed){setUi();toast('Accès déjà accordé')}else askEd()});return}$('#setp').classList.add('hid');openEdit()};
 $('#b_lockc').onclick=function(){var v=!cmLock();if(!confirm(v?'Verrouiller les catégories ? Elles ne seront plus modifiables que dans le mode édition.':'Rendre les catégories modifiables dans les fiches ?'))return;CP.lock=v;cmSaveP();catLater();edUi()};
-$('#e_box').onclick=function(e){if(e.target.id!=='e_ask')return;var c=cfg(),n=c.n,m=c.e;if(!m){n=prompt('Ton prénom et ton nom :',n||'');if(!n)return;m=prompt('Ton adresse e-mail :','');if(!m)return;m=m.trim().toLowerCase();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m)){alert('Adresse e-mail non reconnue.');return}c.n=n.trim();c.e=m;ls('pm_cfg',c)}
- appsRaw({a:'req',e:c.e,n:c.n||'',t:tok(),ua:navigator.userAgent,ed:true}).then(function(r){if(r&&r.ed){c.ed=1;ls('pm_cfg',c);edUi();toast('Droit de modification accordé')}else alert('Demande envoyée à Publimax. Dès qu’elle est acceptée, le bouton « Édition » apparaît en haut du catalogue (rouvre le Menu pour actualiser).')},function(x){alert('Demande non envoyée : '+(x&&x.message||x))})};
+/* ---------- mode édition du catalogue ---------- */
+var EO={},EQ='',EC='',EM=false;
+function openEdit(){$('#matl').innerHTML=MAT_BASE.map(function(m){return '<option value="'+esc(m)+'">'}).join('');show('edit');edUi();drawEdit();syncCat()}
+function ehit(l){if(EC&&(EC==='N'?l.c:l.c!==EC))return false;if(EM&&!l.mod&&!l.custom)return false;if(EQ){if(!l._t)l._t=na(l.des+' '+l.info+' '+l.mat+' '+(l.opts||[]).map(function(o){return o.l}).join(' '));if(l._t.indexOf(na(EQ))<0)return false}return true}
+function kindTxt(l){var K={single:'article simple (quantité)',qty:'quantité par option',multi:'choix multiples',kit:'kit',monde:'monde'},a=[K[l.kind]||l.kind];if(l.opts)a.push(l.opts.length+' option'+(l.opts.length>1?'s':''));if(l.cp)a.push('composition d’enseigne');if(l.canopy)a.push('canopée associée');if(l.zones)a.push(l.zones.length+' zones');if(l.slots)a.push(l.slots.length+' emplacements');if(l.comps)a.push('compositions');if(l.contents)a.push('kit de '+l.contents.length+' éléments');if(l.pages&&l.pages.length)a.push(l.pages.length+' page'+(l.pages.length>1?'s':'')+' du book');return a.join(' · ')}
+function erow(l){var R=rSet(l),on=R.filter(function(x){return x.on});
+ return '<div class="erow'+(l.c?' c'+l.c:'')+(l.mod||l.custom?' mod':'')+'" data-id="'+esc(l.id)+'"><div class="ev"><div class="evi" data-e="img">'+(l.img?'<img data-i="'+l.img+'" alt="" style="visibility:hidden">':'<span>Pas d’aperçu</span>')+'</div><button class="eb" data-e="img">Changer l’aperçu</button><div class="eord"><button class="eb" data-e="up" aria-label="Monter">▲</button><button class="eb" data-e="dn" aria-label="Descendre">▼</button></div></div>'
+ +'<div class="ef"><input class="in ed1" data-f="des" value="'+esc(l.des)+'" placeholder="Désignation">'
+ +'<div class="eg3"><label>Largeur (mm)<input class="in" inputmode="numeric" data-f="L" value="'+(l.L||'')+'"></label><label>Hauteur (mm)<input class="in" inputmode="numeric" data-f="H" value="'+(l.H||'')+'"></label><label class="w">Matière<input class="in" data-f="mat" list="matl" value="'+esc(l.mat||'')+'"></label></div>'
+ +'<label class="el">Descriptif / fabrication<textarea class="in" rows="2" data-f="info">'+esc(l.info||'')+'</textarea></label>'
+ +'<div class="eg2"><div class="ecs">'+['S','M','T','L'].map(function(c){return '<button class="eb kc c'+c+(l.c===c?' on':'')+'" data-e="cat" data-v="'+c+'">'+CN[c]+'</button>'}).join('')+'</div><label class="w">Rubrique<select class="in" data-f="n">'+CAT.nodes.map(function(n){return '<option value="'+esc(n.code)+'"'+(n.code===l.n?' selected':'')+'>'+esc(n.num+' '+n.title)+'</option>'}).join('')+'</select></label></div>'
+ +'<details class="erl"><summary>Règles de débit · '+on.length+(on.length?' : '+esc(on.map(function(x){return x.r.l}).join(' ; ')):'')+'</summary><div class="erb">'+RF.map(function(f,fi){return '<div class="erf">'+esc(f)+'</div>'+R.filter(function(x){return x.r.f===fi}).map(function(x){return '<label class="erc"><input type="checkbox" data-rl="'+x.r.id+'"'+(x.on?' checked':'')+'><span><b>'+esc(x.r.l)+'</b>'+(x.auto?' <i>détectée</i>':'')+'<small>'+esc(x.r.t)+'</small></span></label>'}).join('')}).join('')+'</div></details>'
+ +'<div class="einf">Type : '+esc(kindTxt(l))+(l.custom?' · <b>ajouté au catalogue</b>':'')+(l.mod?' · <b>modifié</b>':'')+'<span class="esp"></span>'+(l.mod?'<button class="eb" data-e="reset">Revenir à l’origine</button>':'')+(l.custom?'<button class="eb bad" data-e="del">Retirer du catalogue</button>':'')+'</div></div></div>'}
+function drawEdit(){var h='',tot=0,open=!!EQ;CAT.nodes.forEach(function(n){var L=(CAT.byNode[n.code]||[]).filter(ehit);if(!L.length)return;tot+=L.length;var o=open||!!EO[n.code];h+='<div class="egr"><button class="egh" data-g="'+esc(n.code)+'"><span class="cv">'+(o?'▾':'▸')+'</span><b>'+esc(n.num)+'</b> '+esc(n.title)+'<small>'+L.length+' article'+(L.length>1?'s':'')+'</small></button>'+(o?L.map(erow).join(''):'')+'</div>'});
+ $('#ed_st').textContent=tot+' article'+(tot>1?'s':'');$('#ed_list').innerHTML=h||'<p class="mute" style="padding:20px">Aucun article ne correspond.</p>';setImgs($('#ed_list'))}
+function edKeep(fn){var y=$('#edit').scrollTop;fn();drawEdit();$('#edit').scrollTop=y}
+$('#ed_back').onclick=function(){syncCat();openDossiers()};
+$('#ed_q').oninput=function(){EQ=this.value.trim();clearTimeout(drawEdit.t);drawEdit.t=setTimeout(drawEdit,250)};
+$('#ed_c').onchange=function(){EC=this.value;drawEdit()};$('#ed_m').onchange=function(){EM=this.checked;drawEdit()};
+$('#ed_all').onclick=function(){var any=CAT.nodes.some(function(n){return !EO[n.code]});CAT.nodes.forEach(function(n){EO[n.code]=any});this.textContent=any?'Tout replier':'Tout déplier';drawEdit()};
+function galFill(all){var l=CAT.byId[EIMG],root=String(l.n).split('.')[0],seen={},K=[];CAT.lines.forEach(function(x){if(!all&&String(x.n).split('.')[0]!==root)return;[x.img0,x.img].forEach(function(g){if(g&&IMG[g]&&!seen[g]){seen[g]=1;K.push(g)}})});
+ $('#pk_l').className='gal';$('#pk_l').innerHTML='<label class="btn" style="grid-column:1/-1;cursor:pointer">Prendre ou choisir une photo<input type="file" accept="image/*" id="pk_f" class="hid"></label>'+K.map(function(g){return '<button class="gi" data-g="'+g+'"><img loading="lazy" src="'+IMG[g]+'" alt=""></button>'}).join('')+(all?'':'<button class="btn sec" id="pk_more" style="grid-column:1/-1">Voir les aperçus de tout le catalogue</button>')}
+function pickImg(l){EIMG=l.id;PKF=function(g){cmSet(l.id,{img:g});edAfter(l)};$('#pk_t').textContent='Aperçu de « '+l.des+' »';galFill(false);$('#pick').classList.remove('hid')}
+function edAfter(l){if(!$('#edit').classList.contains('hid'))edKeep(function(){});else refresh(l)}
+$('#pk_l').onchange=function(e){if(e.target.id!=='pk_f')return;var f=e.target.files&&e.target.files[0],l=CAT.byId[EIMG];if(!f||!l)return;$('#pick').classList.add('hid');shrink2(f,560,.82).then(newImg).then(function(g){cmSet(l.id,{img:g});edAfter(l);toast('Aperçu changé')}).catch(function(x){alert('Image non enregistrée : '+(x&&x.message||x))})};
+$('#ed_list').onclick=function(e){var g=e.target.closest('.egh');if(g){EO[g.dataset.g]=!EO[g.dataset.g];edKeep(function(){});return}var b=e.target.closest('[data-e]');if(!b)return;var l=CAT.byId[b.closest('.erow').dataset.id],a=b.dataset.e;if(!l)return;
+ if(a==='img'){pickImg(l);return}
+ if(a==='cat'){var v=b.dataset.v;edKeep(function(){cmSet(l.id,{c:l.c===v?'':v})});return}
+ if(a==='reset'){if(!confirm('Remettre « '+l.des+' » comme dans le catalogue d’origine ?'))return;edKeep(function(){cmSet(l.id,{c:null,n:null,p:null,img:null,des:null,L:null,H:null,mat:null,info:null,rl:null})});return}
+ if(a==='del'){if(!confirm('Retirer « '+l.des+' » du catalogue ? Les surveys qui l’utilisent garderont la ligne, sans aperçu.'))return;edKeep(function(){CP.add[l.id]={del:1};cmSaveP();applyCM();catLater()});return}
+ if(a==='up'||a==='dn'){var L=(CAT.byNode[l.n]||[]).slice(),V=L.filter(ehit),i=V.indexOf(l),o=V[i+(a==='up'?-1:1)];if(i<0||!o)return;L.splice(L.indexOf(l),1);var j=L.indexOf(o);L.splice(a==='up'?j:j+1,0,l);edKeep(function(){L.forEach(function(x,k){if(x.p!==k*10)(CP.ch[x.id]=CP.ch[x.id]||{}).p=k*10});cmSaveP();applyCM();catLater()})}};
+$('#ed_list').onchange=function(e){var t=e.target,row=t.closest('.erow');if(!row)return;var l=CAT.byId[row.dataset.id];if(!l)return;
+ if(t.dataset.rl){var rl=Object.assign({},l.rl||{});rl[t.dataset.rl]=t.checked?1:0;cmSet(l.id,{rl:rl});var R=rSet(l).filter(function(x){return x.on});row.querySelector('.erl summary').textContent='Règles de débit · '+R.length+(R.length?' : '+R.map(function(x){return x.r.l}).join(' ; '):'');row.classList.add('mod');return}
+ var f=t.dataset.f;if(!f)return;
+ if(f==='n'){edKeep(function(){moveTo(l,t.value)});return}
+ if(f==='L'||f==='H'){var v=parseInt(String(t.value).replace(/[\s.]/g,''),10);cmSet(l.id,(f==='L'?{L:v>0?v:0}:{H:v>0?v:0}))}
+ else{var o={};o[f]=String(t.value).trim();if(f==='des'&&!o.des){t.value=l.des;return}cmSet(l.id,o)}
+ row.classList.add('mod')};
 /* ---------- surveys de l'équipe (lecture seule) ---------- */
 var TEAM=ls('pm_team')||[];
-function drawTeam(){var mine={};DB.d.forEach(function(d){mine[d.id]=1});var L=TEAM.filter(function(t){return !mine[t.id]});$('#t_msg').textContent=L.length?'':(navigator.onLine?'Aucun survey envoyé par un autre appareil pour l’instant.':'Hors ligne : la liste se mettra à jour au retour du réseau.');
- $('#t_list').innerHTML=L.map(function(t){return '<div class="dc"><b>'+esc(t.ville)+'</b><span class="mute">'+(t.num?'N° '+esc(t.num)+' · ':'')+'visite du '+esc(fdate(t.date)||'?')+(t.aut?' · '+esc(t.aut):'')+'</span><span class="mute">envoyé le '+esc(t.maj||'?')+'</span><span class="tag g" style="align-self:flex-start">'+esc(t.n)+' fiche(s) · '+esc(t.np)+' photo(s)</span><div class="row"><button class="btn" data-t="'+esc(t.id)+'">Voir</button></div></div>'}).join('')}
+function drawTeam(){var mine={};DB.d.forEach(function(d){mine[d.id]=1});var L=TEAM.filter(function(t){return !mine[t.id]}),G={},O=[];$('#t_msg').textContent=L.length?'':(navigator.onLine?'Aucun survey envoyé par un autre appareil pour l’instant.':'Hors ligne : la liste se mettra à jour au retour du réseau.');
+ L.forEach(function(t){var a=(t.aut||'').trim()||'Sans nom';if(!G[a]){G[a]=[];O.push(a)}G[a].push(t)});O.sort(function(a,b){return a.localeCompare(b,'fr')});
+ $('#t_list').innerHTML=O.map(function(a){return '<div class="tg"><div class="tn">'+esc(a)+'<span>'+G[a].length+' survey'+(G[a].length>1?'s':'')+'</span></div>'+G[a].map(function(t){return '<button class="tr" data-t="'+esc(t.id)+'"><b>'+esc(t.ville)+(t.num?' · N° '+esc(t.num):'')+'</b><span>visite du '+esc(fdate(t.date)||'?')+' · '+esc(t.n)+' fiche(s) · '+esc(t.np)+' photo(s) · envoyé le '+esc(t.maj||'?')+'</span></button>'}).join('')+'</div>'}).join('')}
 function teamLoad(say){if(!SYH||!appsUrl()||!navigator.onLine){drawTeam();return Promise.resolve()}return post({a:'list'}).then(function(r){TEAM=r.list||[];ls('pm_team',TEAM);drawTeam();if(say)toast('Liste à jour')},function(e){if(say)alert('Liste non reçue : '+(e&&e.message||e))})}
 $('#t_ref').onclick=function(){teamLoad(true)};
-$('#t_list').onclick=function(e){var b=e.target.closest('[data-t]');if(!b)return;b.disabled=true;b.textContent='Chargement…';post({a:'get',did:b.dataset.t}).then(function(r){var t=r.etat,d={id:'ro_'+t.id,rid:t.id,ro:1,ville:t.ville,num:t.num,date:t.date,aut:t.aut,upd:t.upd,info:t.info||{},e:(t.e||[]).map(mig1),pk:t.pk||{}};DB.cur=d;PH[d.id]={};drawRecap();show('recap');$('#recap').scrollTop=0;
+$('#t_list').onclick=function(e){var b=e.target.closest('[data-t]');if(!b)return;b.disabled=true;b.classList.add('ld');post({a:'get',did:b.dataset.t}).then(function(r){var t=r.etat,d={id:'ro_'+t.id,rid:t.id,ro:1,ville:t.ville,num:t.num,date:t.date,aut:t.aut,upd:t.upd,info:t.info||{},e:(t.e||[]).map(mig1),pk:t.pk||{}};DB.cur=d;PH[d.id]={};drawRecap();show('recap');$('#recap').scrollTop=0;
   var q=[];for(var k in d.pk)d.pk[k].forEach(function(x){q.push([k,x])});
   (function nx(){if(!q.length||DB.cur!==d)return;var x=q.shift();post({a:'phget',did:d.rid,k:x[1]}).then(function(r){(PH[d.id][x[0]]=PH[d.id][x[0]]||[]).push({k:x[1],b:r.data});if(DB.cur===d&&!$('#recap').classList.contains('hid'))drawRecap()},function(){}).then(nx)})()},
-  function(x){alert('Survey illisible : '+(x&&x.message||x))}).then(function(){b.disabled=false;b.textContent='Voir'})};
+  function(x){alert('Survey illisible : '+(x&&x.message||x))}).then(function(){b.disabled=false;b.classList.remove('ld')})};
 function mig1(x){return x}
 $('#r_copy').onclick=function(){var s=DB.cur;if(!s||!s.ro)return;var now=new Date().toISOString(),id='d'+Date.now().toString(36),d={id:id,ville:s.ville+' (copie)',num:s.num,date:s.date,aut:cfg().n||s.aut,cr:now,upd:now,s:{},e:JSON.parse(JSON.stringify(s.e)),info:JSON.parse(JSON.stringify(s.info||{})),dirty:1},ph=PH[s.id]||{},jobs=[];DB.d.push(d);save();for(var k in ph)ph[k].forEach(function(x){jobs.push(phAdd(id,k,x.b))});Promise.all(jobs).then(function(){openCat(id,'');toast('Copie créée sur cet appareil')})};
 window.__t={CAT:function(){return CAT}};
