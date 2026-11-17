@@ -258,7 +258,7 @@ label.l{font-weight:600;color:var(--mute)}
 .tab .k{margin-left:auto}
 .tab.on{background:#fff;box-shadow:-4px 6px 18px rgba(16,36,43,.10);border-bottom:0}
 .tab[data-c="info"]{border-left-color:var(--ink)}.tab[data-c=""]{border-left-color:var(--acc)}.tab[data-c="S"]{border-left-color:var(--cS)}.tab[data-c="M"]{border-left-color:var(--cM)}.tab[data-c="T"]{border-left-color:var(--cT)}.tab[data-c="L"]{border-left-color:var(--cL)}
-.tab.on[data-c="S"]{background:#FFF6CC}.tab.on[data-c="M"]{background:#FFE7CF}.tab.on[data-c="T"]{background:#FDE3EE}.tab.on[data-c="L"]{background:#DDEEFC}
+.tab[data-c="N"]{border-left-color:#9AA9AF}.tab.on[data-c="N"]{background:#E9EEF0}.tab.on[data-c="S"]{background:#FFF6CC}.tab.on[data-c="M"]{background:#FFE7CF}.tab.on[data-c="T"]{background:#FDE3EE}.tab.on[data-c="L"]{background:#DDEEFC}
 #chaps{padding:10px 14px;border-radius:0 0 0 18px}
 #subs{display:flex;gap:6px;padding:8px 14px;overflow-x:auto;scrollbar-width:none;flex:none;background:rgba(255,255,255,.7)}#subs::-webkit-scrollbar{display:none}
 #subs.hid{display:none}
@@ -300,7 +300,7 @@ label.l{font-weight:600;color:var(--mute)}
 <div id="g_wait" class="hid"><div class="msg">Demande envoyée. Dès que Publimax l’autorise, cet écran passe tout seul à l’étape suivante.</div><button class="btn sec sm" id="b_chk" style="margin-top:8px">Vérifier maintenant</button></div>
 <div id="g_alt" class="pane"><label class="l" style="color:#1E2124;font-weight:600">Lien ou clé d’accès<input class="in" id="g_key" placeholder="Colle ici le lien reçu de Publimax"></label><button class="btn" id="b_key" style="width:100%">Continuer ›</button></div>
 <div id="g_msg" class="msg hid"></div>
-<p class="ver">Catalogue 20261117-2055 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261117-2100 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- CODE -->
@@ -312,7 +312,7 @@ label.l{font-weight:600;color:var(--mute)}
 <button class="btn" id="b_pin">Ouvrir ›</button><div id="p_msg" class="msg err hid"></div>
 <button class="btn gr inst hid" data-inst>Installer l’application</button>
 <button class="lnk hid" id="b_forget">Code oublié ?</button></div>
-<p class="ver">Catalogue 20261117-2055 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261117-2100 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- DOSSIERS -->
@@ -360,7 +360,7 @@ label.l{font-weight:600;color:var(--mute)}
 (function(){'use strict';
 var $=function(s){return document.querySelector(s)},$$=function(s){return [].slice.call(document.querySelectorAll(s))};
 var CFG={apps:''},CAT=null,IMG={},KEY=null,DB={d:[],cur:null},NM={},CH={},PENDKEY=null,NSHARD=0,LB={};
-var VER='20261117-2055',NFILES=15,SYH='',SYB=false,SYT=null;
+var VER='20261117-2100',NFILES=15,SYH='',SYB=false,SYT=null;
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function ls(k,v){try{if(v===undefined){var r=localStorage.getItem(k);return r?JSON.parse(r):null}if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v));return true}catch(e){if(v!==undefined&&k==='pm_dos')saveErr();return null}}
 function saveErr(){var b=document.getElementById('serr');if(!b){b=document.createElement('div');b.id='serr';b.style.cssText='position:fixed;left:0;right:0;top:0;z-index:99;background:#C62828;color:#fff;padding:12px 16px;font-weight:700;text-align:center';document.body.appendChild(b)}b.textContent='⚠ ENREGISTREMENT IMPOSSIBLE sur cette tablette (mémoire pleine ?). Exporte ton dossier tout de suite : Récap → Exporter.'}
@@ -456,7 +456,7 @@ $('#d_list').onclick=function(e){var b=e.target.closest('button');if(!b)return;v
  if(b.dataset.a==='open')openCat(id);else if(b.dataset.a==='exp')dl(d);else if(b.dataset.a==='del'&&confirm('Supprimer le dossier « '+d.ville+' » de cette tablette ? Exporte-le avant si besoin.')){DELD[d.id]=1;DB.d=DB.d.filter(function(x){return x!==d});save();phDelDos(d.id);drawDossiers()}};
 $('#f_imp').onchange=function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{var o=JSON.parse(r.result),d=o.dossier&&o.etat?{id:'d'+Date.now().toString(36),ville:o.dossier.ville,num:o.dossier.num,date:o.dossier.date,aut:o.dossier.aut,cr:o.dossier.cr||new Date().toISOString(),upd:new Date().toISOString(),s:o.etat,info:{client:o.dossier.client||'',contact:o.dossier.contact||'',adresse:o.dossier.adresse||'',cp:o.dossier.cp||'',commune:o.dossier.commune||'',tel:o.dossier.tel||'',mail:o.dossier.mail||'',pose:o.dossier.pose||'',acces:o.dossier.acces||'',note:o.dossier.note||''}}:null;if(!d)throw 0;DB.d.push(d);save();var P=o.photos||{},q=[];Object.keys(P).forEach(function(l){P[l].forEach(function(b){q.push(phAdd(d.id,l,b))})});Promise.all(q).then(drawDossiers,drawDossiers)}catch(x){alert('Fichier non reconnu.')}};r.readAsText(f);e.target.value=''};
 /* ---------- catalogue ---------- */
-var VIEW={node:'',q:'',f:'all',cat:''};var CATS=[['info','Infos client / dossier'],['','Général'],['S','Standard'],['M','Sur mesure'],['T','Sous-traitance'],['L','Livraison']],CN={S:'Standard',M:'Sur mesure',T:'Sous-traitance',L:'Livraison'};
+var VIEW={node:'',q:'',f:'all',cat:''};var CATS=[['info','Infos client / dossier'],['','Général'],['S','Standard'],['M','Sur mesure'],['T','Sous-traitance'],['L','Livrée'],['N','Non attribué']],CN={S:'Standard',M:'Sur mesure',T:'Sous-traitance',L:'Livrée'};
 function openCat(id,tab){DB.cur=DB.d.filter(function(x){return x.id===id})[0];DB.cur.info=DB.cur.info||{};VIEW={node:'',q:'',f:'all',cat:tab||''};FOLD={};$('#c_q').value='';$$('.chip').forEach(function(c){c.classList.toggle('on',c.dataset.f==='all')});show('cat');setTitle();drawSide();drawView();cnt();phLoad(DB.cur.id).then(function(){drawSide();drawView()})}
 function setTitle(){var d=DB.cur,i=d.info||{};$('#c_title').textContent=d.ville+(d.num?' · '+d.num:'')+(i.client?' · '+i.client:'')}
 function drawView(){var inf=VIEW.cat==='info';$('#info').classList.toggle('hid',!inf);$('#list').classList.toggle('hid',inf);$('#chaps').classList.toggle('hid',inf);$('#c_bar').classList.toggle('hid',inf);drawSubs();if(inf)drawInfo();else drawList()}
@@ -469,11 +469,12 @@ function nAll(code){var n=0;sub(code).forEach(function(c){n+=(CAT.byNode[c]||[])
 var OPEN={},FOLD={};
 function depth(c){var d=0,n=NM[c];while(n&&n.par&&NM[n.par]){d++;n=NM[n.par]}return d}
 function shown(c){var n=NM[c];while(n&&n.par&&NM[n.par]){if(!OPEN[n.par])return false;n=NM[n.par]}return true}
-function inCat(l){return !VIEW.cat||VIEW.cat==='info'||l.c===VIEW.cat}
+function isCat(l,c){return c==='N'?!l.c:l.c===c}
+function inCat(l){return !VIEW.cat||VIEW.cat==='info'||isCat(l,VIEW.cat)}
 function rootOf(c){var n=NM[c];while(n&&n.par&&NM[n.par])n=NM[n.par];return n?n.code:''}
 function drawSubs(){var r=rootOf(VIEW.node),el=$('#subs');if(!r||VIEW.cat==='info'){el.classList.add('hid');return}var ks=sub(r).filter(function(c){return c!==r&&(CAT.byNode[c]||[]).some(inCat)});if(!ks.length){el.classList.add('hid');return}var h='<button class="sbp'+(VIEW.node===r?' on':'')+'" data-n="'+r+'">Tout '+esc(NM[r].title)+'</button>';ks.forEach(function(c){var n=NM[c],k=0;sub(c).forEach(function(x){(CAT.byNode[x]||[]).forEach(function(l){if(inCat(l)&&on(l))k++})});h+='<button class="sbp'+(VIEW.node===c?' on':'')+'" data-n="'+c+'"><b>'+esc(n.num)+'</b>'+esc(n.title)+(k?'<span class="k">'+k+'</span>':'')+'</button>'});el.innerHTML=h;el.classList.remove('hid')}
 $('#subs').onclick=function(e){var t=e.target.closest('.sbp');if(!t)return;VIEW.node=t.dataset.n;FOLD={};drawSide();drawList();$('#list').scrollTop=0};
-function drawSide(){var h='';CATS.forEach(function(c){var k='';if(c[0]!=='info'){var n=0,t=0;CAT.lines.forEach(function(l){if(c[0]&&l.c!==c[0])return;t++;if(on(l))n++});if(!t&&c[0])return;k='<span class="k">'+(n?n+' / ':'')+t+'</span>'}h+='<button class="tab'+(VIEW.cat===c[0]?' on':'')+'" data-c="'+c[0]+'"><i></i>'+c[1]+k+'</button>'});$('#tabs').innerHTML=h;
+function drawSide(){var h='';CATS.forEach(function(c){var k='';if(c[0]!=='info'){var n=0,t=0;CAT.lines.forEach(function(l){if(c[0]&&!isCat(l,c[0]))return;t++;if(on(l))n++});k='<span class="k">'+(n?n+' / ':'')+t+'</span>'}h+='<button class="tab'+(VIEW.cat===c[0]?' on':'')+'" data-c="'+c[0]+'"><i></i>'+c[1]+k+'</button>'});$('#tabs').innerHTML=h;
  var g='<button class="chp'+(VIEW.node===''?' on':'')+'" data-n="">Tout</button>';CAT.nodes.forEach(function(n){if(n.par&&NM[n.par])return;var t=0,k=0;sub(n.code).forEach(function(c){(CAT.byNode[c]||[]).forEach(function(l){if(!inCat(l))return;t++;if(on(l))k++})});if(!t)return;g+='<button class="chp'+(rootOf(VIEW.node)===n.code?' on':'')+'" data-n="'+n.code+'"><b>'+esc(n.num)+'</b>'+esc(n.title)+(k?'<span class="k">'+k+'</span>':'')+'</button>'});$('#chaps').innerHTML=g;drawSubs()}
 $('#tabs').onclick=function(e){var t=e.target.closest('.tab');if(!t)return;VIEW.cat=t.dataset.c;if(VIEW.node&&VIEW.cat&&VIEW.cat!=='info'&&!sub(VIEW.node).some(function(c){return (CAT.byNode[c]||[]).some(inCat)}))VIEW.node='';drawSide();drawView();$('#list').scrollTop=0};
 $('#chaps').onclick=function(e){var t=e.target.closest('.chp');if(!t)return;VIEW.node=t.dataset.n;FOLD={};drawSide();drawList();$('#list').scrollTop=0;t=$('#chaps .chp.on');if(t&&t.scrollIntoView)t.scrollIntoView({inline:'center',block:'nearest'})};
