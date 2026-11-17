@@ -122,7 +122,9 @@ function cat_() { var c = getJson_(root_(), 'catalogue-modifs.json'); if (!c || 
 function isEd_(b) { var e = String(b.e || '').trim().toLowerCase(), t = String(b.t || ''); if (!e || !t) return false; var cur = P.getProperty(rid_(e, t)); if (!cur) return false; var r = JSON.parse(cur); return r.st === 'ok' && r.ed === true; }
 function line_(o, m) {
   var CATS = { '': 1, S: 1, M: 1, T: 1, L: 1 }, TXT = { des: 160, mat: 160, info: 600 };
-  ['c', 'n', 'p', 'img', 'des', 'mat', 'info', 'L', 'H', 'rl', 'hid'].forEach(function (k) { if (o[k] === null) delete m[k]; });
+  ['c', 'n', 'p', 'img', 'des', 'mat', 'info', 'L', 'H', 'rl', 'hid', 'comp'].forEach(function (k) { if (o[k] === null) delete m[k]; });
+  if (o.del === 1) m.del = 1;
+  if (o.comp && typeof o.comp === 'object') { var js = JSON.stringify(o.comp); if (js.length < 80000) m.comp = JSON.parse(js); }
   if (o.hid != null) m.hid = o.hid ? 1 : 0;
   if (o.c != null && CATS[o.c]) m.c = o.c;
   if (o.n != null && /^[0-9.]{1,12}$/.test(String(o.n))) m.n = String(o.n);
@@ -136,7 +138,7 @@ function line_(o, m) {
 function catset_(b) {
   var ed = isEd_(b), cm = cat_(), ch = b.ch || {}, add = b.add || {}, nd = b.nodes || {}, n = 0, NO = { ok: false, err: 'réservé : la modification du catalogue demande une autorisation.' };
   if (!ed && (b.lock != null || cm.lock || Object.keys(add).length || Object.keys(nd).length)) return NO;
-  for (var nc in nd) { if (/^[0-9.]{1,12}$/.test(nc) && nd[nc]) { cm.nodes[nc] = { hid: nd[nc].hid ? 1 : 0 }; n++; } }
+  for (var nc in nd) { if (/^[0-9.]{1,12}$/.test(nc) && nd[nc]) { cm.nodes[nc] = { hid: nd[nc].hid ? 1 : 0 }; if (nd[nc].del === 1) cm.nodes[nc].del = 1; n++; } }
   for (var id in ch) {
     if (!/^[A-Za-z0-9_\-]{1,80}$/.test(id)) continue;
     var o = ch[id] || {};
