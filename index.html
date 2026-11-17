@@ -270,6 +270,7 @@ label.l{font-weight:600;color:var(--mute)}
 #chaps{overflow:hidden;gap:5px;align-items:center;padding:8px 12px}
 .chp{flex:1 1 0;min-width:30px;height:36px;padding:0 6px;font-size:12px;gap:4px;justify-content:center;overflow:hidden;border-radius:10px}
 .chp .tx{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.chp{transition:height .15s,font-size .15s,padding .15s,background .15s}
 .chp b{flex:none}.chp .k{flex:none;font-size:10.5px;padding:0 5px}
 .chp.on{flex:0 0 auto;height:42px;padding:0 14px;font-size:15px;gap:7px;border-radius:12px;max-width:46%}
 .chp.on .k{font-size:12.5px;padding:0 7px}
@@ -308,7 +309,7 @@ label.l{font-weight:600;color:var(--mute)}
 <div id="g_wait" class="hid"><div class="msg">Demande envoyée. Dès que Publimax l’autorise, cet écran passe tout seul à l’étape suivante.</div><button class="btn sec sm" id="b_chk" style="margin-top:8px">Vérifier maintenant</button></div>
 <div id="g_alt" class="pane"><label class="l" style="color:#1E2124;font-weight:600">Lien ou clé d’accès<input class="in" id="g_key" placeholder="Colle ici le lien reçu de Publimax"></label><button class="btn" id="b_key" style="width:100%">Continuer ›</button></div>
 <div id="g_msg" class="msg hid"></div>
-<p class="ver">Catalogue 20261117-2103 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261117-210630 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- CODE -->
@@ -320,7 +321,7 @@ label.l{font-weight:600;color:var(--mute)}
 <button class="btn" id="b_pin">Ouvrir ›</button><div id="p_msg" class="msg err hid"></div>
 <button class="btn gr inst hid" data-inst>Installer l’application</button>
 <button class="lnk hid" id="b_forget">Code oublié ?</button></div>
-<p class="ver">Catalogue 20261117-2103 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261117-210630 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- DOSSIERS -->
@@ -368,7 +369,7 @@ label.l{font-weight:600;color:var(--mute)}
 (function(){'use strict';
 var $=function(s){return document.querySelector(s)},$$=function(s){return [].slice.call(document.querySelectorAll(s))};
 var CFG={apps:''},CAT=null,IMG={},KEY=null,DB={d:[],cur:null},NM={},CH={},PENDKEY=null,NSHARD=0,LB={};
-var VER='20261117-2103',NFILES=15,SYH='',SYB=false,SYT=null;
+var VER='20261117-210630',NFILES=15,SYH='',SYB=false,SYT=null;
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function ls(k,v){try{if(v===undefined){var r=localStorage.getItem(k);return r?JSON.parse(r):null}if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v));return true}catch(e){if(v!==undefined&&k==='pm_dos')saveErr();return null}}
 function saveErr(){var b=document.getElementById('serr');if(!b){b=document.createElement('div');b.id='serr';b.style.cssText='position:fixed;left:0;right:0;top:0;z-index:99;background:#C62828;color:#fff;padding:12px 16px;font-weight:700;text-align:center';document.body.appendChild(b)}b.textContent='⚠ ENREGISTREMENT IMPOSSIBLE sur cette tablette (mémoire pleine ?). Exporte ton dossier tout de suite : Récap → Exporter.'}
