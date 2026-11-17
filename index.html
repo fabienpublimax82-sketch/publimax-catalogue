@@ -322,6 +322,30 @@ label.l{font-weight:600;color:var(--mute)}
 .ech svg{width:14px;height:14px;opacity:.9}
 #toast{position:fixed;left:50%;bottom:34px;transform:translate(-50%,30px);background:var(--ink);color:#fff;font-weight:700;padding:13px 22px;border-radius:99px;z-index:120;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;box-shadow:0 10px 30px rgba(0,0,0,.35)}
 #toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* ---- écran Récap : même présentation que la feuille imprimée ---- */
+#r_body .pv{background:#fff;border-radius:6px;box-shadow:0 1px 2px rgba(16,36,43,.08),0 14px 40px rgba(16,36,43,.14);padding:22px 24px 14px;color:#1E2124;font-size:14.5px;line-height:1.35}
+#r_body .dhead{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;border-bottom:4px solid #008099;padding:0 2px 10px;margin-bottom:6px}
+#r_body .dhead img{height:42px}#r_body .dhead .t{text-align:center}#r_body .dhead .t b{display:block;font-size:21px;color:#008099}#r_body .dhead .t span{font-size:13px;color:#555}
+#r_body .dhead .r{text-align:right;font-size:13.5px;line-height:1.45}#r_body .dhead .r b{font-size:16.5px}
+#r_body .dh2{font-size:15px;margin:16px 0 6px;padding:0 6px 0 12px;min-height:40px;background:#008099;color:#fff;letter-spacing:.04em;display:flex;justify-content:space-between;align-items:center;gap:10px}#r_body .dh2 small{font-weight:400;font-size:12.5px;opacity:.92;padding-right:6px}
+#r_body .dh2 .btn{height:30px;min-height:0;background:#fff;color:#00697C;box-shadow:none;font-size:13px;padding:0 12px;border-radius:5px}
+#r_body .cart{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid #D3D7DC;border-bottom:0;border-right:0}#r_body .cart div{border-right:1px solid #D3D7DC;border-bottom:1px solid #D3D7DC;padding:6px 10px;min-height:48px;overflow-wrap:anywhere}#r_body .cart label{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:#666}
+#r_body .kp{display:flex;gap:8px;margin-top:10px}#r_body .kp div{flex:1;min-width:0;border:1px solid #D3D7DC;border-radius:5px;padding:7px 4px;text-align:center}#r_body .kp b{display:block;font-size:24px;line-height:1.1;color:#008099}#r_body .kp span{font-size:10.5px;color:#666;text-transform:uppercase;letter-spacing:.04em}
+#r_body .kp .kS{border-bottom:4px solid #F6D94A}#r_body .kp .kM{border-bottom:4px solid #F28C28}#r_body .kp .kT{border-bottom:4px solid #EE8FB7}#r_body .kp .kL{border-bottom:4px solid #5AA7E8}#r_body .kp .kN{border-bottom:4px solid #C5CED2}
+#r_body .rblk{margin-top:10px;overflow-x:auto}#r_body .rh{background:#E2F0F3;color:#008099;font-weight:800;text-transform:uppercase;letter-spacing:.05em;font-size:13px;padding:7px 10px;border-left:6px solid #008099;display:flex;justify-content:space-between}#r_body .rh span{font-weight:400;text-transform:none;letter-spacing:0;color:#555}
+#r_body .lt{width:100%;border-collapse:collapse;table-layout:fixed}#r_body .lt th.vi{width:104px}#r_body .lt th.ca{width:128px}#r_body .lt th.q{width:62px}#r_body .lt .op,#r_body .lt .no{display:none}#r_body .lt th.pp{width:132px}#r_body .lt th.ac{width:122px}#r_body .lt td{overflow-wrap:anywhere}#r_body .lt .sub{display:block;margin-top:3px}#r_body .lt td.ac .ib{display:inline-flex;vertical-align:top}#r_body .lt th{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:#555;text-align:left;padding:5px 8px;border-bottom:2px solid #008099;background:#F5F7F8;white-space:nowrap}
+#r_body .lt td{padding:8px;border-bottom:1px solid #D3D7DC;vertical-align:top}
+#r_body .lt tr.rl{display:table-row;border-left:0;padding:0}
+#r_body .lt td.vi{width:96px}#r_body .lt td.vi img{max-width:88px;max-height:62px;display:block;cursor:zoom-in}
+#r_body .lt td.des b{font-size:15px}#r_body .lt small{display:block;color:#666;font-size:12.5px}
+#r_body .lt td.ca{width:104px}#r_body .lt td.q{width:58px;font-weight:800;font-size:17px;color:#008099;white-space:nowrap}
+#r_body .lt td.op,#r_body .lt td.no{font-size:13.5px}#r_body .lt td.pp{width:118px}#r_body .lt td.pp .ph{width:52px;height:52px;border-radius:4px;display:inline-block;margin:0 3px 3px 0}
+#r_body .lt td.ac{display:table-cell;white-space:nowrap;text-align:right}#r_body .lt td.ac .ib{margin-left:6px}
+#r_body .pt{display:inline-block;font-size:12px;font-weight:700;padding:3px 9px;border-radius:4px;background:#E3E8EA;color:#444}#r_body .pt.cS{background:#F6D94A;color:#4A3D00}#r_body .pt.cM{background:#F28C28;color:#fff}#r_body .pt.cT{background:#EE8FB7;color:#4A0F2B}#r_body .pt.cL{background:#5AA7E8;color:#08263F}
+#r_body .ment{color:#444;border:1px solid #D3D7DC;padding:12px;margin:8px 0 0}
+#r_body .dfoot{display:flex;justify-content:space-between;font-size:12px;color:#777;border-top:1px solid #D3D7DC;padding-top:8px;margin-top:14px}
+@media (max-width:900px){#r_body .pv{padding:16px 12px 10px}#r_body .cart{grid-template-columns:1fr 1fr}#r_body .kp{flex-wrap:wrap}#r_body .kp div{flex:1 0 21%}#r_body .lt th.pp{width:70px}#r_body .lt th.vi{width:84px}#r_body .lt td.vi img{max-width:70px}#r_body .lt th.ca{width:118px}}
 /* ---- impression : même présentation que le PV de réception ---- */
 #print{display:none}
 @media print{@page{size:A4 portrait;margin:8mm 6mm 8mm 8mm}
@@ -362,7 +386,7 @@ label.l{font-weight:600;color:var(--mute)}
 <button class="lnk" id="b_alt" style="color:#10242B;text-shadow:0 1px 8px rgba(255,255,255,.8)">J’ai un lien ou une clé d’accès</button>
 <div id="g_alt" class="pane hid"><label class="l" style="color:#1E2124;font-weight:600">Lien ou clé d’accès<input class="in" id="g_key" placeholder="Colle ici le lien reçu de Publimax"></label><button class="btn" id="b_key" style="width:100%">Continuer ›</button></div>
 <div id="g_msg" class="msg hid"></div>
-<p class="ver">Catalogue 20261117-214826 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261117-215344 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- CODE -->
@@ -374,7 +398,7 @@ label.l{font-weight:600;color:var(--mute)}
 <button class="btn" id="b_pin">Ouvrir ›</button><div id="p_msg" class="msg err hid"></div>
 <button class="btn gr inst hid" data-inst>Installer l’application</button>
 <button class="lnk hid" id="b_forget">Code oublié ?</button></div>
-<p class="ver">Catalogue 20261117-214826 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261117-215344 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- DOSSIERS -->
@@ -423,7 +447,7 @@ label.l{font-weight:600;color:var(--mute)}
 (function(){'use strict';
 var $=function(s){return document.querySelector(s)},$$=function(s){return [].slice.call(document.querySelectorAll(s))};
 var CFG={apps:''},CAT=null,IMG={},KEY=null,DB={d:[],cur:null},NM={},CH={},PENDKEY=null,NSHARD=0,LB={};
-var KS='',VER='20261117-214826',NFILES=15,SYH='',SYB=false,SYT=null;
+var KS='',VER='20261117-215344',NFILES=15,SYH='',SYB=false,SYT=null;
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function ls(k,v){try{if(v===undefined){var r=localStorage.getItem(k);return r?JSON.parse(r):null}if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v));return true}catch(e){if(v!==undefined&&k==='pm_dos')saveErr();return null}}
 function saveErr(){var b=document.getElementById('serr');if(!b){b=document.createElement('div');b.id='serr';b.style.cssText='position:fixed;left:0;right:0;top:0;z-index:99;background:#C62828;color:#fff;padding:12px 16px;font-weight:700;text-align:center';document.body.appendChild(b)}b.textContent='⚠ ENREGISTREMENT IMPOSSIBLE sur cette tablette (mémoire pleine ?). Exporte ton dossier tout de suite : Récap → Exporter.'}
@@ -688,12 +712,19 @@ function expFull(d){return phLoad(d.id).then(function(ph){return expObj(d,ph)})}
 function fname(d){return (d.ville||'dossier').replace(/[^A-Za-z0-9]+/g,'_')+'_'+(d.date||'')+'.json'}
 function dl(d){return expFull(d).then(function(o){var t=JSON.stringify(o,null,1),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:'application/json'}));a.download=fname(d);document.body.appendChild(a);a.click();setTimeout(function(){a.remove()},500)})}
 $('#b_recap').onclick=function(){save();drawRecap();show('recap');phLoad(DB.cur.id).then(drawRecap)};$('#r_back').onclick=function(){show('cat')};
-function drawRecap(){var d=DB.cur,F=flat(d),g={},ord=[];F.forEach(function(r){if(!g[r.rubrique]){g[r.rubrique]=[];ord.push(r.rubrique)}g[r.rubrique].push(r)});$('#r_title').textContent='Récap · '+d.ville;
- var np=0,o=PH[d.id]||{};for(var k in o)np+=o[k].length;
- var di=d.info||{},dl2=[di.client,di.contact,di.tel,di.mail].filter(Boolean).join(' · '),ad=[di.adresse,di.cp,di.commune].filter(Boolean).join(' ');
- var h='<div class="rc"><div style="display:flex;gap:12px;align-items:flex-start"><div style="flex:1"><b style="font-size:20px">'+esc(d.ville)+'</b>'+(d.num?' · N° '+esc(d.num):'')+' · visite du '+esc(d.date||'?')+(d.aut?' · '+esc(d.aut):'')+(dl2?'<br>'+esc(dl2):'')+(ad?'<br>'+esc(ad):'')+(di.pose?'<br>Pose souhaitée : '+esc(di.pose):'')+(di.acces?'<br>Accès : '+esc(di.acces):'')+(di.note?'<br>'+esc(di.note):'')+'</div><button class="btn sm sec noprint" id="r_info">Modifier les infos</button></div><span class="mute">'+F.length+' fiche(s) au survey'+(np?' · '+np+' photo(s)':'')+' · catalogue du '+String(CAT.at).slice(0,10)+'</span></div>';
- ord.forEach(function(k){h+='<div class="rc"><h3>'+esc(k)+'</h3>'+g[k].map(function(r){var l=CAT.byId[r.id]||{des:r.des};return '<div class="rl'+(r.cat?' c'+r.cat:'')+'" data-id="'+esc(r.k)+'"><div class="mi">'+(l.img?'<img data-i="'+l.img+'" data-z="1" alt="">':'')+'</div><span class="q">'+(r.q?'× '+r.q:'à voir')+'</span><div class="tx"><b>'+esc(r.des)+'</b>'+((r.L&&r.H)?' · '+r.L+' × '+r.H+' mm':'')+(r.cat?' <span class="tag c'+r.cat+'">'+CN[r.cat]+'</span>':'')+(r.composition?'<small>'+r.composition.contenu+', '+r.composition.eclairage+', format '+r.composition.format+'</small>':'')+(r.options?r.options.map(function(o){return '<small>• '+esc(o.l)+(o.q>1?' × '+o.q:'')+'</small>'}).join(''):'')+(r.note?'<small>Remarque : '+esc(r.note)+'</small>':'')+phHtml(r.k,1)+'</div><div class="ac"><button class="ib" data-r="edit" title="Modifier" aria-label="Modifier"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg></button><button class="ib d" data-r="del" title="Supprimer" aria-label="Supprimer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg></button></div></div>'}).join('')+'</div>'});
- $('#r_body').innerHTML=F.length?h:h+'<p class="mute">Rien de retenu pour l’instant.</p>';setImgs($('#r_body'))}
+function drawRecap(){var d=DB.cur,i=d.info||{},F=flat(d),num=d.num||d.ville,ph=PH[d.id]||{},np=0,pcs=0,cc={S:0,M:0,T:0,L:0,N:0};F.forEach(function(r){np+=(ph[r.k]||[]).length;pcs+=+r.q||0;cc[r.cat||'N']++});$('#r_title').textContent='Récap · '+d.ville;
+ var n=1,H2=function(t,sm){return '<h2 class="dh2"><span>'+(n++)+' · '+t+'</span>'+(sm||'')+'</h2>'},cell=function(l,v){return '<div><label>'+l+'</label>'+(v||'&nbsp;')+'</div>'};
+ var h='<div class="pv"><div class="dhead"><img src="'+$('#gate img.logo').src+'" alt="Publimax"><div class="t"><b>Relevé de magasin</b><span>Survey signalétique</span></div><div class="r"><b>Dossier '+esc(num)+'</b><br>'+esc(i.client||'Carrefour Market')+' — '+esc(d.ville)+'<br>Visite du '+esc(fdate(d.date))+'</div></div>';
+ h+=H2('Cartouche','<button class="btn sm" id="r_info">Modifier les infos</button>')+'<div class="cart">'+cell('Client / site',esc((i.client||'Carrefour Market')+' '+d.ville))+cell('Référence Publimax','Dossier '+esc(num))+cell('Visite du relevé',esc(fdate(d.date)))+cell('Pour Publimax',esc(d.aut||''))+cell('Interlocuteur magasin',esc([i.contact,i.tel,i.mail].filter(Boolean).join(' · ')))+cell('Adresse',esc([i.adresse,i.cp,i.commune].filter(Boolean).join(' ')))+cell('Pose souhaitée',esc(fdate(i.pose)))+cell('Accès / contraintes de pose',esc(i.acces||''))+cell('Remarques',esc(i.note||''))+'</div>';
+ h+='<div class="kp"><div><b>'+F.length+'</b><span>fiches</span></div><div><b>'+pcs+'</b><span>pièces</span></div><div class="kS"><b>'+cc.S+'</b><span>standard</span></div><div class="kM"><b>'+cc.M+'</b><span>sur mesure</span></div><div class="kT"><b>'+cc.T+'</b><span>sous-trait.</span></div><div class="kL"><b>'+cc.L+'</b><span>livrée</span></div><div class="kN"><b>'+cc.N+'</b><span>non attr.</span></div><div><b>'+np+'</b><span>photos</span></div></div>';
+ h+=H2('Éléments relevés','<small>'+F.length+' fiche'+(F.length>1?'s':'')+' · par rubrique</small>');
+ var g={},ord=[];F.forEach(function(r){if(!g[r.rubrique]){g[r.rubrique]=[];ord.push(r.rubrique)}g[r.rubrique].push(r)});
+ ord.forEach(function(k){var L=g[k];h+='<div class="rblk"><div class="rh">'+esc(k)+'<span>'+L.length+' fiche'+(L.length>1?'s':'')+'</span></div><table class="lt"><tr><th class="vi">Visuel</th><th>Élément</th><th class="ca">Catégorie</th><th class="q">Qté</th><th class="op">Options / composition</th><th class="no">Remarque</th><th class="pp">Photos</th><th class="ac"></th></tr>'+L.map(function(r){var l=CAT.byId[r.id]||{};
+  var op=(r.composition?['Composition : '+r.composition.contenu+', '+r.composition.eclairage+', format '+r.composition.format]:[]).concat((r.options||[]).map(function(o){return o.l+(o.q>1?' × '+o.q:'')})).concat(r.visuel?['Visuel '+r.visuel]:[]),opx=op.map(function(x){return esc(x).replace(/\?/g,'à préciser')});
+  return '<tr class="rl" data-id="'+esc(r.k)+'"><td class="vi">'+(l.img?'<img data-i="'+l.img+'" data-z="1" alt="">':'')+'</td><td class="des"><b>'+esc(r.des)+'</b><small>'+esc([(r.L&&r.H)?r.L+' × '+r.H+' mm':'',r.mat].filter(Boolean).join(' · '))+'</small><div class="sub">'+opx.map(function(x){return '<small>• '+x+'</small>'}).join('')+(r.note?'<small><i>'+esc(r.note)+'</i></small>':'')+'</div></td><td class="ca">'+(r.cat?'<span class="pt c'+r.cat+'">'+CN[r.cat]+'</span>':'<span class="pt">Non attribué</span>')+'</td><td class="q">'+(r.q?'× '+r.q:'à voir')+'</td><td class="op">'+opx.join('<br>')+'</td><td class="no">'+esc(r.note||'')+'</td><td class="pp">'+phHtml(r.k,1)+'</td><td class="ac"><button class="ib" data-r="edit" title="Modifier" aria-label="Modifier"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg></button><button class="ib d" data-r="del" title="Supprimer" aria-label="Supprimer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg></button></td></tr>'}).join('')+'</table></div>'});
+ if(!F.length)h+='<p class="ment">Aucune fiche pour l’instant : ouvre un article dans le catalogue, configure-le, puis « Ajouter au survey ».</p>';
+ h+='<div class="dfoot"><span>Publimax · Enseignes &amp; Publicité</span><span>Catalogue du '+String(CAT.at).slice(0,10)+'</span></div></div>';
+ $('#r_body').innerHTML=h;setImgs($('#r_body'))}
 $('#r_body').onclick=function(e){if(e.target.id==='r_info'){show('cat');VIEW.cat='info';drawSide();drawView();return}if(e.target.dataset.z){if(e.target.src)zoom(e.target.src);return}var b=e.target.closest('[data-r]');if(!b)return;var id=b.closest('.rl').dataset.id,en=DB.cur.e.filter(function(x){return x.k===id})[0];if(!en)return;var l=CAT.byId[en.id]||{id:en.id,des:en._des||en.id,orph:1};
  if(b.dataset.r==='edit'){if(l.orph)alert('Cette ligne n’existe plus dans le catalogue : elle ne peut qu’être retirée.');else openSheet(l,id)}
  else if(confirm('Retirer « '+l.des+' » du survey ?'+(phOf(id).length?' Ses photos seront supprimées aussi.':''))){rmEntry(id);after(l);drawRecap()}};
