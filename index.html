@@ -316,6 +316,7 @@ label.l{font-weight:600;color:var(--mute)}
 
 /* ---- fiches d'un article ---- */
 #sheet .chip{background:#fff;color:#42545B;box-shadow:0 0 0 1.5px #C9DCE1 inset}#sheet .chip.on{background:var(--acc);color:#fff;box-shadow:0 6px 14px rgba(0,124,146,.28)}
+#sheet .chip.kc.on.cS{background:#F6D94A;color:#4A3D00}#sheet .chip.kc.on.cM{background:#F28C28;color:#fff}#sheet .chip.kc.on.cT{background:#EE8FB7;color:#4A0F2B}#sheet .chip.kc.on.cL{background:#5AA7E8;color:#08263F}#sheet .chip.kc.on{box-shadow:0 4px 12px rgba(0,0,0,.18)}
 .echs{display:flex;flex-wrap:wrap;gap:5px;margin-top:3px}
 .ech{border:0;border-radius:9px;background:var(--acc);color:#fff;font:inherit;font-size:12.5px;font-weight:700;height:30px;padding:0 8px 0 10px;display:flex;align-items:center;gap:6px;cursor:pointer}
 .ech svg{width:14px;height:14px;opacity:.9}
@@ -361,7 +362,7 @@ label.l{font-weight:600;color:var(--mute)}
 <button class="lnk" id="b_alt" style="color:#10242B;text-shadow:0 1px 8px rgba(255,255,255,.8)">J’ai un lien ou une clé d’accès</button>
 <div id="g_alt" class="pane hid"><label class="l" style="color:#1E2124;font-weight:600">Lien ou clé d’accès<input class="in" id="g_key" placeholder="Colle ici le lien reçu de Publimax"></label><button class="btn" id="b_key" style="width:100%">Continuer ›</button></div>
 <div id="g_msg" class="msg hid"></div>
-<p class="ver">Catalogue 20261117-214038 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261117-214826 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- CODE -->
@@ -373,7 +374,7 @@ label.l{font-weight:600;color:var(--mute)}
 <button class="btn" id="b_pin">Ouvrir ›</button><div id="p_msg" class="msg err hid"></div>
 <button class="btn gr inst hid" data-inst>Installer l’application</button>
 <button class="lnk hid" id="b_forget">Code oublié ?</button></div>
-<p class="ver">Catalogue 20261117-214038 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261117-214826 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- DOSSIERS -->
@@ -422,7 +423,7 @@ label.l{font-weight:600;color:var(--mute)}
 (function(){'use strict';
 var $=function(s){return document.querySelector(s)},$$=function(s){return [].slice.call(document.querySelectorAll(s))};
 var CFG={apps:''},CAT=null,IMG={},KEY=null,DB={d:[],cur:null},NM={},CH={},PENDKEY=null,NSHARD=0,LB={};
-var KS='',VER='20261117-214038',NFILES=15,SYH='',SYB=false,SYT=null;
+var KS='',VER='20261117-214826',NFILES=15,SYH='',SYB=false,SYT=null;
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function ls(k,v){try{if(v===undefined){var r=localStorage.getItem(k);return r?JSON.parse(r):null}if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v));return true}catch(e){if(v!==undefined&&k==='pm_dos')saveErr();return null}}
 function saveErr(){var b=document.getElementById('serr');if(!b){b=document.createElement('div');b.id='serr';b.style.cssText='position:fixed;left:0;right:0;top:0;z-index:99;background:#C62828;color:#fff;padding:12px 16px;font-weight:700;text-align:center';document.body.appendChild(b)}b.textContent='⚠ ENREGISTREMENT IMPOSSIBLE sur cette tablette (mémoire pleine ?). Exporte ton dossier tout de suite : Récap → Exporter.'}
@@ -481,7 +482,7 @@ $('#b_forget').onclick=function(){if(confirm('Code oublié : l’accès sera eff
 function startWith(raw){KS=b64e(raw).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');crypto.subtle.digest('SHA-256',new TextEncoder().encode(KS+'|sync')).then(function(h){SYH=[].map.call(new Uint8Array(h),function(x){return ('0'+x.toString(16)).slice(-2)}).join('')});return ckey(raw,['decrypt']).then(function(k){KEY=k;return fetch('data/cat.bin',{cache:'no-cache'}).catch(function(){return fetch('data/cat.bin')})}).then(function(r){if(!r.ok)throw new Error('catalogue introuvable');return r.arrayBuffer()}).then(function(b){return dec(b,KEY)}).then(function(p){CAT=JSON.parse(new TextDecoder().decode(p));prep();loadImgs();openDossiers()}).catch(function(e){msg('#p_msg','Clé refusée ou catalogue illisible : '+e.message,'err');$('#p_msg').classList.remove('hid')})}
 function loadImgs(){var n=CAT.shards||0;for(var i=0;i<n;i++)(function(i,t){(function go(){fetch('data/img'+i+'.bin').then(function(r){if(!r.ok)throw 0;return r.arrayBuffer()}).then(function(b){return dec(b,KEY)}).then(function(p){var o=JSON.parse(new TextDecoder().decode(p));for(var k in o)IMG[k]='data:image/webp;base64,'+o[k];setImgs(document)}).catch(function(){if(t++<5)setTimeout(go,2000*t)})})()})(i,0)}
 function setImgs(root){[].forEach.call(root.querySelectorAll('img[data-i]'),function(im){var s=IMG[im.dataset.i];if(s&&im.src!==s){im.src=s;im.style.visibility='visible'}})}
-function prep(){NM={};CH={};CAT.nodes.forEach(function(n){NM[n.code]=n;CH[n.code]=[]});CAT.nodes.forEach(function(n){if(n.par&&CH[n.par])CH[n.par].push(n.code)});CAT.lines.forEach(function(l,i){l._o=i});CAT.byId={};CAT.lines.forEach(function(l){CAT.byId[l.id]=l});CAT.byNode={};CAT.lines.forEach(function(l){(CAT.byNode[l.n]=CAT.byNode[l.n]||[]).push(l)});for(var k in CAT.byNode)CAT.byNode[k].sort(function(a,b){return (a.p-b.p)||(a._o-b._o)});$('#d_ver').textContent='Catalogue du '+String(CAT.at).slice(0,10);offUi()}
+function prep(){NM={};CH={};CAT.nodes.forEach(function(n){NM[n.code]=n;CH[n.code]=[]});CAT.nodes.forEach(function(n){if(n.par&&CH[n.par])CH[n.par].push(n.code)});var OV=ls('pm_ov')||{};CAT.lines.forEach(function(l,i){l._o=i;l.c0=l.c||'';if(OV[l.id]!=null)l.c=OV[l.id]});CAT.byId={};CAT.lines.forEach(function(l){CAT.byId[l.id]=l});CAT.byNode={};CAT.lines.forEach(function(l){(CAT.byNode[l.n]=CAT.byNode[l.n]||[]).push(l)});for(var k in CAT.byNode)CAT.byNode[k].sort(function(a,b){return (a.p-b.p)||(a._o-b._o)});$('#d_ver').textContent='Catalogue du '+String(CAT.at).slice(0,10);offUi()}
 function offUi(){if(!('caches' in window))return;caches.keys().then(function(ks){return Promise.all(ks.map(function(k){return caches.open(k).then(function(c){return c.keys()})}))}).then(function(a){var n=0;a.forEach(function(x){n+=x.length});var ok=n>=NFILES;$('#d_ver').textContent='Catalogue du '+String(CAT.at).slice(0,10)+(ok?' · ✔ prêt hors ligne':' · ⏳ préparation hors ligne…');if(!ok)setTimeout(offUi,3000)}).catch(function(){})}
 /* ---------- photos (IndexedDB) ---------- */
 var PH={},IDB=null;
@@ -622,12 +623,14 @@ function drawSheet(){var l=SL,s=ST(l),h='<div class="hd"><h2>'+esc(l.des)+'</h2>
  if(l.comps){l.comps.forEach(function(m){h+=optRow({id:m.id,l:m.l+' — '+m.parts.join(' + ')},o[m.id],'o')});if(l.visu&&l.visu.length){var vv=s.vv||l.visu[0][0];h+='<div class="sl">Visuel</div><div class="row">'+l.visu.map(function(v){return '<button class="chip'+(vv===v[0]?' on':'')+'" data-s="vv" data-v="'+v[0]+'">'+esc(v[1])+'</button>'}).join('')+'</div>'}}
  if(l.id==='n_local_region'){var rg=s.rg||{};h+='<div class="sl">Régions retenues</div><p class="mute">Coche la bande de rive (1330×34) et/ou l’adhésif bac froid (1250×150) pour chaque région du magasin.</p>';CAT.rg.concat(Object.keys(s.rgc||{}).map(function(k){return {k:k,name:s.rgc[k]}})).forEach(function(g){var r=rg[g.k]||{};h+='<div class="o'+(r.b||r.a?' on':'')+'"><div class="tx">'+esc(g.name)+'</div><label><input type="checkbox" data-s="rg" data-k="'+esc(g.k)+'" data-v="b"'+(r.b?' checked':'')+'> Bande</label><label><input type="checkbox" data-s="rg" data-k="'+esc(g.k)+'" data-v="a"'+(r.a?' checked':'')+'> Adhésif</label></div>'});h+='<div class="row"><input class="in" id="rg_new" placeholder="Autre région (nom)" style="flex:1"><button class="btn sm" data-s="rgadd">Ajouter</button></div>'}
  if(l.kind==='single'&&!l.opts){h+='<div class="f2"><label class="l">Largeur (mm)<input class="in" inputmode="numeric" data-s="dim" data-k="L" value="'+(s.L||l.L||'')+'"></label><label class="l">Hauteur (mm)<input class="in" inputmode="numeric" data-s="dim" data-k="H" value="'+(s.H||l.H||'')+'"></label></div>'}
+ h+='<div class="sl">Catégorie de l’article'+(l.c?'':' <small style="color:var(--warn)">(à attribuer)</small>')+'</div><div class="row">'+['S','M','T','L'].map(function(c){return '<button class="chip kc c'+c+(l.c===c?' on':'')+'" data-s="kc" data-v="'+c+'">'+CN[c]+'</button>'}).join('')+'</div>';
  h+='<div class="sl">Photos</div><div class="row"><label class="btn sec" style="cursor:pointer">Prendre une photo<input type="file" accept="image/*" capture="environment" data-s="ph" class="hid"></label><label class="btn sec sm" style="cursor:pointer">Depuis la galerie<input type="file" accept="image/*" multiple data-s="ph" class="hid"></label></div>'+phHtml(s.k);
  h+='<label class="l">Remarque<textarea class="in" rows="2" data-s="note" placeholder="ex. support abîmé, dimension relevée sur place…">'+esc(s.note||'')+'</textarea></label>';
  h+='<div class="foot">'+(SNEW?'<button class="btn" data-s="add" style="width:100%;height:58px;font-size:18px">Ajouter au survey ›</button>':'<div class="row" style="flex-wrap:nowrap"><button class="btn bad" data-s="rm">Retirer</button><button class="btn" data-s="x" style="flex:1">Enregistrer</button></div>')+'</div>';
  var p=$('#sh_p'),st=p.scrollTop;p.innerHTML=h;p.scrollTop=st;setImgs(p)}
 $('#sh_p').onclick=function(e){if(e.target.dataset.z){zoom(e.target.src);return}var b=e.target.closest('[data-s]');if(!b||b.tagName==='INPUT'||b.tagName==='TEXTAREA')return;var l=SL,s=ST(l),a=b.dataset.s,id=b.dataset.id,k=b.dataset.k;
  if(a==='x'){doneSheet();return}
+ if(a==='kc'){var ov=ls('pm_ov')||{},v=b.dataset.v;l.c=(l.c===v?'':v);if(l.c===l.c0)delete ov[l.id];else ov[l.id]=l.c;try{localStorage.setItem('pm_ov',JSON.stringify(ov))}catch(e){}if(DB.cur.e.some(function(x){return x.id===l.id}))touch();drawSheet();if(!l.orph)refresh(l);return}
  if(a==='add'){addSheet();return}
  if(a==='rm'){if(confirm('Retirer cette fiche du survey ?'+(phOf(s.k).length?' Ses photos seront supprimées aussi.':''))){var kk=s.k;closeSheet();rmEntry(kk);after(l);toast('Fiche retirée')}return}
  if(a==='phx'){if(confirm('Supprimer cette photo ?'))phDel(b.dataset.k).then(drawSheet,drawSheet);return}
