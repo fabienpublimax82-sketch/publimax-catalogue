@@ -1,60 +1,88 @@
 /**
- * Catalogue Carrefour Publimax : autorisations d'accès + dépôt des dossiers.
+ * Catalogue Carrefour Publimax : envoi des surveys vers Google Drive + Google Sheet de récap.
  * À déployer depuis le compte Google de Publimax (voir INSTALLATION.md).
- * Propriété du script à créer : KEY = la clé du catalogue.
+ * Propriété du script à créer : KEY = la clé du catalogue (sert à vérifier que l'appel vient bien de l'appli).
+ * Tout le reste (dossier Drive racine, classeur de récap) est créé automatiquement au premier envoi.
  */
 var P = PropertiesService.getScriptProperties();
-function secret_() { var s = P.getProperty('SECRET'); if (!s) { s = Utilities.getUuid() + Utilities.getUuid(); P.setProperty('SECRET', s); } return s; }
-function admin_() { return P.getProperty('ADMIN') || Session.getEffectiveUser().getEmail(); }
-function get_(e) { var v = P.getProperty('U_' + e); return v ? JSON.parse(v) : null; }
-function set_(e, o) { P.setProperty('U_' + e, JSON.stringify(o)); }
-function json_(o) { return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON); }
-function mailOk_(e) { return /^[^\s@<>"']+@[^\s@<>"']+\.[^\s@<>"']+$/.test(e) && e.length < 120; }
+var ROOT_NAME = 'Catalogue Carrefour - surveys', SS_NAME = 'Catalogue Carrefour - récap surveys';
+var HL = ['Dossier', 'Magasin', 'N°', 'Date visite', 'Saisi par', 'Rubrique', 'Désignation', 'Qté', 'L (mm)', 'H (mm)', 'Matière', 'Catégorie', 'Options / composition', 'Remarque', 'Prix', 'Photos', 'Id ligne', 'Mis à jour'];
+var HD = ['Dossier', 'Magasin', 'N°', 'Date visite', 'Saisi par', 'Lignes', 'Photos', 'Mis à jour', 'Dossier Drive'];
 
-function doGet(ev) {
-  var q = ev.parameter || {}, a = q.a, e = String(q.e || '').trim().toLowerCase(), t = String(q.t || '');
-  if (a === 'req') {
-    if (!mailOk_(e) || t.length < 16) return json_({ st: 'err' });
-    var u = get_(e);
-    if (u && u.st === 'ok' && u.t === t) return json_({ st: 'ok', k: P.getProperty('KEY') });
-    var first = !u || u.t !== t || u.st === 'refus';
-    set_(e, { st: 'att', t: t, n: String(q.n || '').slice(0, 60), at: new Date().toISOString() });
-    if (first) {
-      var base = ScriptApp.getService().getUrl() + '?e=' + encodeURIComponent(e) + '&s=' + secret_() + '&a=';
-      MailApp.sendEmail({ to: admin_(), subject: 'Catalogue Carrefour : demande d\'accès de ' + e,
-        htmlBody: '<p><b>' + e + '</b> demande l\'accès au catalogue Carrefour (tablette).</p>' +
-          '<p><a href="' + base + 'ok" style="display:inline-block;padding:12px 20px;background:#008099;color:#fff;border-radius:8px;text-decoration:none;font-weight:bold">Autoriser</a> &nbsp; ' +
-          '<a href="' + base + 'no" style="display:inline-block;padding:12px 20px;border:2px solid #C62828;color:#C62828;border-radius:8px;text-decoration:none;font-weight:bold">Refuser</a></p>' +
-          '<p style="color:#666">Tu peux revenir sur ta décision plus tard en recliquant sur l\'un des deux liens.</p>' });
-    }
-    return json_({ st: 'att' });
-  }
-  if (a === 'st') {
-    var u2 = get_(e);
-    if (!u2 || u2.t !== t) return json_({ st: 'inconnu' });
-    return json_(u2.st === 'ok' ? { st: 'ok', k: P.getProperty('KEY') } : { st: u2.st });
-  }
-  if (a === 'ok' || a === 'no') {
-    if (q.s !== secret_()) return HtmlService.createHtmlOutput('Lien invalide.');
-    var u3 = get_(e); if (!u3) return HtmlService.createHtmlOutput('Aucune demande pour ' + e + '.');
-    u3.st = a === 'ok' ? 'ok' : 'refus'; u3.dec = new Date().toISOString(); set_(e, u3);
-    return HtmlService.createHtmlOutput('<div style="font:18px Segoe UI,Arial;padding:30px"><b>' + e + '</b> : accès ' + (a === 'ok' ? 'AUTORISÉ' : 'REFUSÉ') + '.</div>');
-  }
-  return json_({ st: 'err' });
+function json_(o) { return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON); }
+function hex_(b) { return b.map(function (x) { return ('0' + ((x + 256) % 256).toString(16)).slice(-2); }).join(''); }
+function auth_(h) { var k = P.getProperty('KEY'); if (!k) throw new Error('propriété KEY absente du script'); return h === hex_(Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, k.trim() + '|sync', Utilities.Charset.UTF_8)); }
+function clean_(s) { return String(s || '').replace(/[\\\/:*?"<>|\[\]]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 80); }
+
+function root_() {
+  var id = P.getProperty('ROOT'); if (id) { try { return DriveApp.getFolderById(id); } catch (e) {} }
+  var f = DriveApp.createFolder(ROOT_NAME); P.setProperty('ROOT', f.getId()); return f;
+}
+function folder_(d, create) {
+  var id = P.getProperty('F_' + d.id); if (id) { try { return DriveApp.getFolderById(id); } catch (e) {} }
+  if (!create) return null;
+  var f = root_().createFolder(clean_(d.ville || 'Magasin') + ' ' + clean_(d.date || '') + ' [' + clean_(d.id) + ']'); P.setProperty('F_' + d.id, f.getId()); return f;
+}
+function ss_() {
+  var id = P.getProperty('SS'), ss = null; if (id) { try { ss = SpreadsheetApp.openById(id); } catch (e) {} }
+  if (!ss) { ss = SpreadsheetApp.create(SS_NAME); P.setProperty('SS', ss.getId()); try { DriveApp.getFileById(ss.getId()).moveTo(root_()); } catch (e) {} }
+  return ss;
+}
+function sheet_(ss, name, head) {
+  var sh = ss.getSheetByName(name);
+  if (!sh) { sh = ss.getSheets().length === 1 && ss.getSheets()[0].getLastRow() === 0 ? ss.getSheets()[0].setName(name) : ss.insertSheet(name); }
+  if (sh.getLastRow() === 0) { sh.getRange(1, 1, 1, head.length).setValues([head]).setFontWeight('bold'); sh.setFrozenRows(1); }
+  return sh;
+}
+/** Remplace toutes les lignes d'un dossier (colonne A) par les nouvelles. */
+function replace_(sh, did, rows, width) {
+  var last = sh.getLastRow(), keep = [];
+  if (last > 1) keep = sh.getRange(2, 1, last - 1, width).getValues().filter(function (r) { return String(r[0]) !== String(did); });
+  var all = keep.concat(rows);
+  if (last > 1) sh.getRange(2, 1, last - 1, width).clearContent();
+  if (all.length) sh.getRange(2, 1, all.length, width).setValues(all);
 }
 
 function doPost(ev) {
+  var lock = LockService.getScriptLock();
   try {
-    var b = JSON.parse(ev.postData.contents), e = String(b.e || '').toLowerCase(), u = get_(e);
-    if (b.a !== 'save' || !u || u.st !== 'ok' || u.t !== b.t) return json_({ ok: false, err: 'accès non autorisé' });
-    var it = DriveApp.getFoldersByName('Catalogue Carrefour - dossiers'), f = it.hasNext() ? it.next() : DriveApp.createFolder('Catalogue Carrefour - dossiers');
-    var d = b.d.dossier || {}, name = String(d.ville || 'dossier').replace(/[^A-Za-z0-9]+/g, '_') + '_' + (d.date || '') + '_' + (d.id || '') + '.json';
-    var old = f.getFilesByName(name); while (old.hasNext()) old.next().setTrashed(true);
-    f.createFile(name, JSON.stringify(b.d, null, 1), 'application/json');
-    MailApp.sendEmail(admin_(), 'Catalogue Carrefour : dossier ' + (d.ville || '') + ' reçu', e + ' a envoyé le dossier « ' + (d.ville || '') + ' » (' + (b.d.lignes || []).length + ' lignes). Fichier : Drive > Catalogue Carrefour - dossiers > ' + name);
-    return json_({ ok: true });
-  } catch (x) { return json_({ ok: false, err: String(x) }); }
+    var b = JSON.parse(ev.postData.contents);
+    if (!auth_(b.h)) return json_({ ok: false, err: 'accès refusé (clé du catalogue différente de celle du script)' });
+    lock.waitLock(25000);
+    if (b.a === 'photo') {
+      var m = /^data:(image\/(?:jpeg|png|webp));base64,(.+)$/.exec(String(b.data || '')); if (!m) return json_({ ok: false, err: 'photo illisible' });
+      var f = folder_({ id: b.did, ville: b.ville, date: b.date }, true), name = clean_(b.k).replace(/ /g, '_') + '.jpg', it = f.getFilesByName(name);
+      var file = it.hasNext() ? it.next() : f.createFile(Utilities.newBlob(Utilities.base64Decode(m[2]), m[1], name));
+      file.setDescription(String(b.lid) + ' | ' + String(b.des || ''));
+      return json_({ ok: true, id: file.getId(), url: file.getUrl() });
+    }
+    if (b.a === 'photoDel') {
+      var fd = folder_({ id: b.did }, false);
+      if (fd) { var itd = fd.getFilesByName(clean_(b.k).replace(/ /g, '_') + '.jpg'); while (itd.hasNext()) itd.next().setTrashed(true); }
+      return json_({ ok: true });
+    }
+    if (b.a === 'lignes') {
+      var d = b.dossier || {}, L = b.lignes || [], fo = folder_(d, true), ph = {}, np = 0, fi = fo.getFiles();
+      while (fi.hasNext()) { var x = fi.next(), lid = String(x.getDescription() || '').split(' | ')[0]; if (!lid) continue; (ph[lid] = ph[lid] || []).push(x.getUrl()); np++; }
+      var now = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'dd/MM/yyyy HH:mm');
+      var rows = L.map(function (r) {
+        var op = (r.options || []).map(function (o) { return o.l + (o.q > 1 ? ' × ' + o.q : ''); });
+        if (r.composition) op.unshift(r.composition.contenu + ', ' + r.composition.eclairage + ', format ' + r.composition.format);
+        if (r.visuel) op.push('Visuel ' + r.visuel);
+        return [d.id, d.ville || '', d.num || '', d.date || '', d.aut || '', r.rubrique || '', r.des || '', r.q || '', r.L || '', r.H || '', r.mat || '', r.cat || '', op.join('\n'), r.note || '', r.prix || '', (ph[r.id] || []).join('\n'), r.id, now];
+      });
+      var ss = ss_();
+      replace_(sheet_(ss, 'Lignes', HL), d.id, rows, HL.length);
+      replace_(sheet_(ss, 'Dossiers', HD), d.id, [[d.id, d.ville || '', d.num || '', d.date || '', d.aut || '', L.length, np, now, fo.getUrl()]], HD.length);
+      return json_({ ok: true, lignes: L.length, photos: np });
+    }
+    return json_({ ok: false, err: 'action inconnue' });
+  } catch (x) { return json_({ ok: false, err: String(x && x.message || x) }); }
+  finally { try { lock.releaseLock(); } catch (e) {} }
 }
 
-/** À lancer une fois à la main dans l'éditeur pour accorder les autorisations (mail + Drive). */
-function autoriser() { MailApp.getRemainingDailyQuota(); DriveApp.getRootFolder(); secret_(); Logger.log('OK, compte : ' + admin_()); }
+/** La demande d'accès par e-mail n'est pas en service dans cette version. */
+function doGet() { return json_({ st: 'indispo' }); }
+
+/** À lancer une fois à la main dans l'éditeur pour accorder les autorisations (Drive + Sheets). */
+function autoriser() { var r = root_(), s = ss_(); sheet_(s, 'Lignes', HL); sheet_(s, 'Dossiers', HD); Logger.log('OK. Dossier : ' + r.getUrl() + ' — Classeur : ' + s.getUrl()); }
