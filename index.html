@@ -346,6 +346,36 @@ label.l{font-weight:600;color:var(--mute)}
 #r_body .ment{color:#444;border:1px solid #D3D7DC;padding:12px;margin:8px 0 0}
 #r_body .dfoot{display:flex;justify-content:space-between;font-size:12px;color:#777;border-top:1px solid #D3D7DC;padding-top:8px;margin-top:14px}
 @media (max-width:900px){#r_body .pv{padding:16px 12px 10px}#r_body .cart{grid-template-columns:1fr 1fr}#r_body .kp{flex-wrap:wrap}#r_body .kp div{flex:1 0 21%}#r_body .lt th.pp{width:70px}#r_body .lt th.vi{width:84px}#r_body .lt td.vi img{max-width:70px}#r_body .lt th.ca{width:118px}}
+
+/* ---- téléphone ---- */
+@media (max-width:640px){
+ .top{padding:6px 10px;min-height:52px;gap:6px}.top .t{font-size:16px}.top .btn{height:40px;padding:0 12px;font-size:14px}
+ .cbody{flex-direction:column}.ccol{min-height:0}
+ #tabs{flex-direction:row;width:auto;padding:8px 10px 6px;gap:6px;overflow-x:auto;overflow-y:hidden}
+ .tab{min-height:40px;height:40px;padding:0 10px;border-radius:10px;border-left-width:5px;white-space:nowrap;flex-wrap:nowrap;font-size:13.5px;gap:6px}
+ .tab .k{margin-left:0;font-size:11px;padding:1px 6px}
+ #chaps{padding:6px 10px;gap:6px;border-radius:0}#chaps .seg{font-size:14px;height:40px;padding:0 10px;min-width:0;max-width:60vw;overflow:hidden;text-overflow:ellipsis}
+ #subs{left:8px;right:8px;top:54px;grid-template-columns:1fr;max-height:66%}
+ .bar,#cat .bar{padding:6px 10px 4px;gap:6px}.bar .in{flex:1 0 100%;height:42px;min-height:42px}.chip,#cat .bar .btn.sec{height:36px;padding:0 10px;font-size:13px}
+ #list{padding:4px 10px 40px}.grid{grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+ .card .im{height:96px}.card .bd{padding:7px 8px;gap:3px}.card .ti{font-size:13.5px}.card .dm{font-size:12px}.card .ft{padding:4px 8px 8px}.card .ft .btn{height:38px;font-size:13.5px;padding:0 6px}.card .tag{font-size:10.5px}.ech{height:28px;font-size:12px}
+ .sech,.sech *{font-size:14px!important}
+ #info{padding:8px}.ibox{padding:14px;border-radius:16px;gap:10px}.ibox h2{font-size:19px}.f2{display:flex;flex-direction:column;gap:10px}.f2>*{width:100%;min-width:0}
+ #sheet .p{padding:10px 12px 96px}#sheet .f2{display:grid;grid-template-columns:1fr 1fr}#sheet .f2>*{width:auto}#sheet .pv0 img,#sheet .big img{max-height:150px}
+ #dossiers .top img{display:none}#dossiers .top{overflow-x:auto}#dossiers .top .btn{flex:none}#sheet .hd h2{font-size:18px}
+ .banner .inb{padding:18px 14px 10px}.banner h1{font-size:28px}.banner .btn{height:50px;font-size:16px;padding:0 18px}
+ #dossiers .top .btn{padding:0 9px;font-size:13px}.dc{padding:14px;border-radius:16px}.dc b{font-size:19px}.dc .row{flex-wrap:wrap}
+ #recap .row.noprint{gap:6px}#recap .row.noprint .btn{height:42px;padding:0 10px;font-size:13.5px}
+ #r_body .pv{padding:10px 8px;font-size:13px}#r_body .dhead{flex-wrap:wrap;gap:6px}#r_body .dhead img{height:26px}#r_body .dhead .t{display:none}#r_body .dhead .r{font-size:12px}#r_body .dhead .r b{font-size:14px}
+ #r_body .cart{grid-template-columns:1fr 1fr}#r_body .cart div{min-height:0;padding:4px 7px}#r_body .cart label{font-size:9px}#r_body .dh2{font-size:13px;min-height:34px}#r_body .dh2 small{font-size:11px}#r_body .rh{font-size:12px}#r_body .kp div{flex:1 0 22%}#r_body .kp b{font-size:18px}#r_body .kp span{font-size:9px;letter-spacing:0}
+ #r_body .lt tr:first-child{display:none}#r_body .lt,#r_body .lt tbody{display:block}
+ #r_body .lt tr.rl{display:grid;grid-template-columns:64px 1fr auto;gap:2px 8px;padding:8px 2px;border-bottom:1px solid #D3D7DC}
+ #r_body .lt td{display:block;padding:0;border:0;width:auto!important}
+ #r_body .lt td.vi{grid-row:1/4}#r_body .lt td.vi img{max-width:62px;max-height:50px}
+ #r_body .lt td.des{grid-column:2/4}#r_body .lt td.des b{font-size:14px}
+ #r_body .lt td.ca{grid-column:2}#r_body .lt td.q{grid-column:3;grid-row:2;text-align:right}
+ #r_body .lt td.pp{grid-column:2}#r_body .lt td.ac{grid-column:3;grid-row:3;display:block}#r_body .lt td.ac .ib{width:40px;height:40px}
+}
 /* ---- impression : même présentation que le PV de réception ---- */
 #print{display:none}
 @media print{@page{size:A4 portrait;margin:8mm 6mm 8mm 8mm}
@@ -386,7 +416,7 @@ label.l{font-weight:600;color:var(--mute)}
 <button class="lnk" id="b_alt" style="color:#10242B;text-shadow:0 1px 8px rgba(255,255,255,.8)">J’ai un lien ou une clé d’accès</button>
 <div id="g_alt" class="pane hid"><label class="l" style="color:#1E2124;font-weight:600">Lien ou clé d’accès<input class="in" id="g_key" placeholder="Colle ici le lien reçu de Publimax"></label><button class="btn" id="b_key" style="width:100%">Continuer ›</button></div>
 <div id="g_msg" class="msg hid"></div>
-<p class="ver">Catalogue 20261117-215940 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261117-220931 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- CODE -->
@@ -398,7 +428,7 @@ label.l{font-weight:600;color:var(--mute)}
 <button class="btn" id="b_pin">Ouvrir ›</button><div id="p_msg" class="msg err hid"></div>
 <button class="btn gr inst hid" data-inst>Installer l’application</button>
 <button class="lnk hid" id="b_forget">Code oublié ?</button></div>
-<p class="ver">Catalogue 20261117-215940 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261117-220931 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- DOSSIERS -->
@@ -447,7 +477,7 @@ label.l{font-weight:600;color:var(--mute)}
 (function(){'use strict';
 var $=function(s){return document.querySelector(s)},$$=function(s){return [].slice.call(document.querySelectorAll(s))};
 var CFG={apps:''},CAT=null,IMG={},KEY=null,DB={d:[],cur:null},NM={},CH={},PENDKEY=null,NSHARD=0,LB={};
-var KS='',VER='20261117-215940',NFILES=15,SYH='',SYB=false,SYT=null;
+var KS='',VER='20261117-220931',NFILES=15,SYH='',SYB=false,SYT=null;
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function ls(k,v){try{if(v===undefined){var r=localStorage.getItem(k);return r?JSON.parse(r):null}if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v));return true}catch(e){if(v!==undefined&&k==='pm_dos')saveErr();return null}}
 function saveErr(){var b=document.getElementById('serr');if(!b){b=document.createElement('div');b.id='serr';b.style.cssText='position:fixed;left:0;right:0;top:0;z-index:99;background:#C62828;color:#fff;padding:12px 16px;font-weight:700;text-align:center';document.body.appendChild(b)}b.textContent='⚠ ENREGISTREMENT IMPOSSIBLE sur cette tablette (mémoire pleine ?). Exporte ton dossier tout de suite : Récap → Exporter.'}
