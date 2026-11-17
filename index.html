@@ -266,6 +266,14 @@ label.l{font-weight:600;color:var(--mute)}
 .sbp b{color:var(--acc);font-weight:800}.sbp .k{background:var(--acc);color:#fff;border-radius:99px;font-size:12px;font-weight:800;padding:0 6px}
 .sbp.on{background:var(--ink);color:#fff;box-shadow:none}.sbp.on b{color:#9ADDEA}
 #cat .main{flex:1;min-height:0}
+/* ---- chapitres : tout sur une ligne, le sélectionné en grand ---- */
+#chaps{overflow:hidden;gap:5px;align-items:center;padding:8px 12px}
+.chp{flex:1 1 0;min-width:30px;height:36px;padding:0 6px;font-size:12px;gap:4px;justify-content:center;overflow:hidden;border-radius:10px}
+.chp .tx{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.chp b{flex:none}.chp .k{flex:none;font-size:10.5px;padding:0 5px}
+.chp.on{flex:0 0 auto;height:42px;padding:0 14px;font-size:15px;gap:7px;border-radius:12px;max-width:46%}
+.chp.on .k{font-size:12.5px;padding:0 7px}
+@media(max-width:900px){.chp:not(.on):not([data-n=""]) .tx{display:none}.chp:not(.on) b{font-size:14px}}
 /* ---- cartes plus petites ---- */
 #cat .grid{gap:12px;margin-bottom:20px;grid-template-columns:repeat(auto-fill,minmax(186px,1fr))}
 #cat .card{border-radius:14px;border-top-width:5px}
@@ -300,7 +308,7 @@ label.l{font-weight:600;color:var(--mute)}
 <div id="g_wait" class="hid"><div class="msg">Demande envoyée. Dès que Publimax l’autorise, cet écran passe tout seul à l’étape suivante.</div><button class="btn sec sm" id="b_chk" style="margin-top:8px">Vérifier maintenant</button></div>
 <div id="g_alt" class="pane"><label class="l" style="color:#1E2124;font-weight:600">Lien ou clé d’accès<input class="in" id="g_key" placeholder="Colle ici le lien reçu de Publimax"></label><button class="btn" id="b_key" style="width:100%">Continuer ›</button></div>
 <div id="g_msg" class="msg hid"></div>
-<p class="ver">Catalogue 20261117-2100 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261117-2103 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- CODE -->
@@ -312,7 +320,7 @@ label.l{font-weight:600;color:var(--mute)}
 <button class="btn" id="b_pin">Ouvrir ›</button><div id="p_msg" class="msg err hid"></div>
 <button class="btn gr inst hid" data-inst>Installer l’application</button>
 <button class="lnk hid" id="b_forget">Code oublié ?</button></div>
-<p class="ver">Catalogue 20261117-2100 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261117-2103 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- DOSSIERS -->
@@ -360,7 +368,7 @@ label.l{font-weight:600;color:var(--mute)}
 (function(){'use strict';
 var $=function(s){return document.querySelector(s)},$$=function(s){return [].slice.call(document.querySelectorAll(s))};
 var CFG={apps:''},CAT=null,IMG={},KEY=null,DB={d:[],cur:null},NM={},CH={},PENDKEY=null,NSHARD=0,LB={};
-var VER='20261117-2100',NFILES=15,SYH='',SYB=false,SYT=null;
+var VER='20261117-2103',NFILES=15,SYH='',SYB=false,SYT=null;
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function ls(k,v){try{if(v===undefined){var r=localStorage.getItem(k);return r?JSON.parse(r):null}if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v));return true}catch(e){if(v!==undefined&&k==='pm_dos')saveErr();return null}}
 function saveErr(){var b=document.getElementById('serr');if(!b){b=document.createElement('div');b.id='serr';b.style.cssText='position:fixed;left:0;right:0;top:0;z-index:99;background:#C62828;color:#fff;padding:12px 16px;font-weight:700;text-align:center';document.body.appendChild(b)}b.textContent='⚠ ENREGISTREMENT IMPOSSIBLE sur cette tablette (mémoire pleine ?). Exporte ton dossier tout de suite : Récap → Exporter.'}
@@ -475,7 +483,7 @@ function rootOf(c){var n=NM[c];while(n&&n.par&&NM[n.par])n=NM[n.par];return n?n.
 function drawSubs(){var r=rootOf(VIEW.node),el=$('#subs');if(!r||VIEW.cat==='info'){el.classList.add('hid');return}var ks=sub(r).filter(function(c){return c!==r&&(CAT.byNode[c]||[]).some(inCat)});if(!ks.length){el.classList.add('hid');return}var h='<button class="sbp'+(VIEW.node===r?' on':'')+'" data-n="'+r+'">Tout '+esc(NM[r].title)+'</button>';ks.forEach(function(c){var n=NM[c],k=0;sub(c).forEach(function(x){(CAT.byNode[x]||[]).forEach(function(l){if(inCat(l)&&on(l))k++})});h+='<button class="sbp'+(VIEW.node===c?' on':'')+'" data-n="'+c+'"><b>'+esc(n.num)+'</b>'+esc(n.title)+(k?'<span class="k">'+k+'</span>':'')+'</button>'});el.innerHTML=h;el.classList.remove('hid')}
 $('#subs').onclick=function(e){var t=e.target.closest('.sbp');if(!t)return;VIEW.node=t.dataset.n;FOLD={};drawSide();drawList();$('#list').scrollTop=0};
 function drawSide(){var h='';CATS.forEach(function(c){var k='';if(c[0]!=='info'){var n=0,t=0;CAT.lines.forEach(function(l){if(c[0]&&!isCat(l,c[0]))return;t++;if(on(l))n++});k='<span class="k">'+(n?n+' / ':'')+t+'</span>'}h+='<button class="tab'+(VIEW.cat===c[0]?' on':'')+'" data-c="'+c[0]+'"><i></i>'+c[1]+k+'</button>'});$('#tabs').innerHTML=h;
- var g='<button class="chp'+(VIEW.node===''?' on':'')+'" data-n="">Tout</button>';CAT.nodes.forEach(function(n){if(n.par&&NM[n.par])return;var t=0,k=0;sub(n.code).forEach(function(c){(CAT.byNode[c]||[]).forEach(function(l){if(!inCat(l))return;t++;if(on(l))k++})});if(!t)return;g+='<button class="chp'+(rootOf(VIEW.node)===n.code?' on':'')+'" data-n="'+n.code+'"><b>'+esc(n.num)+'</b>'+esc(n.title)+(k?'<span class="k">'+k+'</span>':'')+'</button>'});$('#chaps').innerHTML=g;drawSubs()}
+ var g='<button class="chp'+(VIEW.node===''?' on':'')+'" data-n=""><span class="tx">Tout</span></button>';CAT.nodes.forEach(function(n){if(n.par&&NM[n.par])return;var t=0,k=0;sub(n.code).forEach(function(c){(CAT.byNode[c]||[]).forEach(function(l){if(!inCat(l))return;t++;if(on(l))k++})});if(!t)return;g+='<button class="chp'+(rootOf(VIEW.node)===n.code?' on':'')+'" data-n="'+n.code+'" title="'+esc(n.title)+'"><b>'+esc(n.num)+'</b><span class="tx">'+esc(n.title)+'</span>'+(k?'<span class="k">'+k+'</span>':'')+'</button>'});$('#chaps').innerHTML=g;drawSubs()}
 $('#tabs').onclick=function(e){var t=e.target.closest('.tab');if(!t)return;VIEW.cat=t.dataset.c;if(VIEW.node&&VIEW.cat&&VIEW.cat!=='info'&&!sub(VIEW.node).some(function(c){return (CAT.byNode[c]||[]).some(inCat)}))VIEW.node='';drawSide();drawView();$('#list').scrollTop=0};
 $('#chaps').onclick=function(e){var t=e.target.closest('.chp');if(!t)return;VIEW.node=t.dataset.n;FOLD={};drawSide();drawList();$('#list').scrollTop=0;t=$('#chaps .chp.on');if(t&&t.scrollIntoView)t.scrollIntoView({inline:'center',block:'nearest'})};
 $('#side').onclick=function(e){var n=e.target.closest('.n');if(!n)return;var c=n.dataset.n;
