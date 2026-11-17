@@ -74,7 +74,7 @@ function doPost(ev) {
         var op = (r.options || []).map(function (o) { return o.l + (o.q > 1 ? ' × ' + o.q : ''); });
         if (r.composition) op.unshift(r.composition.contenu + ', ' + r.composition.eclairage + ', format ' + r.composition.format);
         if (r.visuel) op.push('Visuel ' + r.visuel);
-        return [d.id, d.ville || '', d.num || '', d.date || '', d.aut || '', r.rubrique || '', r.des || '', r.q || '', r.L || '', r.H || '', r.mat || '', r.cat || '', op.join('\n'), r.note || '', r.prix || '', (ph[r.id] || []).join('\n'), r.id, now];
+        return [d.id, d.ville || '', d.num || '', d.date || '', d.aut || '', r.rubrique || '', r.des || '', r.q || '', r.L || '', r.H || '', r.mat || '', r.cat || '', op.join('\n'), r.note || '', r.prix || '', (ph[r.k] || ph[r.id] || []).join('\n'), r.id, now];
       });
       var ss = ss_();
       replace_(sheet_(ss, 'Lignes', HL), d.id, rows, HL.length);
