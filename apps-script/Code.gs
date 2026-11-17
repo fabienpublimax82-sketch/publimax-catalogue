@@ -1,7 +1,7 @@
 /**
  * Catalogue Carrefour Publimax : envoi des surveys vers Google Drive + Google Sheet de récap.
  * À déployer depuis le compte Google de Publimax (voir INSTALLATION.md).
- * Propriété du script à créer : KEY = la clé du catalogue (sert à vérifier que l'appel vient bien de l'appli).
+ * Aucune clé à saisir : l'empreinte de la clé du catalogue est enregistrée au premier envoi (propriété H).
  * Tout le reste (dossier Drive racine, classeur de récap) est créé automatiquement au premier envoi.
  */
 var P = PropertiesService.getScriptProperties();
@@ -11,7 +11,8 @@ var HD = ['Dossier', 'Magasin', 'N°', 'Date visite', 'Saisi par', 'Lignes', 'Ph
 
 function json_(o) { return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON); }
 function hex_(b) { return b.map(function (x) { return ('0' + ((x + 256) % 256).toString(16)).slice(-2); }).join(''); }
-function auth_(h) { var k = P.getProperty('KEY'); if (!k) throw new Error('propriété KEY absente du script'); return h === hex_(Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, k.trim() + '|sync', Utilities.Charset.UTF_8)); }
+/** Le premier appareil qui synchronise enregistre son empreinte ; ensuite seuls les appareils qui ont la même clé de catalogue passent. Pour repartir de zéro : supprimer la propriété H. */
+function auth_(h) { h = String(h || ''); if (!/^[0-9a-f]{64}$/.test(h)) return false; var s = P.getProperty('H'); if (!s) { P.setProperty('H', h); return true; } return s === h; }
 function clean_(s) { return String(s || '').replace(/[\\\/:*?"<>|\[\]]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 80); }
 
 function root_() {
