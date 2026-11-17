@@ -386,7 +386,7 @@ label.l{font-weight:600;color:var(--mute)}
 <button class="lnk" id="b_alt" style="color:#10242B;text-shadow:0 1px 8px rgba(255,255,255,.8)">J’ai un lien ou une clé d’accès</button>
 <div id="g_alt" class="pane hid"><label class="l" style="color:#1E2124;font-weight:600">Lien ou clé d’accès<input class="in" id="g_key" placeholder="Colle ici le lien reçu de Publimax"></label><button class="btn" id="b_key" style="width:100%">Continuer ›</button></div>
 <div id="g_msg" class="msg hid"></div>
-<p class="ver">Catalogue 20261117-215344 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261117-215940 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- CODE -->
@@ -398,7 +398,7 @@ label.l{font-weight:600;color:var(--mute)}
 <button class="btn" id="b_pin">Ouvrir ›</button><div id="p_msg" class="msg err hid"></div>
 <button class="btn gr inst hid" data-inst>Installer l’application</button>
 <button class="lnk hid" id="b_forget">Code oublié ?</button></div>
-<p class="ver">Catalogue 20261117-215344 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261117-215940 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- DOSSIERS -->
@@ -447,7 +447,7 @@ label.l{font-weight:600;color:var(--mute)}
 (function(){'use strict';
 var $=function(s){return document.querySelector(s)},$$=function(s){return [].slice.call(document.querySelectorAll(s))};
 var CFG={apps:''},CAT=null,IMG={},KEY=null,DB={d:[],cur:null},NM={},CH={},PENDKEY=null,NSHARD=0,LB={};
-var KS='',VER='20261117-215344',NFILES=15,SYH='',SYB=false,SYT=null;
+var KS='',VER='20261117-215940',NFILES=15,SYH='',SYB=false,SYT=null;
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function ls(k,v){try{if(v===undefined){var r=localStorage.getItem(k);return r?JSON.parse(r):null}if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v));return true}catch(e){if(v!==undefined&&k==='pm_dos')saveErr();return null}}
 function saveErr(){var b=document.getElementById('serr');if(!b){b=document.createElement('div');b.id='serr';b.style.cssText='position:fixed;left:0;right:0;top:0;z-index:99;background:#C62828;color:#fff;padding:12px 16px;font-weight:700;text-align:center';document.body.appendChild(b)}b.textContent='⚠ ENREGISTREMENT IMPOSSIBLE sur cette tablette (mémoire pleine ?). Exporte ton dossier tout de suite : Récap → Exporter.'}

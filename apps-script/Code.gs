@@ -51,6 +51,7 @@ function doPost(ev) {
     var b = JSON.parse(ev.postData.contents);
     if (b.a === 'req') return json_(req_(b));
     if (b.a === 'st') return json_(st_(b));
+    if (b.a === 'decinfo' || b.a === 'dec') return json_(dec_(b));
     if (!auth_(b.h)) return json_({ ok: false, err: 'accès refusé (clé du catalogue différente de celle du script)' });
     lock.waitLock(25000);
     if (b.a === 'photo') {
@@ -105,7 +106,7 @@ function req_(b) {
   if (!r && nb >= 60) return { ok: false, st: 'err', err: 'Trop de demandes en attente : contacte Publimax.' };
   r = { e: e, t: t, n: n, ua: String(b.ua || '').slice(0, 120), st: 'att', at: new Date().toISOString(), nonce: Utilities.getUuid() };
   P.setProperty(id, JSON.stringify(r)); cache.put('rq_' + e, '1', 90);
-  var url = ScriptApp.getService().getUrl() + '?a=dec&id=' + id + '&n=' + r.nonce;
+  var url = SITE + 'decision.html#id=' + id + '&n=' + r.nonce;
   MailApp.sendEmail({ to: Session.getEffectiveUser().getEmail(), subject: 'Survey Publimax : demande d\'accès de ' + (n || e),
     htmlBody: '<div style="font:16px Arial,sans-serif;color:#10242B"><p><b>' + html_(n) + '</b> (' + html_(e) + ') demande l\'accès à l\'appli Survey.</p>' +
       '<p style="color:#5B6B72;font-size:13px">Appareil : ' + html_(r.ua) + '</p>' +
@@ -126,6 +127,14 @@ function decide(id, nonce, yes) {
   var r = JSON.parse(cur); if (r.nonce !== nonce) throw new Error('Lien invalide.');
   r.st = yes ? 'ok' : 'refus'; r.dec = new Date().toISOString(); P.setProperty(String(id), JSON.stringify(r));
   return r.st;
+}
+/** Page de décision hébergée avec l'appli (évite la page Google qui casse quand plusieurs comptes sont connectés). */
+var SITE = 'https://fabienpublimax82-sketch.github.io/publimax-catalogue/';
+function dec_(b) {
+  var id = String(b.id || ''), cur = id.indexOf('R_') === 0 ? P.getProperty(id) : null, r = cur ? JSON.parse(cur) : null;
+  if (!r || !b.n || r.nonce !== String(b.n)) return { ok: false, err: 'Lien invalide ou demande supprimée.' };
+  if (b.a === 'dec') { r.st = b.yes === true ? 'ok' : 'refus'; r.dec = new Date().toISOString(); P.setProperty(id, JSON.stringify(r)); }
+  return { ok: true, r: { n: r.n, e: r.e, ua: r.ua, at: r.at, st: r.st } };
 }
 function doGet(ev) {
   var q = ev.parameter || {};

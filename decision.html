@@ -1,0 +1,22 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><meta name="referrer" content="no-referrer">
+<title>Survey Publimax : demande d'accès</title>
+<style>body{margin:0;font:17px/1.45 system-ui,Arial,sans-serif;color:#10242B;background:#EEF4F6}main{max-width:520px;margin:0 auto;padding:28px 20px}
+.c{background:#fff;border-radius:18px;padding:22px;box-shadow:0 10px 30px rgba(16,36,43,.12)}h1{font-size:22px;color:#00849B;margin:0 0 14px}
+.m{color:#5B6B72;font-size:14px}button{font:inherit;font-weight:700;height:54px;padding:0 26px;border-radius:12px;cursor:pointer;border:0}
+#ok{background:#00849B;color:#fff}#no{background:#fff;color:#C62828;box-shadow:0 0 0 2px #C62828 inset}.r{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0 10px}
+#msg{font-weight:700;min-height:26px}button:disabled{opacity:.5}</style></head><body><main><div class="c">
+<h1>Survey Publimax : demande d'accès</h1><div id="who">Chargement…</div>
+<div class="r"><button id="ok" disabled>Autoriser</button><button id="no" disabled>Refuser</button></div><p id="msg"></p>
+<p class="m">Tu peux changer d'avis en revenant sur cette page. Attention : une fois l'appareil entré, refuser ensuite ne retire pas le catalogue déjà reçu.</p></div></main>
+<script>
+(function(){var q={};location.hash.slice(1).split('&').forEach(function(p){var i=p.indexOf('=');if(i>0)q[p.slice(0,i)]=decodeURIComponent(p.slice(i+1))});
+var $=function(i){return document.getElementById(i)},U=null,LAB={att:'en attente',ok:'AUTORISÉE',refus:'REFUSÉE'};
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function post(o){return fetch(U,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(o),credentials:'omit',redirect:'follow'}).then(function(r){return r.json()})}
+function show(r){$('who').innerHTML='<p><b>'+esc(r.n)+'</b><br>'+esc(r.e)+'</p><p class="m">Demandée le '+esc(String(r.at||'').slice(0,16).replace('T',' à '))+' (UTC)<br>Appareil : '+esc(r.ua)+'</p><p>État actuel : <b>'+(LAB[r.st]||esc(r.st))+'</b></p>';$('ok').disabled=$('no').disabled=false}
+function fail(e){$('who').textContent='';$('msg').style.color='#C62828';$('msg').textContent=e}
+if(!q.id||!q.n){fail('Lien incomplet.');return}
+fetch('config.json',{cache:'no-store'}).then(function(r){return r.json()}).then(function(c){U=c.apps;return post({a:'decinfo',id:q.id,n:q.n})}).then(function(r){if(!r.ok)throw new Error(r.err||'Demande introuvable.');show(r.r)}).catch(function(e){fail(e.message||'Pas de réseau.')});
+function go(y){$('ok').disabled=$('no').disabled=true;$('msg').style.color='';$('msg').textContent='…';post({a:'dec',id:q.id,n:q.n,yes:y}).then(function(r){if(!r.ok)throw new Error(r.err||'Erreur');show(r.r);$('msg').textContent=r.r.st==='ok'?'Accès autorisé. L’appareil va se débloquer tout seul.':'Accès refusé.'}).catch(function(e){$('ok').disabled=$('no').disabled=false;fail(e.message||'Pas de réseau.')})}
+$('ok').onclick=function(){go(true)};$('no').onclick=function(){go(false)}})();
+</script></body></html>
