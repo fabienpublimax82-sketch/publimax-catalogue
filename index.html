@@ -482,7 +482,7 @@ body.edit #cat .top{box-shadow:0 0 0 3px #F0B429 inset}#b_edit:not(.sec){backgro
 <button class="lnk" id="b_alt" style="display:none;color:#10242B;text-shadow:0 1px 8px rgba(255,255,255,.8)">J’ai un lien ou une clé d’accès</button>
 <div id="g_alt" class="pane hid"><label class="l" style="color:#1E2124;font-weight:600">Lien ou clé d’accès<input class="in" id="g_key" placeholder="Colle ici le lien reçu de Publimax"></label><button class="btn" id="b_key" style="width:100%">Continuer ›</button></div>
 <div id="g_msg" class="msg hid"></div>
-<p class="ver">Catalogue 20261118-131823 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261118-135209 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- CODE -->
@@ -494,7 +494,7 @@ body.edit #cat .top{box-shadow:0 0 0 3px #F0B429 inset}#b_edit:not(.sec){backgro
 <button class="btn" id="b_pin">Ouvrir ›</button><div id="p_msg" class="msg err hid"></div>
 <button class="btn gr inst hid" data-inst>Installer l’application</button>
 <button class="lnk hid" id="b_forget">Code oublié ?</button></div>
-<p class="ver">Catalogue 20261118-131823 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261118-135209 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- DOSSIERS -->
@@ -553,7 +553,7 @@ body.edit #cat .top{box-shadow:0 0 0 3px #F0B429 inset}#b_edit:not(.sec){backgro
 (function(){'use strict';
 var $=function(s){return document.querySelector(s)},$$=function(s){return [].slice.call(document.querySelectorAll(s))};
 var CFG={apps:''},CAT=null,IMG={},KEY=null,DB={d:[],cur:null},NM={},CH={},PENDKEY=null,NSHARD=0,LB={};
-var KS='',VER='20261118-131823',NFILES=22,SYH='',SYB=false,SYT=null;
+var KS='',VER='20261118-135209',NFILES=22,SYH='',SYB=false,SYT=null;
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 var WIPE=false;
 function ls(k,v){if(WIPE&&v!==undefined&&v!==null)return true;try{if(v===undefined){var r=localStorage.getItem(k);return r?JSON.parse(r):null}if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v));return true}catch(e){if(v!==undefined&&k==='pm_dos')saveErr();return null}}
@@ -628,7 +628,15 @@ function prep(){NM={};CH={};if(!CAT.nodesB){CAT.nodesB=CAT.nodes;CAT.nodes0=CAT.
 function offUi(){if(!('caches' in window))return;caches.keys().then(function(ks){return Promise.all(ks.map(function(k){return caches.open(k).then(function(c){return c.keys()})}))}).then(function(a){var n=0;a.forEach(function(x){n+=x.length});var ok=n>=NFILES;$('#d_ver').textContent='Catalogue du '+String(CAT.at).slice(0,10)+(ok?' · ✔ prêt hors ligne':' · ⏳ préparation hors ligne…');if(!ok)setTimeout(offUi,3000)}).catch(function(){})}
 /* ---------- photos (IndexedDB) ---------- */
 var PH={},IDB=null;
-function idb(){if(IDB)return IDB;return IDB=new Promise(function(ok,ko){var r=indexedDB.open('pm_cat',1);r.onupgradeneeded=function(){var st=r.result.createObjectStore('ph',{keyPath:'k'});st.createIndex('d','d')};r.onsuccess=function(){ok(r.result)};r.onerror=function(){ko(r.error)}})}
+var SYB0=0;
+function idbWarn(on){var b=document.getElementById('idbw');if(!on){if(b)b.remove();return}if(!b){b=document.createElement('div');b.id='idbw';b.style.cssText='position:fixed;left:0;right:0;bottom:0;z-index:98;background:#8A5A00;color:#fff;padding:10px 14px;font-weight:600;font-size:14px;text-align:center';document.body.appendChild(b)}b.textContent='⚠ Le stockage des photos ne répond pas sur cet appareil. Les dossiers et les fiches continuent de s’envoyer. Pour retrouver les photos : ferme complètement le navigateur (toutes ses fenêtres, et l’appli) puis rouvre.'}
+function idb(){if(IDB)return IDB;var p=new Promise(function(ok,ko){var fini=false,t=setTimeout(function(){if(fini)return;fini=true;idbWarn(1);ko(new Error('le stockage des photos ne répond pas'))},8000),r;
+ var pret=function(db){db.onversionchange=function(){try{db.close()}catch(e){}IDB=null};return db};
+ try{r=indexedDB.open('pm_cat',1)}catch(e){fini=true;clearTimeout(t);ko(e);return}
+ r.onupgradeneeded=function(){var st=r.result.createObjectStore('ph',{keyPath:'k'});st.createIndex('d','d')};
+ r.onsuccess=function(){var db=pret(r.result);if(fini){IDB=Promise.resolve(db);idbWarn(0);return}fini=true;clearTimeout(t);idbWarn(0);ok(db)};
+ r.onerror=function(){if(fini)return;fini=true;clearTimeout(t);ko(r.error)}});
+ IDB=p;p.catch(function(){if(IDB===p)IDB=null});return p}
 function phTx(mode,fn){return idb().then(function(db){return new Promise(function(ok,ko){var tx=db.transaction('ph',mode),st=tx.objectStore('ph'),res=fn(st);tx.oncomplete=function(){ok(res&&res.result)};tx.onerror=function(){ko(tx.error)};tx.onabort=function(){ko(tx.error||new Error('enregistrement interrompu'))}})})}
 function phLoad(did){return phTx('readonly',function(st){return st.index('d').getAll(did)}).then(function(a){var o={};(a||[]).sort(function(x,y){return x.k<y.k?-1:1}).forEach(function(x){(o[x.l]=o[x.l]||[]).push(x)});PH[did]=o;return o}).catch(function(){PH[did]=PH[did]||{};return PH[did]})}
 function phOf(lid){return ((DB.cur&&PH[DB.cur.id])||{})[lid]||[]}
@@ -808,11 +816,11 @@ function phAll(){return phTx('readonly',function(st){return st.getAll()}).then(f
 function pend(){return phAll().then(function(a){var n=a.filter(function(x){return !x.up}).length+(ls('pm_del')||[]).length;DB.d.forEach(function(d){if(d.dirty)n++});return n})}
 function syUi(t){var b=$('#b_sy');if(t){b.textContent='Drive : '+t;return}if(!appsUrl()){b.textContent='Drive non réglé';return}pend().then(function(n){b.textContent='Drive : '+(SYB?'envoi… ':'')+(n?n+' en attente'+(navigator.onLine?'':' (hors ligne)'):'à jour')})}
 function syncLater(){clearTimeout(SYT);SYT=setTimeout(function(){sync(true)},10000);syUi()}
-function sync(silent){if(SYB||!CAT)return Promise.resolve();var say=function(t,c){if(!silent){msg('#r_msg',t,c);if($('#recap').classList.contains('hid'))alert(t)}};
+function sync(silent){if(SYB&&Date.now()-SYB0<180000)return Promise.resolve();if(!CAT)return Promise.resolve();var say=function(t,c){if(!silent){msg('#r_msg',t,c);if($('#recap').classList.contains('hid'))alert(t)}};
  if(!appsUrl()){say('Drive non réglé : bouton ⚙ sur l’écran des dossiers.','err');syUi();return Promise.resolve()}
  if(!navigator.onLine){say('Pas de réseau : tout reste sur la tablette et partira plus tard.','err');syUi();return Promise.resolve()}
  if(!SYH)return Promise.resolve();
- SYB=true;syUi();load0();var by={};DB.d.forEach(function(d){by[d.id]=d});var nb=0;
+ SYB=true;SYB0=Date.now();syUi();load0();var by={};DB.d.forEach(function(d){by[d.id]=d});var nb=0;
  return ownSync().then(function(){by={};DB.d.forEach(function(d){by[d.id]=d});return phAll()}).then(function(all){var todo=all.filter(function(x){return !x.up&&by[x.d]&&!by[x.d].cf}),i=0;
   function nx(){if(i>=todo.length)return;var x=todo[i++],d=by[x.d],en=(d.e||[]).filter(function(z){return z.k===x.l})[0],l=CAT.byId[en?en.id:x.l]||{des:en?(en.des||en._des):''};return post({a:'photo',did:d.id,ville:d.ville,date:d.date,num:d.num,lid:x.l,des:l.des||'',k:x.k,data:x.b}).then(function(r){x.up=1;x.id=r.id;d.dirty=1;nb++;var c=(PH[x.d]||{})[x.l]||[];c.forEach(function(y){if(y.k===x.k){y.up=1;y.id=r.id}});return phTx('readwrite',function(st){var g=st.get(x.k);g.onsuccess=function(){if(g.result)st.put(x);else delQ(x)}})}).then(function(){syUi();return nx()})}
   return nx()})
@@ -886,7 +894,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(PAN){PAN
 var SPT=Date.now();function spOut(){var d=Math.max(0,1300-(Date.now()-SPT));setTimeout(function(){var e=$('#splash');e.classList.add('out');setTimeout(function(){e.style.display='none'},500)},d)}
 (function(){if(!('serviceWorker' in navigator)){spOut();return}var done=false,fin=function(){if(!done){done=true;spOut()}};
  var had=!!navigator.serviceWorker.controller;
- navigator.serviceWorker.addEventListener('controllerchange',function(){if(had&&!sessionStorage.getItem('pm_rl')){sessionStorage.setItem('pm_rl','1');location.reload()}});
+ navigator.serviceWorker.addEventListener('controllerchange',function(){if(had&&!sessionStorage.getItem('pm_rl')&&$('#cat').classList.contains('hid')&&$('#recap').classList.contains('hid')&&$('#edit').classList.contains('hid')){sessionStorage.setItem('pm_rl','1');try{flush()}catch(e){}location.reload()}});
  navigator.serviceWorker.register('sw.js').then(function(reg){
   var watch=function(w){if(!w)return;$('#sp_t').textContent=had?'Mise à jour…':'Préparation…';w.addEventListener('statechange',function(){if(w.state==='activated'||w.state==='redundant'){if(!had||w.state==='redundant')fin()}});setTimeout(fin,25000)};
   if(reg.installing)watch(reg.installing);reg.addEventListener('updatefound',function(){watch(reg.installing)});
@@ -1007,7 +1015,7 @@ if(navigator.share){$('#sh_nat').classList.remove('hid');$('#sh_nat').onclick=fu
 $('#sh_box').onclick=function(){this.classList.toggle('big')};
 $('#dev_out').onclick=function(){pend().then(function(n){var t=n?'ATTENTION : '+n+' élément(s) ne sont pas encore envoyés sur le Drive et seront PERDUS.\n\n':'';if(!confirm(t+'Déconnecter cet appareil et effacer tout ce qu’il contient (accès, code, dossiers, photos) ?'))return;if(n&&!confirm('Dernière confirmation : '+n+' élément(s) non envoyé(s) vont être perdus. Continuer ?'))return;
  WIPE=true;clearTimeout(SYT);clearTimeout(CST);DB.d=[];try{Object.keys(localStorage).forEach(function(k){if(k.indexOf('pm_')===0)localStorage.removeItem(k)})}catch(e){}try{sessionStorage.clear()}catch(e){}
- var jobs=[];try{jobs.push(new Promise(function(ok){var r=indexedDB.deleteDatabase('pm_cat');r.onsuccess=r.onerror=r.onblocked=function(){ok()}}))}catch(e){}
+ var jobs=[];try{jobs.push(Promise.race([IDB||Promise.resolve(null),new Promise(function(ok){setTimeout(ok,1500)})]).then(function(db){try{if(db&&db.close)db.close()}catch(e){}},function(){}).then(function(){return new Promise(function(ok){var r=indexedDB.deleteDatabase('pm_cat');setTimeout(ok,4000);r.onsuccess=r.onerror=r.onblocked=function(){ok()}})}))}catch(e){}
  if(window.caches)jobs.push(caches.keys().then(function(ks){return Promise.all(ks.map(function(k){return caches.delete(k)}))}).catch(function(){}));
  if(navigator.serviceWorker)jobs.push(navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.unregister()}))}).catch(function(){}));
  Promise.all(jobs).then(function(){location.replace(location.pathname)})})};
