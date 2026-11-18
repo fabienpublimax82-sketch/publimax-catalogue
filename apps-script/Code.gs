@@ -6,6 +6,7 @@
  * Tout le reste (dossier Drive racine, classeur de récap) est créé automatiquement au premier envoi.
  */
 var P = PropertiesService.getScriptProperties();
+var NOMAIL = false; // mis à true par autotest() pour ne rien envoyer
 var ROOT_NAME = 'Catalogue Carrefour - surveys', SS_NAME = 'Catalogue Carrefour - récap surveys';
 var HL = ['Dossier', 'Magasin', 'N°', 'Date visite', 'Saisi par', 'Rubrique', 'Désignation', 'Qté', 'L (mm)', 'H (mm)', 'Matière', 'Catégorie', 'Options / composition', 'Remarque', 'Prix', 'Photos', 'Id ligne', 'Mis à jour'];
 var HD = ['Dossier', 'Magasin', 'N°', 'Date visite', 'Saisi par', 'Lignes', 'Photos', 'Mis à jour', 'Dossier Drive', 'Client', 'Interlocuteur', 'Téléphone', 'E-mail', 'Adresse', 'Code postal', 'Ville', 'Pose souhaitée', 'Accès / contraintes', 'Remarques', 'Compte', 'Version'];
@@ -184,7 +185,7 @@ function req_(b) {
     var code = ('00000' + Math.floor(Math.random() * 1000000)).slice(-6);
     r = { e: e, t: t, n: known.n || n, ua: String(b.ua || '').slice(0, 120), st: 'code', code: code, exp: Date.now() + 15 * 60000, tries: 0, at: new Date().toISOString(), nonce: Utilities.getUuid(), inh: !!known.ed };
     P.setProperty(id, JSON.stringify(r)); cache.put('rq_' + e, '1', 60);
-    MailApp.sendEmail({ to: e, subject: 'Survey Publimax : ton code de connexion',
+    if (!NOMAIL) MailApp.sendEmail({ to: e, subject: 'Survey Publimax : ton code de connexion',
       htmlBody: '<div style="font:16px Arial,sans-serif;color:#10242B"><p>Bonjour ' + html_(r.n) + ',</p><p>Voici ton code pour connecter un nouvel appareil à l\'appli Survey :</p>' +
         '<p style="font-size:34px;font-weight:bold;letter-spacing:6px;color:#00849B;margin:18px 0">' + code + '</p>' +
         '<p style="color:#5B6B72;font-size:13px">Il est valable 15 minutes. Appareil : ' + html_(r.ua) + '<br>Si ce n\'est pas toi, ignore ce message et préviens Publimax.</p></div>' });
@@ -218,6 +219,7 @@ function code_(b) {
 }
 function mail_(id, r, edit) {
   var url = SITE + 'decision.html#id=' + id + '&n=' + r.nonce;
+  if (NOMAIL) return;
   MailApp.sendEmail({ to: Session.getEffectiveUser().getEmail(), subject: 'Survey Publimax : ' + (edit ? 'demande de modification du catalogue de ' : 'demande d\'accès de ') + (r.n || r.e),
     htmlBody: '<div style="font:16px Arial,sans-serif;color:#10242B"><p><b>' + html_(r.n) + '</b> (' + html_(r.e) + ') ' + (edit ? 'demande le droit de modifier le catalogue de l\'appli Survey.' : 'demande l\'accès à l\'appli Survey.') + '</p>' +
       '<p style="color:#5B6B72;font-size:13px">Appareil : ' + html_(r.ua) + '</p>' +
@@ -291,4 +293,43 @@ function purgerComptes() {
   var all = P.getProperties(), n = 0;
   for (var k in all) { if (k.indexOf('R_') === 0) { P.deleteProperty(k); n++; } }
   Logger.log('PURGE ' + n + ' compte(s)');
+}
+
+/** Vérifie tout le parcours sur le vrai script, sans envoyer de mail, puis nettoie : demande, accord, envoi d'un survey avec photo, connexion d'un 2e appareil par code, récupération. */
+function autotest() {
+  NOMAIL = true;
+  var H = P.getProperty('H'), e = 'autotest@exemple.invalid', t1 = 'autotestappareil0001', t2 = 'autotestappareil0002', did = 'autotest1', U1 = new Date().toISOString(), res = [];
+  var call = function (o) { return JSON.parse(doPost({ postData: { contents: JSON.stringify(o) } }).getContent()); };
+  var ok = function (nom, cond, info) { res.push((cond ? 'OK   ' : 'ECHEC ') + nom + (cond ? '' : ' -> ' + JSON.stringify(info))); };
+  var clean = function () {
+    [rid_(e, t1), rid_(e, t2)].forEach(function (k) { P.deleteProperty(k); });
+    var fid = P.getProperty('F_' + did); if (fid) { try { DriveApp.getFolderById(fid).setTrashed(true); } catch (x) {} P.deleteProperty('F_' + did); }
+    var ss = ss_(); replace_(sheet_(ss, 'Lignes', HL), did, [], HL.length); replace_(sheet_(ss, 'Dossiers', HD), did, [], HD.length);
+    CacheService.getScriptCache().remove('rq_' + e);
+  };
+  try {
+    clean();
+    var r = call({ a: 'req', e: e, t: t1, n: '' }); ok('adresse inconnue sans nom -> demande le nom', r.st === 'nom', r);
+    r = call({ a: 'req', e: e, t: t1, n: 'Auto Test' }); ok('première demande -> en attente', r.st === 'att', r);
+    var rec = JSON.parse(P.getProperty(rid_(e, t1)));
+    r = call({ a: 'dec', id: rid_(e, t1), n: rec.nonce, yes: true, ed: true }); ok('accord avec modification', r.ok && r.r.st === 'ok' && r.r.ed === true, r);
+    r = call({ a: 'st', e: e, t: t1 }); ok('appareil 1 reçoit la clé', r.st === 'ok' && !!r.k && r.ed === true, { st: r.st, k: !!r.k, ed: r.ed });
+    r = call({ a: 'photo', h: H, did: did, ville: 'AUTOTEST', date: '2026-11-18', k: did + '|e1|1', lid: 'e1', des: 'essai', data: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==' }); ok('envoi photo', r.ok === true, r);
+    r = call({ a: 'lignes', h: H, dossier: { id: did, ville: 'AUTOTEST', date: '2026-11-18', aut: 'Auto Test', upd: U1, own: e }, lignes: [{ k: 'e1', id: 'x', rubrique: 'Essai', des: 'Ligne essai', q: 2 }], etat: { id: did, ville: 'AUTOTEST', date: '2026-11-18', aut: 'Auto Test', upd: U1, own: e, info: {}, e: [{ k: 'e1', id: 'x', q: 2 }], pk: { e1: [did + '|e1|1'] } } }); ok('envoi survey', r.ok === true && r.photos === 1, r);
+    r = call({ a: 'list', h: H }); var it = (r.list || []).filter(function (x) { return x.id === did; })[0] || {};
+    ok('liste : compte et version relus à l\'identique', it.own === e && it.ver === U1, it);
+    CacheService.getScriptCache().remove('rq_' + e);
+    r = call({ a: 'req', e: e, t: t2, n: '' }); ok('2e appareil, adresse connue -> code', r.st === 'code', r);
+    var rc = JSON.parse(P.getProperty(rid_(e, t2)));
+    r = call({ a: 'code', e: e, t: t2, code: rc.code === '000000' ? '111111' : '000000' }); ok('mauvais code refusé', r.ok === false, r);
+    r = call({ a: 'code', e: e, t: t2, code: rc.code }); ok('bon code -> clé, nom et droits hérités', r.ok === true && !!r.k && r.ed === true && r.n === 'Auto Test', { ok: r.ok, k: !!r.k, ed: r.ed, n: r.n, err: r.err });
+    r = call({ a: 'cat', h: H, v: -1, e: e, t: t2 }); ok('2e appareil reconnu comme pouvant modifier', r.ed === true, { ed: r.ed });
+    r = call({ a: 'get', h: H, did: did }); ok('récupération du survey', r.ok && r.etat && r.etat.upd === U1 && r.etat.e.length === 1, r.ok ? { upd: r.etat.upd } : r);
+    r = call({ a: 'phget', h: H, did: did, k: did + '|e1|1' }); ok('récupération de la photo', r.ok && /^data:image\//.test(r.data || ''), { ok: r.ok, err: r.err });
+    r = call({ a: 'catset', h: H, e: 'inconnu@exemple.invalid', t: 'x', ch: { zz: { des: 'x' } } }); ok('modification du catalogue refusée sans droit', r.ok === false, r);
+  } catch (x) { res.push('ERREUR ' + (x && x.message || x)); }
+  try { clean(); res.push('nettoyage fait'); } catch (x) { res.push('nettoyage en erreur : ' + x); }
+  NOMAIL = false;
+  Logger.log('TEST ' + JSON.stringify(res));
+  return res;
 }
