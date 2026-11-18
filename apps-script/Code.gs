@@ -57,6 +57,8 @@ function doPost(ev) {
     if (b.a === 'req' || b.a === 'code' || b.a === 'dec') { lock.waitLock(25000); return json_(b.a === 'req' ? req_(b) : b.a === 'code' ? code_(b) : dec_(b)); }
     if (!auth_(b.h)) return json_({ ok: false, err: 'accès refusé (clé du catalogue différente de celle du script)' });
     lock.waitLock(25000);
+    if ((b.a === 'photo' && P.getProperty('X_' + String(b.did || ''))) || (b.a === 'lignes' && b.dossier && P.getProperty('X_' + String(b.dossier.id || '')))) return json_({ ok: false, err: 'supprime' });
+    if (b.a === 'del') return json_(del_(b));
     if (b.a === 'photo') {
       var m = /^data:(image\/(?:jpeg|png|webp));base64,(.+)$/.exec(String(b.data || '')); if (!m) return json_({ ok: false, err: 'photo illisible' });
       var f = folder_({ id: b.did, ville: b.ville, date: b.date }, true), name = clean_(b.k).replace(/ /g, '_') + '.jpg', it = f.getFilesByName(name);
@@ -82,7 +84,7 @@ function doPost(ev) {
       var now = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'dd/MM/yyyy HH:mm');
       var rows = L.map(function (r) {
         var op = (r.options || []).map(function (o) { return o.l + (o.q > 1 ? ' × ' + o.q : ''); });
-        if (r.composition) op.unshift(r.composition.contenu + ', ' + r.composition.eclairage + ', format ' + r.composition.format);
+        if (r.composition) op.unshift(r.composition.contenu + ', ' + r.composition.eclairage + (r.composition.format ? ', format ' + r.composition.format : '') + (r.composition.detail ? ' (' + r.composition.detail + ')' : ''));
         if (r.visuel) op.push('Visuel ' + r.visuel);
         return [d.id, d.ville || '', d.num || '', d.date || '', d.aut || '', r.rubrique || '', r.des || '', r.q || '', r.L || '', r.H || '', r.mat || '', r.cat || '', op.join('\n'), r.note || '', r.prix || '', (ph[r.k] || ph[r.id] || []).join('\n'), r.id, now];
       });
@@ -95,7 +97,8 @@ function doPost(ev) {
     if (b.a === 'list') {
       var sh = ss_().getSheetByName('Dossiers'), out = [], last = sh ? sh.getLastRow() : 0;
       if (last > 1) sh.getRange(2, 1, last - 1, HD.length).getDisplayValues().forEach(function (r) { if (r[0]) out.push({ id: r[0], ville: r[1], num: r[2], date: r[3], aut: r[4], n: r[5], np: r[6], maj: r[7], own: r[HD.length - 2] || '', ver: String(r[HD.length - 1] || '').replace(/^v/, '') }); });
-      return json_({ ok: true, list: out });
+      var gone = [], ap = P.getProperties(); for (var gk in ap) if (gk.indexOf('X_') === 0) gone.push(gk.slice(2));
+      return json_({ ok: true, list: out, gone: gone });
     }
     if (b.a === 'get') {
       var fg = folder_({ id: String(b.did || '') }, false), et = fg ? getJson_(fg, 'survey.json') : null;
@@ -118,6 +121,22 @@ function doPost(ev) {
     return json_({ ok: false, err: 'action inconnue' });
   } catch (x) { return json_({ ok: false, err: String(x && x.message || x) }); }
   finally { try { lock.releaseLock(); } catch (e) {} }
+}
+
+/** Suppression d'un survey partout : dossier Drive à la corbeille, lignes retirées du classeur, et une marque X_<id> pour que les autres appareils le retirent et ne le renvoient plus. Réservé au compte qui l'a créé. */
+function del_(b) {
+  var did = String(b.did || ''); if (!did) return { ok: false, err: 'survey inconnu' };
+  var acc = acct_(b); if (!acc) return { ok: false, err: 'compte non reconnu sur cet appareil' };
+  var fo = folder_({ id: did }, false), et = fo ? getJson_(fo, 'survey.json') : null, own = (et && et.own) ? String(et.own) : '';
+  var ss = ss_(), sd = sheet_(ss, 'Dossiers', HD), last = sd.getLastRow();
+  if (!own && last > 1) sd.getRange(2, 1, last - 1, HD.length).getDisplayValues().forEach(function (r) { if (String(r[0]) === did && r[HD.length - 2]) own = String(r[HD.length - 2]); });
+  if (own && own !== acc.e) return { ok: false, err: 'Ce survey appartient à un autre compte : lui seul peut le supprimer partout.' };
+  if (!own && acc.ed !== true) return { ok: false, err: 'Ce survey n\'est rattaché à aucun compte : seul un compte qui peut modifier le catalogue peut le supprimer partout.' };
+  if (fo) { try { fo.setTrashed(true); } catch (x) {} }
+  P.deleteProperty('F_' + did);
+  replace_(sheet_(ss, 'Lignes', HL), did, [], HL.length); replace_(sd, did, [], HD.length);
+  P.setProperty('X_' + did, new Date().toISOString());
+  return { ok: true };
 }
 
 /* ================= Modifications du catalogue (partagées par toutes les tablettes) =================
@@ -297,7 +316,7 @@ function autotest() {
     [rid_(e, t1), rid_(e, t2)].forEach(function (k) { P.deleteProperty(k); });
     var fid = P.getProperty('F_' + did); if (fid) { try { DriveApp.getFolderById(fid).setTrashed(true); } catch (x) {} P.deleteProperty('F_' + did); }
     var ss = ss_(); replace_(sheet_(ss, 'Lignes', HL), did, [], HL.length); replace_(sheet_(ss, 'Dossiers', HD), did, [], HD.length);
-    CacheService.getScriptCache().remove('rq_' + e);
+    CacheService.getScriptCache().remove('rq_' + e); P.deleteProperty('X_' + did);
   };
   try {
     clean();
@@ -327,6 +346,12 @@ function autotest() {
     ok('feuille : zéros et signes conservés', it.num === '007' && it.own === e && it.ver === U2, it);
     var sl = ss_().getSheetByName('Lignes'), vals = sl.getRange(2, 1, Math.max(1, sl.getLastRow() - 1), HL.length).getDisplayValues().filter(function (x) { return x[0] === did; })[0] || [];
     ok('feuille : un texte commençant par = reste du texte', vals[6] === '=1+1', vals[6]);
+    r = call({ a: 'del', h: H, e: 'pirate@exemple.invalid', t: 'x', did: did }); ok('suppression partout refusée à un autre compte', r.ok === false, r);
+    r = call({ a: 'del', h: H, e: e, t: t2, did: did }); ok('suppression partout par son compte', r.ok === true, r);
+    r = call({ a: 'list', h: H }); ok('liste : survey retiré et signalé supprimé', !(r.list || []).some(function (x) { return x.id === did; }) && (r.gone || []).indexOf(did) >= 0, { gone: r.gone });
+    r = call({ a: 'get', h: H, did: did }); ok('survey supprimé : plus récupérable', r.ok === false, r);
+    r = call({ a: 'lignes', h: H, e: e, t: t1, dossier: { id: did, ville: 'AUTOTEST', upd: U2 }, lignes: [], etat: { id: did, upd: U2, e: [], pk: {} } }); ok('survey supprimé : un renvoi est refusé', r.ok === false && r.err === 'supprime', r);
+    r = call({ a: 'photo', h: H, did: did, ville: 'AUTOTEST', date: '2026-11-18', k: did + '|e1|9', lid: 'e1', des: 'essai', data: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==' }); ok('survey supprimé : une photo est refusée', r.ok === false && r.err === 'supprime' && !P.getProperty('F_' + did), r);
   } catch (x) { res.push('ERREUR ' + (x && x.message || x)); }
   try { clean(); res.push('nettoyage fait'); } catch (x) { res.push('nettoyage en erreur : ' + x); }
   NOMAIL = false;
