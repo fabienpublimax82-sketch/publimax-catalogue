@@ -41,7 +41,8 @@ function sheet_(ss, name, head) {
 function replace_(sh, did, rows, width) {
   var last = sh.getLastRow(), keep = [];
   if (last > 1) keep = sh.getRange(2, 1, last - 1, width).getDisplayValues().filter(function (r) { return String(r[0]) !== String(did); });
-  var all = keep.concat(rows.map(function (r) { return r.map(function (v) { return v == null ? '' : String(v); }); }));
+  var txt = function (v) { v = v == null ? '' : String(v); return /^[=+\-@']/.test(v) ? "'" + v : v; };
+  var all = keep.concat(rows).map(function (r) { return r.map(txt); });
   if (all.length) sh.getRange(2, 1, all.length, width).setNumberFormat('@').setValues(all);
   var extra = (last - 1) - all.length;
   if (extra > 0) sh.getRange(2 + all.length, 1, extra, width).clearContent();
