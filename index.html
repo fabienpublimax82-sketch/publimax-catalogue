@@ -481,7 +481,7 @@ body.edit #cat .top{box-shadow:0 0 0 3px #F0B429 inset}#b_edit:not(.sec){backgro
 <button class="lnk" id="b_alt" style="color:#10242B;text-shadow:0 1px 8px rgba(255,255,255,.8)">J’ai un lien ou une clé d’accès</button>
 <div id="g_alt" class="pane hid"><label class="l" style="color:#1E2124;font-weight:600">Lien ou clé d’accès<input class="in" id="g_key" placeholder="Colle ici le lien reçu de Publimax"></label><button class="btn" id="b_key" style="width:100%">Continuer ›</button></div>
 <div id="g_msg" class="msg hid"></div>
-<p class="ver">Catalogue 20261118-122858 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261118-124339 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- CODE -->
@@ -493,7 +493,7 @@ body.edit #cat .top{box-shadow:0 0 0 3px #F0B429 inset}#b_edit:not(.sec){backgro
 <button class="btn" id="b_pin">Ouvrir ›</button><div id="p_msg" class="msg err hid"></div>
 <button class="btn gr inst hid" data-inst>Installer l’application</button>
 <button class="lnk hid" id="b_forget">Code oublié ?</button></div>
-<p class="ver">Catalogue 20261118-122858 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261118-124339 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- DOSSIERS -->
@@ -552,7 +552,7 @@ body.edit #cat .top{box-shadow:0 0 0 3px #F0B429 inset}#b_edit:not(.sec){backgro
 (function(){'use strict';
 var $=function(s){return document.querySelector(s)},$$=function(s){return [].slice.call(document.querySelectorAll(s))};
 var CFG={apps:''},CAT=null,IMG={},KEY=null,DB={d:[],cur:null},NM={},CH={},PENDKEY=null,NSHARD=0,LB={};
-var KS='',VER='20261118-122858',NFILES=22,SYH='',SYB=false,SYT=null;
+var KS='',VER='20261118-124339',NFILES=22,SYH='',SYB=false,SYT=null;
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 var WIPE=false;
 function ls(k,v){if(WIPE&&v!==undefined&&v!==null)return true;try{if(v===undefined){var r=localStorage.getItem(k);return r?JSON.parse(r):null}if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v));return true}catch(e){if(v!==undefined&&k==='pm_dos')saveErr();return null}}
@@ -660,7 +660,7 @@ $('#b_new').onclick=function(){$('#d_new').classList.remove('hid');$('#n_date').
 $('#b_ncancel').onclick=function(){$('#d_new').classList.add('hid')};
 $('#b_create').onclick=function(){var v=$('#n_ville').value.trim();if(!v){$('#n_ville').focus();return}var c=cfg();c.n=$('#n_aut').value.trim();ls('pm_cfg',c);var d={id:'d'+Date.now().toString(36),ville:v,num:$('#n_num').value.trim(),date:$('#n_date').value,aut:c.n,cr:new Date().toISOString(),upd:new Date().toISOString(),s:{},e:[]};d.info={};DB.d.push(d);save();$('#d_new').classList.add('hid');openCat(d.id,'info')};
 $('#d_list').onclick=function(e){var b=e.target.closest('button');if(!b)return;var id=b.dataset.id,d=DB.d.filter(function(x){return x.id===id})[0];if(!d)return;
- if(b.dataset.a==='open')openCat(id);else if(b.dataset.a==='exp')dl(d);else if(b.dataset.a==='del'&&confirm('Supprimer le dossier « '+d.ville+' » de cette tablette ? Exporte-le avant si besoin.')){DELD[d.id]=1;DB.d=DB.d.filter(function(x){return x!==d});save();phDelDos(d.id);drawDossiers()}};
+ if(b.dataset.a==='open')openCat(id);else if(b.dataset.a==='exp')dl(d);else if(b.dataset.a==='del'&&confirm('Supprimer le dossier « '+d.ville+' » de cette tablette ? Exporte-le avant si besoin.')){DELD[d.id]=1;var gn=ls('pm_gone')||{};gn[d.id]=1;ls('pm_gone',gn);DB.d=DB.d.filter(function(x){return x!==d});save();phDelDos(d.id);drawDossiers();drawTeam()}};
 $('#f_imp').onchange=function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{var o=JSON.parse(r.result),d=o.dossier&&o.etat?{id:'d'+Date.now().toString(36),ville:o.dossier.ville,num:o.dossier.num,date:o.dossier.date,aut:o.dossier.aut,cr:o.dossier.cr||new Date().toISOString(),upd:new Date().toISOString(),s:Array.isArray(o.etat)?{}:o.etat,e:Array.isArray(o.etat)?o.etat:undefined,info:{client:o.dossier.client||'',contact:o.dossier.contact||'',adresse:o.dossier.adresse||'',cp:o.dossier.cp||'',commune:o.dossier.commune||'',tel:o.dossier.tel||'',mail:o.dossier.mail||'',pose:o.dossier.pose||'',acces:o.dossier.acces||'',note:o.dossier.note||''}}:null;if(!d)throw 0;if(d.e===undefined)delete d.e;mig(d);DB.d.push(d);save();var P=o.photos||{},q=[];Object.keys(P).forEach(function(l){P[l].forEach(function(b){q.push(phAdd(d.id,l,b))})});Promise.all(q).then(drawDossiers,drawDossiers)}catch(x){alert('Fichier non reconnu.')}};r.readAsText(f);e.target.value=''};
 /* ---------- catalogue ---------- */
 var VIEW={node:'',q:'',f:'all',cat:''};var CATS=[['info','Infos client / dossier'],['','Général'],['S','Standard'],['M','Sur mesure'],['T','Sous-traitance'],['L','Livrée'],['N','Non attribué']],CN={S:'Standard',M:'Sur mesure',T:'Sous-traitance',L:'Livrée'};
@@ -811,7 +811,7 @@ function sync(silent){if(SYB||!CAT)return Promise.resolve();var say=function(t,c
  return phAll().then(function(all){var todo=all.filter(function(x){return !x.up&&by[x.d]}),i=0;
   function nx(){if(i>=todo.length)return;var x=todo[i++],d=by[x.d],en=(d.e||[]).filter(function(z){return z.k===x.l})[0],l=CAT.byId[en?en.id:x.l]||{des:en?(en.des||en._des):''};return post({a:'photo',did:d.id,ville:d.ville,date:d.date,num:d.num,lid:x.l,des:l.des||'',k:x.k,data:x.b}).then(function(r){x.up=1;x.id=r.id;d.dirty=1;nb++;var c=(PH[x.d]||{})[x.l]||[];c.forEach(function(y){if(y.k===x.k){y.up=1;y.id=r.id}});return phTx('readwrite',function(st){st.put(x)})}).then(function(){syUi();return nx()})}
   return nx()}).then(function(){var q=ls('pm_del')||[];function dn(){if(!q.length)return;var x=q[0];return post({a:'photoDel',did:x.d,k:x.k}).then(function(){q.shift();ls('pm_del',q);return dn()})}return dn()})
- .then(function(){var ds=DB.d.filter(function(d){return d.dirty}),i=0;function nd(){if(i>=ds.length)return;var d=ds[i++],u=d.upd;return phLoad(d.id).then(function(o){var pk={};for(var q in o)pk[q]=o[q].map(function(x){return x.k});return post({a:'lignes',dossier:Object.assign({id:d.id,ville:d.ville,num:d.num,date:d.date,aut:d.aut,upd:d.upd},d.info||{},{own:cfg().e||''}),lignes:flat(d).map(function(r){if(r.ap){r=Object.assign({},r);delete r.ap}return r}),etat:{id:d.id,ville:d.ville,num:d.num,date:d.date,aut:d.aut,upd:d.upd,own:cfg().e||'',info:d.info||{},e:d.e||[],pk:pk}})}).then(function(){if(d.upd===u)delete d.dirty;d.sy=new Date().toISOString();save();return nd()})}return nd()})
+ .then(ownSync).then(function(){var ds=DB.d.filter(function(d){return d.dirty}),i=0;function nd(){if(i>=ds.length)return;var d=ds[i++],u=d.upd;return phLoad(d.id).then(function(o){var pk={};for(var q in o)pk[q]=o[q].map(function(x){return x.k});return post({a:'lignes',dossier:Object.assign({id:d.id,ville:d.ville,num:d.num,date:d.date,aut:d.aut,upd:d.upd},d.info||{},{own:cfg().e||''}),lignes:flat(d).map(function(r){if(r.ap){r=Object.assign({},r);delete r.ap}return r}),etat:{id:d.id,ville:d.ville,num:d.num,date:d.date,aut:d.aut,upd:d.upd,own:cfg().e||'',info:d.info||{},e:d.e||[],pk:pk}})}).then(function(){if(d.upd===u)delete d.dirty;d.base=u;d.sy=new Date().toISOString();save();return nd()})}return nd()})
  .then(function(){if(ls('pm_ks')===SYH||!KS)return;return post({a:'key',k:KS}).then(function(){ls('pm_ks',SYH)},function(){})})
  .then(function(){SYB=false;syUi();say('Synchronisé avec le Drive'+(nb?' ('+nb+' photo'+(nb>1?'s':'')+' envoyée'+(nb>1?'s':'')+')':'')+'.','ok')},function(e){SYB=false;syUi();say('Synchronisation interrompue : '+(e&&e.message||e)+'. Rien n’est perdu, ça repartira.','err')})}
 function load0(){if(!DB.d.length)load()}
@@ -1093,6 +1093,31 @@ $('#ed_list').onchange=function(e){var t=e.target,row=t.closest('.erow');if(!row
  if(f==='L'||f==='H'){var v=parseInt(String(t.value).replace(/[\s.]/g,''),10);cmSet(l.id,(f==='L'?{L:v>0?v:0}:{H:v>0?v:0}))}
  else{var o={};o[f]=String(t.value).trim();if(f==='des'&&!o.des){t.value=l.des;return}cmSet(l.id,o)}
  row.classList.add('mod')};
+
+/* ---------- mes surveys sur tous mes appareils ---------- */
+function fdh(x){var d=new Date(x);if(isNaN(d))return '?';var p=function(n){return ('0'+n).slice(-2)};return p(d.getDate())+'/'+p(d.getMonth()+1)+' '+p(d.getHours())+'h'+p(d.getMinutes())}
+function fromEtat(t,id){var now=new Date().toISOString();return {id:id||t.id,ville:t.ville,num:t.num,date:t.date,aut:t.aut,cr:now,upd:t.upd||now,base:t.upd||'',s:{},e:JSON.parse(JSON.stringify(t.e||[])),info:JSON.parse(JSON.stringify(t.info||{}))}}
+function pullPhotos(rid,lid,pk,copy){return phLoad(lid).then(function(o){var have={};for(var l in o)o[l].forEach(function(x){have[x.k]=1});var q=[];for(var k in (pk||{}))(pk[k]||[]).forEach(function(x){if(!have[(copy?'c':'')+x])q.push([k,x])});
+ function nx(){if(!q.length)return Promise.resolve();var x=q.shift();return post({a:'phget',did:rid,k:x[1]}).then(function(r){var rec={k:(copy?'c':'')+x[1],d:lid,l:x[0],b:r.data};if(!copy)rec.up=1;return phTx('readwrite',function(st){st.put(rec)}).then(function(){var c=PH[lid];if(c)(c[x[0]]=c[x[0]]||[]).push(rec)})},function(){}).then(nx)}
+ return nx()}).catch(function(){})}
+function dropPhotos(id,pk){var keep={};for(var k in (pk||{}))(pk[k]||[]).forEach(function(x){keep[x]=1});return phLoad(id).then(function(o){var del=[];for(var l in o)o[l].forEach(function(x){if(x.up&&!keep[x.k])del.push(x.k)});if(!del.length)return;delete PH[id];return phTx('readwrite',function(st){del.forEach(function(k){st.delete(k)})})}).catch(function(){})}
+function ownSync(){var me=cfg().e;if(!me)return Promise.resolve();
+ return post({a:'list'}).then(function(r){TEAM=r.list||[];ls('pm_team',TEAM);var g=ls('pm_gone')||{},by={};DB.d.forEach(function(d){by[d.id]=d});var mine=TEAM.filter(function(t){return t.own===me&&!g[t.id]&&t.ver}),i=0,ch=0,CF=[],busy=!$('#cat').classList.contains('hid')||!$('#recap').classList.contains('hid');
+  function nx(){if(i>=mine.length)return Promise.resolve();var t=mine[i++],d=by[t.id];
+   if(d&&d.base===t.ver)return nx();
+   if(d&&!d.base){if(!d.dirty){d.base=t.ver;ch++}return nx()}
+   if(d&&d===DB.cur&&busy)return nx();
+   return post({a:'get',did:t.id}).then(function(x){var e=x.etat;if(!e)return;
+    if(!d){var nw=fromEtat(e);DB.d.push(nw);by[nw.id]=nw;ch++;pullPhotos(e.id,nw.id,e.pk,false);return}
+    if(!d.dirty){d.ville=e.ville;d.num=e.num;d.date=e.date;d.aut=e.aut;d.info=JSON.parse(JSON.stringify(e.info||{}));d.e=JSON.parse(JSON.stringify(e.e||[]));d.upd=e.upd||d.upd;d.base=e.upd||'';ch++;dropPhotos(d.id,e.pk).then(function(){pullPhotos(e.id,d.id,e.pk,false)});return}
+    var cid='d'+Date.now().toString(36)+Math.random().toString(36).slice(2,4);
+    if((d.upd||'')>=(e.upd||'')){var c=fromEtat(e,cid);c.ville=e.ville+' (autre version du '+fdh(e.upd)+')';c.base='';c.dirty=1;c.cf=1;DB.d.push(c);pullPhotos(e.id,cid,e.pk,true);d.base=e.upd||''}
+    else{var c2=JSON.parse(JSON.stringify(d));c2.id=cid;c2.ville=d.ville+' (version de cet appareil du '+fdh(d.upd)+')';c2.base='';c2.dirty=1;c2.cf=1;delete c2.sy;DB.d.push(c2);
+     var mv=phLoad(d.id).then(function(o){var rec=[];for(var l in o)o[l].forEach(function(p){rec.push({k:'c'+p.k,d:cid,l:l,b:p.b})});return phTx('readwrite',function(st){rec.forEach(function(p){st.put(p)})})}).catch(function(){});
+     d.ville=e.ville;d.num=e.num;d.date=e.date;d.aut=e.aut;d.info=JSON.parse(JSON.stringify(e.info||{}));d.e=JSON.parse(JSON.stringify(e.e||[]));d.upd=e.upd||d.upd;d.base=e.upd||'';delete d.dirty;mv.then(function(){return dropPhotos(d.id,e.pk)}).then(function(){pullPhotos(e.id,d.id,e.pk,false)})}
+    ch++;CF.push(e.ville)},function(){}).then(nx)}
+  return nx().then(function(){if(ch){save();if(!$('#dossiers').classList.contains('hid')){drawDossiers();drawTeam()}}
+   if(CF.length)alert('Deux versions différentes existaient pour : '+CF.join(', ')+'.\n\nLa plus récente est gardée comme survey principal. L’autre est rangée à côté, avec « autre version » ou « version de cet appareil » dans son nom : rien n’est perdu, recopie ce qui manque puis supprime-la.')})},function(){})}
 /* ---------- surveys de l'équipe (lecture seule) ---------- */
 var TEAM=ls('pm_team')||[];
 function drawTeam(){var mine={};DB.d.forEach(function(d){mine[d.id]=1});var L=TEAM.filter(function(t){return !mine[t.id]}),G={},O=[];$('#t_msg').textContent=L.length?'':(navigator.onLine?'Aucun survey envoyé par un autre appareil pour l’instant.':'Hors ligne : la liste se mettra à jour au retour du réseau.');
@@ -1105,7 +1130,7 @@ $('#t_list').onclick=function(e){var b=e.target.closest('[data-t]');if(!b)return
   (function nx(){if(!q.length||DB.cur!==d)return;var x=q.shift();post({a:'phget',did:d.rid,k:x[1]}).then(function(r){(PH[d.id][x[0]]=PH[d.id][x[0]]||[]).push({k:x[1],b:r.data});if(DB.cur===d&&!$('#recap').classList.contains('hid'))drawRecap()},function(){}).then(nx)})()},
   function(x){alert('Survey illisible : '+(x&&x.message||x))}).then(function(){b.disabled=false;b.classList.remove('ld')})};
 function mig1(x){return x}
-$('#r_take').onclick=function(){var s=DB.cur;if(!s||!s.ro)return;if(DB.d.some(function(x){return x.id===s.rid})){openCat(s.rid,'');return}if(!confirm('Reprendre ce survey ici ? Tu pourras le modifier sur cet appareil. Évite de le modifier sur deux appareils en même temps : le dernier envoi remplace l’autre.'))return;var now=new Date().toISOString(),d={id:s.rid,ville:s.ville,num:s.num,date:s.date,aut:s.aut,cr:now,upd:s.upd||now,s:{},e:JSON.parse(JSON.stringify(s.e)),info:JSON.parse(JSON.stringify(s.info||{}))},ph=PH[s.id]||{},rec=[];for(var k in ph)ph[k].forEach(function(x){rec.push({k:x.k,d:d.id,l:k,b:x.b,up:1})});var miss=0;for(var k2 in (s.pk||{}))miss+=s.pk[k2].length;miss-=rec.length;
+$('#r_take').onclick=function(){var s=DB.cur;if(!s||!s.ro)return;if(DB.d.some(function(x){return x.id===s.rid})){openCat(s.rid,'');return}if(!confirm('Reprendre ce survey ici ? Tu pourras le modifier sur cet appareil. Évite de le modifier sur deux appareils en même temps : le dernier envoi remplace l’autre.'))return;var gn=ls('pm_gone')||{};delete gn[s.rid];ls('pm_gone',gn);var now=new Date().toISOString(),d={id:s.rid,ville:s.ville,num:s.num,date:s.date,aut:s.aut,cr:now,upd:s.upd||now,base:s.upd||'',s:{},e:JSON.parse(JSON.stringify(s.e)),info:JSON.parse(JSON.stringify(s.info||{}))},ph=PH[s.id]||{},rec=[];for(var k in ph)ph[k].forEach(function(x){rec.push({k:x.k,d:d.id,l:k,b:x.b,up:1})});var miss=0;for(var k2 in (s.pk||{}))miss+=s.pk[k2].length;miss-=rec.length;
  DB.d.push(d);save();phTx('readwrite',function(st){rec.forEach(function(x){st.put(x)})}).then(function(){openCat(d.id,'');toast(miss>0?'Repris. '+miss+' photo(s) pas encore chargée(s) : elles restent sur le Drive':'Survey repris sur cet appareil')})};
 $('#r_copy').onclick=function(){var s=DB.cur;if(!s||!s.ro)return;var now=new Date().toISOString(),id='d'+Date.now().toString(36),d={id:id,ville:s.ville+' (copie)',num:s.num,date:s.date,aut:cfg().n||s.aut,cr:now,upd:now,s:{},e:JSON.parse(JSON.stringify(s.e)),info:JSON.parse(JSON.stringify(s.info||{})),dirty:1},ph=PH[s.id]||{},jobs=[];DB.d.push(d);save();for(var k in ph)ph[k].forEach(function(x){jobs.push(phAdd(id,k,x.b))});Promise.all(jobs).then(function(){openCat(id,'');toast('Copie créée sur cet appareil')})};
 window.__t={CAT:function(){return CAT}};

@@ -8,7 +8,7 @@
 var P = PropertiesService.getScriptProperties();
 var ROOT_NAME = 'Catalogue Carrefour - surveys', SS_NAME = 'Catalogue Carrefour - récap surveys';
 var HL = ['Dossier', 'Magasin', 'N°', 'Date visite', 'Saisi par', 'Rubrique', 'Désignation', 'Qté', 'L (mm)', 'H (mm)', 'Matière', 'Catégorie', 'Options / composition', 'Remarque', 'Prix', 'Photos', 'Id ligne', 'Mis à jour'];
-var HD = ['Dossier', 'Magasin', 'N°', 'Date visite', 'Saisi par', 'Lignes', 'Photos', 'Mis à jour', 'Dossier Drive', 'Client', 'Interlocuteur', 'Téléphone', 'E-mail', 'Adresse', 'Code postal', 'Ville', 'Pose souhaitée', 'Accès / contraintes', 'Remarques', 'Compte'];
+var HD = ['Dossier', 'Magasin', 'N°', 'Date visite', 'Saisi par', 'Lignes', 'Photos', 'Mis à jour', 'Dossier Drive', 'Client', 'Interlocuteur', 'Téléphone', 'E-mail', 'Adresse', 'Code postal', 'Ville', 'Pose souhaitée', 'Accès / contraintes', 'Remarques', 'Compte', 'Version'];
 
 function json_(o) { return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON); }
 function hex_(b) { return b.map(function (x) { return ('0' + ((x + 256) % 256).toString(16)).slice(-2); }).join(''); }
@@ -81,12 +81,12 @@ function doPost(ev) {
       if (b.etat && b.etat.id === d.id) putJson_(fo, 'survey.json', b.etat);
       var ss = ss_();
       replace_(sheet_(ss, 'Lignes', HL), d.id, rows, HL.length);
-      replace_(sheet_(ss, 'Dossiers', HD), d.id, [[d.id, d.ville || '', d.num || '', d.date || '', d.aut || '', L.length, np, now, fo.getUrl(), d.client || '', d.contact || '', d.tel || '', d.mail || '', d.adresse || '', d.cp || '', d.commune || '', d.pose || '', d.acces || '', d.note || '', d.own || '']], HD.length);
+      replace_(sheet_(ss, 'Dossiers', HD), d.id, [[d.id, d.ville || '', d.num || '', d.date || '', d.aut || '', L.length, np, now, fo.getUrl(), d.client || '', d.contact || '', d.tel || '', d.mail || '', d.adresse || '', d.cp || '', d.commune || '', d.pose || '', d.acces || '', d.note || '', d.own || '', 'v' + (d.upd || '')]], HD.length);
       return json_({ ok: true, lignes: L.length, photos: np });
     }
     if (b.a === 'list') {
       var sh = ss_().getSheetByName('Dossiers'), out = [], last = sh ? sh.getLastRow() : 0;
-      if (last > 1) sh.getRange(2, 1, last - 1, HD.length).getDisplayValues().forEach(function (r) { if (r[0]) out.push({ id: r[0], ville: r[1], num: r[2], date: r[3], aut: r[4], n: r[5], np: r[6], maj: r[7], own: r[HD.length - 1] || '' }); });
+      if (last > 1) sh.getRange(2, 1, last - 1, HD.length).getDisplayValues().forEach(function (r) { if (r[0]) out.push({ id: r[0], ville: r[1], num: r[2], date: r[3], aut: r[4], n: r[5], np: r[6], maj: r[7], own: r[HD.length - 2] || '', ver: String(r[HD.length - 1] || '').replace(/^v/, '') }); });
       return json_({ ok: true, list: out });
     }
     if (b.a === 'get') {
