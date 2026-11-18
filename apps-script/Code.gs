@@ -8,7 +8,7 @@
 var P = PropertiesService.getScriptProperties();
 var ROOT_NAME = 'Catalogue Carrefour - surveys', SS_NAME = 'Catalogue Carrefour - récap surveys';
 var HL = ['Dossier', 'Magasin', 'N°', 'Date visite', 'Saisi par', 'Rubrique', 'Désignation', 'Qté', 'L (mm)', 'H (mm)', 'Matière', 'Catégorie', 'Options / composition', 'Remarque', 'Prix', 'Photos', 'Id ligne', 'Mis à jour'];
-var HD = ['Dossier', 'Magasin', 'N°', 'Date visite', 'Saisi par', 'Lignes', 'Photos', 'Mis à jour', 'Dossier Drive', 'Client', 'Interlocuteur', 'Téléphone', 'E-mail', 'Adresse', 'Code postal', 'Ville', 'Pose souhaitée', 'Accès / contraintes', 'Remarques'];
+var HD = ['Dossier', 'Magasin', 'N°', 'Date visite', 'Saisi par', 'Lignes', 'Photos', 'Mis à jour', 'Dossier Drive', 'Client', 'Interlocuteur', 'Téléphone', 'E-mail', 'Adresse', 'Code postal', 'Ville', 'Pose souhaitée', 'Accès / contraintes', 'Remarques', 'Compte'];
 
 function json_(o) { return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON); }
 function hex_(b) { return b.map(function (x) { return ('0' + ((x + 256) % 256).toString(16)).slice(-2); }).join(''); }
@@ -51,6 +51,7 @@ function doPost(ev) {
     var b = JSON.parse(ev.postData.contents);
     if (b.a === 'req') return json_(req_(b));
     if (b.a === 'st') return json_(st_(b));
+    if (b.a === 'code') return json_(code_(b));
     if (b.a === 'decinfo' || b.a === 'dec') return json_(dec_(b));
     if (!auth_(b.h)) return json_({ ok: false, err: 'accès refusé (clé du catalogue différente de celle du script)' });
     lock.waitLock(25000);
@@ -80,12 +81,12 @@ function doPost(ev) {
       if (b.etat && b.etat.id === d.id) putJson_(fo, 'survey.json', b.etat);
       var ss = ss_();
       replace_(sheet_(ss, 'Lignes', HL), d.id, rows, HL.length);
-      replace_(sheet_(ss, 'Dossiers', HD), d.id, [[d.id, d.ville || '', d.num || '', d.date || '', d.aut || '', L.length, np, now, fo.getUrl(), d.client || '', d.contact || '', d.tel || '', d.mail || '', d.adresse || '', d.cp || '', d.commune || '', d.pose || '', d.acces || '', d.note || '']], HD.length);
+      replace_(sheet_(ss, 'Dossiers', HD), d.id, [[d.id, d.ville || '', d.num || '', d.date || '', d.aut || '', L.length, np, now, fo.getUrl(), d.client || '', d.contact || '', d.tel || '', d.mail || '', d.adresse || '', d.cp || '', d.commune || '', d.pose || '', d.acces || '', d.note || '', d.own || '']], HD.length);
       return json_({ ok: true, lignes: L.length, photos: np });
     }
     if (b.a === 'list') {
       var sh = ss_().getSheetByName('Dossiers'), out = [], last = sh ? sh.getLastRow() : 0;
-      if (last > 1) sh.getRange(2, 1, last - 1, 8).getDisplayValues().forEach(function (r) { if (r[0]) out.push({ id: r[0], ville: r[1], num: r[2], date: r[3], aut: r[4], n: r[5], np: r[6], maj: r[7] }); });
+      if (last > 1) sh.getRange(2, 1, last - 1, HD.length).getDisplayValues().forEach(function (r) { if (r[0]) out.push({ id: r[0], ville: r[1], num: r[2], date: r[3], aut: r[4], n: r[5], np: r[6], maj: r[7], own: r[HD.length - 1] || '' }); });
       return json_({ ok: true, list: out });
     }
     if (b.a === 'get') {
@@ -177,6 +178,19 @@ function req_(b) {
     if (b.ed === true && !r.ed && !cache.get('rq_' + e)) { cache.put('rq_' + e, '1', 90); mail_(id, r, true); }
     var k = P.getProperty('K'); return k ? { ok: true, st: 'ok', k: k, ed: !!r.ed } : { ok: true, st: 'ok', ed: !!r.ed };
   }
+  var known = findOk_(e);
+  if (known) {
+    if (cache.get('rq_' + e)) return { ok: true, st: 'code' };
+    var code = ('00000' + Math.floor(Math.random() * 1000000)).slice(-6);
+    r = { e: e, t: t, n: known.n || n, ua: String(b.ua || '').slice(0, 120), st: 'code', code: code, exp: Date.now() + 15 * 60000, tries: 0, at: new Date().toISOString(), nonce: Utilities.getUuid(), inh: !!known.ed };
+    P.setProperty(id, JSON.stringify(r)); cache.put('rq_' + e, '1', 60);
+    MailApp.sendEmail({ to: e, subject: 'Survey Publimax : ton code de connexion',
+      htmlBody: '<div style="font:16px Arial,sans-serif;color:#10242B"><p>Bonjour ' + html_(r.n) + ',</p><p>Voici ton code pour connecter un nouvel appareil à l\'appli Survey :</p>' +
+        '<p style="font-size:34px;font-weight:bold;letter-spacing:6px;color:#00849B;margin:18px 0">' + code + '</p>' +
+        '<p style="color:#5B6B72;font-size:13px">Il est valable 15 minutes. Appareil : ' + html_(r.ua) + '<br>Si ce n\'est pas toi, ignore ce message et préviens Publimax.</p></div>' });
+    return { ok: true, st: 'code' };
+  }
+  if (n.length < 2) return { ok: false, st: 'nom', err: 'Adresse inconnue : indique ton prénom et ton nom pour demander l\'accès.' };
   if (cache.get('rq_' + e)) return { ok: true, st: 'att' };
   var nb = P.getKeys().filter(function (x) { return x.indexOf('R_') === 0; }).length;
   if (!r && nb >= 60) return { ok: false, st: 'err', err: 'Trop de demandes en attente : contacte Publimax.' };
@@ -184,6 +198,23 @@ function req_(b) {
   P.setProperty(id, JSON.stringify(r)); cache.put('rq_' + e, '1', 90);
   mail_(id, r, b.ed === true);
   return { ok: true, st: 'att' };
+}
+/** Un appareil déjà autorisé pour cette adresse (de préférence avec le droit de modifier). */
+function findOk_(e) {
+  var all = P.getProperties(), best = null;
+  for (var k in all) { if (k.indexOf('R_') !== 0) continue; try { var r = JSON.parse(all[k]); if (r.e === e && r.st === 'ok' && (!best || (r.ed && !best.ed))) best = r; } catch (x) {} }
+  return best;
+}
+/** Nouvel appareil d'une personne déjà autorisée : le code reçu par e-mail prouve que c'est bien elle. */
+function code_(b) {
+  var e = String(b.e || '').trim().toLowerCase(), t = String(b.t || ''), id = rid_(e, t), cur = P.getProperty(id), r = cur ? JSON.parse(cur) : null;
+  if (!r || r.st !== 'code') return { ok: false, err: 'Aucun code en attente : redemande-le.' };
+  if (Date.now() > r.exp) return { ok: false, err: 'Code expiré : redemande-le.' };
+  if (r.tries >= 5) return { ok: false, err: 'Trop d\'essais : redemande un code.' };
+  if (String(b.code || '').replace(/\D/g, '') !== r.code) { r.tries++; P.setProperty(id, JSON.stringify(r)); return { ok: false, err: 'Code incorrect.' }; }
+  r.st = 'ok'; r.ed = !!r.inh; delete r.code; delete r.inh; r.dec = new Date().toISOString(); P.setProperty(id, JSON.stringify(r));
+  var k = P.getProperty('K');
+  return k ? { ok: true, st: 'ok', k: k, ed: r.ed, n: r.n } : { ok: false, err: 'Clé pas encore disponible côté Publimax.' };
 }
 function mail_(id, r, edit) {
   var url = SITE + 'decision.html#id=' + id + '&n=' + r.nonce;
