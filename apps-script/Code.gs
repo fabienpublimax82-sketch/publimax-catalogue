@@ -265,3 +265,30 @@ function doGet(ev) {
 
 /** À lancer une fois à la main dans l'éditeur pour accorder les autorisations (Drive + Sheets). */
 function autoriser() { MailApp.getRemainingDailyQuota(); CacheService.getScriptCache(); var r = root_(), s = ss_(); sheet_(s, 'Lignes', HL); sheet_(s, 'Dossiers', HD); Logger.log('OK. Dossier : ' + r.getUrl() + ' — Classeur : ' + s.getUrl()); }
+
+
+/* ================= Outils à lancer à la main dans l'éditeur ================= */
+/** Résumé de l'état : comptes, surveys. Rien n'est modifié. */
+function diagnostic() {
+  var all = P.getProperties(), out = { cle: !!all.K, empreinte: !!all.H, comptes: [], surveys: [] };
+  for (var k in all) { if (k.indexOf('R_') !== 0) continue; try { var r = JSON.parse(all[k]); out.comptes.push({ e: r.e, n: r.n, st: r.st, ed: !!r.ed, le: String(r.at || '').slice(0, 16), code: r.st === 'code' ? r.code : '', app: String(r.ua || '').replace(/^Mozilla\/5\.0 \(([^)]*)\).*$/, '$1').slice(0, 40) }); } catch (x) {} }
+  var sh = ss_().getSheetByName('Dossiers'), last = sh ? sh.getLastRow() : 0;
+  if (last > 1) sh.getRange(2, 1, last - 1, HD.length).getDisplayValues().forEach(function (r) { out.surveys.push({ id: r[0], ville: r[1], aut: r[4], n: r[5], maj: r[7], own: r[HD.length - 2], ver: r[HD.length - 1] }); });
+  Logger.log('DIAG ' + JSON.stringify(out));
+  return out;
+}
+/** Efface TOUS les surveys (lignes du classeur, dossiers Drive mis à la corbeille). Les comptes et le catalogue ne sont pas touchés. */
+function purgerSurveys() {
+  var all = P.getProperties(), n = 0;
+  for (var k in all) { if (k.indexOf('F_') !== 0) continue; try { DriveApp.getFolderById(all[k]).setTrashed(true); } catch (x) {} P.deleteProperty(k); n++; }
+  var ss = ss_();
+  ['Lignes', 'Dossiers'].forEach(function (nm) { var sh = ss.getSheetByName(nm); if (sh && sh.getLastRow() > 1) sh.getRange(2, 1, sh.getLastRow() - 1, sh.getMaxColumns()).clearContent(); });
+  sheet_(ss, 'Lignes', HL); sheet_(ss, 'Dossiers', HD);
+  Logger.log('PURGE ' + n + ' dossier(s) mis à la corbeille');
+}
+/** Efface tous les comptes (il faudra refaire une première demande sur chaque appareil). */
+function purgerComptes() {
+  var all = P.getProperties(), n = 0;
+  for (var k in all) { if (k.indexOf('R_') === 0) { P.deleteProperty(k); n++; } }
+  Logger.log('PURGE ' + n + ' compte(s)');
+}
