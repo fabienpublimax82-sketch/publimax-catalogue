@@ -246,6 +246,14 @@ function st_(b) {
   if (r.st === 'ok') { var k = P.getProperty('K'); return k ? { ok: true, st: 'ok', k: k, ed: !!r.ed } : { ok: true, st: 'ok', ed: !!r.ed }; }
   return { ok: true, st: r.st };
 }
+/** Page de décision hébergée avec l'appli (évite la page Google qui casse quand plusieurs comptes sont connectés). */
+var SITE = 'https://fabienpublimax82-sketch.github.io/publimax-catalogue/';
+function dec_(b) {
+  var id = String(b.id || ''), cur = id.indexOf('R_') === 0 ? P.getProperty(id) : null, r = cur ? JSON.parse(cur) : null;
+  if (!r || !b.n || r.nonce !== String(b.n)) return { ok: false, err: 'Lien invalide ou demande supprimée.' };
+  if (b.a === 'dec') { r.st = b.yes === true ? 'ok' : 'refus'; r.ed = b.yes === true && b.ed === true; r.dec = new Date().toISOString(); P.setProperty(id, JSON.stringify(r)); }
+  return { ok: true, r: { n: r.n, e: r.e, ua: r.ua, at: r.at, st: r.st, ed: !!r.ed } };
+}
 function doGet() { return json_({ st: 'indispo' }); }
 
 /** À lancer une fois à la main dans l'éditeur pour accorder les autorisations (Drive + Sheets). */
