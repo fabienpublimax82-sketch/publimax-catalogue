@@ -356,6 +356,8 @@ label.l{font-weight:600;color:var(--mute)}
 .tg{background:rgba(255,255,255,.86);border-radius:16px;padding:10px;display:flex;flex-direction:column;gap:6px;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
 .tn{font-weight:800;color:var(--acc2);font-size:16px;display:flex;justify-content:space-between;align-items:baseline;padding:2px 4px}.tn span{font-size:12px;font-weight:600;color:#5B6B72}
 .tr{border:0;border-radius:10px;background:#fff;box-shadow:0 0 0 1px #DCE6EA inset;font:inherit;text-align:left;padding:8px 10px;cursor:pointer;display:flex;flex-direction:column;gap:1px;color:var(--ink)}.tr b{font-size:14.5px}.tr span{font-size:12px;color:#5B6B72}.tr.ld{opacity:.5}
+/* ---- pictos photo ---- */
+.btn.pic{width:72px;height:60px;padding:0;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:none}.btn.pic svg{width:32px;height:32px}
 /* ---- réglages ---- */
 #sh_box{display:flex;flex-direction:column;align-items:center;gap:8px;padding-top:6px;cursor:zoom-in}#sh_box.hid{display:none}.qr{width:min(240px,70vw);border-radius:10px;overflow:hidden;box-shadow:0 0 0 1px #DCE6EA}.qr svg{display:block;width:100%;height:auto}#sh_box.big{position:fixed;inset:0;z-index:60;background:#fff;justify-content:center;padding:20px;cursor:zoom-out}#sh_box.big .qr{width:min(86vw,80vh)}#sh_url{font-size:12.5px;overflow-wrap:anywhere;text-align:center}
 #setp{position:fixed;inset:0;background:#0007;z-index:40;display:flex;align-items:center;justify-content:center;padding:14px}
@@ -482,7 +484,7 @@ body.edit #cat .top{box-shadow:0 0 0 3px #F0B429 inset}#b_edit:not(.sec){backgro
 <button class="lnk" id="b_alt" style="display:none;color:#10242B;text-shadow:0 1px 8px rgba(255,255,255,.8)">J’ai un lien ou une clé d’accès</button>
 <div id="g_alt" class="pane hid"><label class="l" style="color:#1E2124;font-weight:600">Lien ou clé d’accès<input class="in" id="g_key" placeholder="Colle ici le lien reçu de Publimax"></label><button class="btn" id="b_key" style="width:100%">Continuer ›</button></div>
 <div id="g_msg" class="msg hid"></div>
-<p class="ver">Catalogue 20261118-135722 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261118-140327 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- CODE -->
@@ -494,7 +496,7 @@ body.edit #cat .top{box-shadow:0 0 0 3px #F0B429 inset}#b_edit:not(.sec){backgro
 <button class="btn" id="b_pin">Ouvrir ›</button><div id="p_msg" class="msg err hid"></div>
 <button class="btn gr inst hid" data-inst>Installer l’application</button>
 <button class="lnk hid" id="b_forget">Code oublié ?</button></div>
-<p class="ver">Catalogue 20261118-135722 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261118-140327 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- DOSSIERS -->
@@ -553,7 +555,7 @@ body.edit #cat .top{box-shadow:0 0 0 3px #F0B429 inset}#b_edit:not(.sec){backgro
 (function(){'use strict';
 var $=function(s){return document.querySelector(s)},$$=function(s){return [].slice.call(document.querySelectorAll(s))};
 var CFG={apps:''},CAT=null,IMG={},KEY=null,DB={d:[],cur:null},NM={},CH={},PENDKEY=null,NSHARD=0,LB={};
-var KS='',VER='20261118-135722',NFILES=22,SYH='',SYB=false,SYT=null;
+var KS='',VER='20261118-140327',NFILES=22,SYH='',SYB=false,SYT=null;
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 var WIPE=false;
 function ls(k,v){if(WIPE&&v!==undefined&&v!==null)return true;try{if(v===undefined){var r=localStorage.getItem(k);return r?JSON.parse(r):null}if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v));return true}catch(e){if(v!==undefined&&k==='pm_dos')saveErr();return null}}
@@ -780,7 +782,7 @@ function drawSheet(){var l=SL,s=ST(l);if(l.free){l.des=s.des||'';l.c=s.c||''}var
  if(l.id==='n_local_region'){var rg=s.rg||{};h+='<div class="sl">Régions retenues</div><p class="mute">Coche la bande de rive (1330×34) et/ou l’adhésif bac froid (1250×150) pour chaque région du magasin.</p>';CAT.rg.concat(Object.keys(s.rgc||{}).map(function(k){return {k:k,name:s.rgc[k]}})).forEach(function(g){var r=rg[g.k]||{};h+='<div class="o'+(r.b||r.a?' on':'')+'"><div class="tx">'+esc(g.name)+'</div><label><input type="checkbox" data-s="rg" data-k="'+esc(g.k)+'" data-v="b"'+(r.b?' checked':'')+'> Bande</label><label><input type="checkbox" data-s="rg" data-k="'+esc(g.k)+'" data-v="a"'+(r.a?' checked':'')+'> Adhésif</label></div>'});h+='<div class="row"><input class="in" id="rg_new" placeholder="Autre région (nom)" style="flex:1"><button class="btn sm" data-s="rgadd">Ajouter</button></div>'}
  if(l.kind==='single'&&!l.opts){h+='<div class="f2"><label class="l">Largeur (mm)<input class="in" inputmode="numeric" data-s="dim" data-k="L" value="'+(s.L||l.L||'')+'"></label><label class="l">Hauteur (mm)<input class="in" inputmode="numeric" data-s="dim" data-k="H" value="'+(s.H||l.H||'')+'"></label></div>'}
  if(l.free||!cmLock()||EDIT)h+='<div class="sl">Catégorie de l’article'+(l.c?'':' <small style="color:var(--warn)">(à attribuer)</small>')+'</div><div class="row">'+['S','M','T','L'].map(function(c){return '<button class="chip kc c'+c+(l.c===c?' on':'')+'" data-s="kc" data-v="'+c+'">'+CN[c]+'</button>'}).join('')+'</div>';
- h+='<div class="sl">Photos</div><div class="row"><label class="btn sec" style="cursor:pointer">Prendre une photo<input type="file" accept="image/*" capture="environment" data-s="ph" class="hid"></label><label class="btn sec sm" style="cursor:pointer">Depuis la galerie<input type="file" accept="image/*" multiple data-s="ph" class="hid"></label></div>'+phHtml(s.k);
+ h+='<div class="sl">Photos</div><div class="row"><label class="btn pic" title="Prendre une photo" aria-label="Prendre une photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.6-2.4h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.2" r="3.6"/></svg><input type="file" accept="image/*" capture="environment" data-s="ph" class="hid"></label><label class="btn sec pic" title="Choisir dans la galerie" aria-label="Choisir dans la galerie"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="15" rx="2"/><circle cx="8.6" cy="9.8" r="1.6"/><path d="M21 15.5l-5-5-8.5 9"/></svg><input type="file" accept="image/*" multiple data-s="ph" class="hid"></label></div>'+phHtml(s.k);
  if(l.free&&cfg().ed)h+='<button class="btn sec" data-s="tocat">Ajouter cet article au catalogue…</button>';
  h+='<label class="l">Remarque<textarea class="in" rows="2" data-s="note" placeholder="ex. support abîmé, dimension relevée sur place…">'+esc(s.note||'')+'</textarea></label>';
  h+='<div class="foot">'+(SNEW?'<button class="btn" data-s="add" style="width:100%;height:58px;font-size:18px">Ajouter au survey ›</button>':'<div class="row" style="flex-wrap:nowrap"><button class="btn bad" data-s="rm">Retirer</button><button class="btn" data-s="x" style="flex:1">Enregistrer</button></div>')+'</div>';
@@ -1152,6 +1154,25 @@ function mig1(x){return x}
 $('#r_take').onclick=function(){var s=DB.cur;if(!s||!s.ro)return;if(DB.d.some(function(x){return x.id===s.rid})){openCat(s.rid,'');return}if(!confirm('Reprendre ce survey ici ? Tu pourras le modifier sur cet appareil. Évite de le modifier sur deux appareils en même temps : le dernier envoi remplace l’autre.'))return;var gn=ls('pm_gone')||{};delete gn[s.rid];ls('pm_gone',gn);var now=new Date().toISOString(),d={id:s.rid,ville:s.ville,num:s.num,date:s.date,aut:s.aut,cr:now,upd:s.upd||now,base:s.upd||'',own:s.own||'',pk:JSON.parse(JSON.stringify(s.pk||{})),s:{},e:JSON.parse(JSON.stringify(s.e)),info:JSON.parse(JSON.stringify(s.info||{}))},ph=PH[s.id]||{},rec=[];for(var k in ph)ph[k].forEach(function(x){rec.push({k:x.k,d:d.id,l:k,b:x.b,up:1})});var miss=0;for(var k2 in (s.pk||{}))miss+=s.pk[k2].length;miss-=rec.length;
  DB.d.push(d);save();phTx('readwrite',function(st){rec.forEach(function(x){st.put(x)})}).then(function(){openCat(d.id,'');toast(miss>0?'Repris. '+miss+' photo(s) encore en chargement':'Survey repris sur cet appareil');pullPhotos(d.id,d.id,d.pk,false)})};
 $('#r_copy').onclick=function(){var s=DB.cur;if(!s||!s.ro)return;var now=new Date().toISOString(),id='d'+Date.now().toString(36),d={id:id,ville:s.ville+' (copie)',num:s.num,date:s.date,aut:cfg().n||s.aut,cr:now,upd:now,s:{},e:JSON.parse(JSON.stringify(s.e)),info:JSON.parse(JSON.stringify(s.info||{})),dirty:1},ph=PH[s.id]||{},jobs=[];DB.d.push(d);save();for(var k in ph)ph[k].forEach(function(x){jobs.push(phAdd(id,k,x.b))});Promise.all(jobs).then(function(){openCat(id,'');toast('Copie créée sur cet appareil')})};
+
+/* ---------- touche Retour : on reste dans l'appli ---------- */
+var BK=0;
+function backAct(){var vis=function(q){var e=$(q);return e&&!e.classList.contains('hid')};
+ if(vis('#zoom')){$('#zoom').classList.add('hid');return true}
+ if($('#sh_box').classList.contains('big')){$('#sh_box').classList.remove('big');return true}
+ if(vis('#pick')){$('#pick').classList.add('hid');return true}
+ if(vis('#setp')){$('#setp').classList.add('hid');return true}
+ if(vis('#sheet')){doneSheet();return true}
+ if(vis('#recap')){$('#r_back').click();return true}
+ if(vis('#edit')){$('#ed_back').click();return true}
+ if(vis('#cat')){if(PAN){PAN='';drawSubs();drawCrumbState();return true}$('#b_back').click();return true}
+ return false}
+function trapBack(){try{history.pushState({pm:1},'')}catch(e){}}
+window.addEventListener('popstate',function(){var h=false;try{h=backAct()}catch(e){h=true}
+ if(h){trapBack();return}
+ if(Date.now()-BK<2500){BK=0;try{history.back()}catch(e){}return}
+ BK=Date.now();toast('Appuie encore une fois sur Retour pour quitter l’appli');trapBack()});
+trapBack();
 window.__t={CAT:function(){return CAT}};
 })();
 </script></body></html>
