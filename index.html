@@ -413,6 +413,7 @@ body.edit #cat .top{box-shadow:0 0 0 3px #F0B429 inset}#b_edit:not(.sec){backgro
 #pick{position:fixed;inset:0;background:#0007;z-index:40;display:flex;align-items:center;justify-content:center;padding:14px}
 #pick .pp{background:#fff;border-radius:18px;width:min(560px,100%);max-height:86%;display:flex;flex-direction:column;padding:14px;gap:10px}#pick .hd{display:flex;align-items:center;gap:10px}#pick .hd h2{flex:1;margin:0;font-size:20px}
 #pk_l{overflow:auto;display:flex;flex-direction:column;gap:6px}.pk{border:0;border-radius:10px;background:#EEF4F6;font:inherit;font-size:15px;text-align:left;padding:11px 12px;cursor:pointer;color:var(--ink)}.pk b{color:var(--acc);margin-right:6px}.pk.on{background:#D9EEF2;box-shadow:0 0 0 2px var(--acc) inset}
+.cbw{flex:none;width:118px;display:inline-flex;align-items:center;vertical-align:middle}.cbar{display:block;height:16px;border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,.3)}.cbar.b{background:repeating-linear-gradient(90deg,#c79a63 0 9px,#b98a52 9px 13px,#d3a971 13px 22px)}.cbar.r{background:#cc0605}
 /* ---- téléphone ---- */
 @media (max-width:640px){
  .top{padding:6px 10px;min-height:52px;gap:6px}.top .t{font-size:16px}.top .btn{height:40px;padding:0 12px;font-size:14px}
@@ -428,6 +429,7 @@ body.edit #cat .top{box-shadow:0 0 0 3px #F0B429 inset}#b_edit:not(.sec){backgro
  .sech,.sech *{font-size:14px!important}
  #info{padding:8px}.ibox{padding:14px;border-radius:16px;gap:10px}.ibox h2{font-size:19px}.f2{display:flex;flex-direction:column;gap:10px}.f2>*{width:100%;min-width:0}
  #sheet .p{padding:10px 12px 96px}#sheet .f2{display:grid;grid-template-columns:1fr 1fr}#sheet .f2>*{width:auto}#sheet .pv0 img,#sheet .big img{max-height:150px}
+ .tx>.cbw{display:flex;margin:0 0 6px}
  #dossiers .top img{display:none}#dossiers .top{overflow-x:auto}#dossiers .top .btn{flex:none}#sheet .hd h2{font-size:18px}
  .banner .inb{padding:18px 14px 10px}.banner h1{font-size:28px}.banner .btn{height:50px;font-size:16px;padding:0 18px}
  #dossiers .top .btn{padding:0 9px;font-size:13px}.dc{padding:14px;border-radius:16px}.dc b{font-size:19px}.dc .row{flex-wrap:wrap}
@@ -484,7 +486,7 @@ body.edit #cat .top{box-shadow:0 0 0 3px #F0B429 inset}#b_edit:not(.sec){backgro
 <button class="lnk" id="b_alt" style="display:none;color:#10242B;text-shadow:0 1px 8px rgba(255,255,255,.8)">J’ai un lien ou une clé d’accès</button>
 <div id="g_alt" class="pane hid"><label class="l" style="color:#1E2124;font-weight:600">Lien ou clé d’accès<input class="in" id="g_key" placeholder="Colle ici le lien reçu de Publimax"></label><button class="btn" id="b_key" style="width:100%">Continuer ›</button></div>
 <div id="g_msg" class="msg hid"></div>
-<p class="ver">Catalogue 20261118-141918 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261118-144149 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- CODE -->
@@ -496,7 +498,7 @@ body.edit #cat .top{box-shadow:0 0 0 3px #F0B429 inset}#b_edit:not(.sec){backgro
 <button class="btn" id="b_pin">Ouvrir ›</button><div id="p_msg" class="msg err hid"></div>
 <button class="btn gr inst hid" data-inst>Installer l’application</button>
 <button class="lnk hid" id="b_forget">Code oublié ?</button></div>
-<p class="ver">Catalogue 20261118-141918 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261118-144149 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- DOSSIERS -->
@@ -555,7 +557,7 @@ body.edit #cat .top{box-shadow:0 0 0 3px #F0B429 inset}#b_edit:not(.sec){backgro
 (function(){'use strict';
 var $=function(s){return document.querySelector(s)},$$=function(s){return [].slice.call(document.querySelectorAll(s))};
 var CFG={apps:''},CAT=null,IMG={},KEY=null,DB={d:[],cur:null},NM={},CH={},PENDKEY=null,NSHARD=0,LB={};
-var KS='',VER='20261118-141918',NFILES=22,SYH='',SYB=false,SYT=null;
+var KS='',VER='20261118-144149',NFILES=22,SYH='',SYB=false,SYT=null;
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 var WIPE=false;
 function ls(k,v){if(WIPE&&v!==undefined&&v!==null)return true;try{if(v===undefined){var r=localStorage.getItem(k);return r?JSON.parse(r):null}if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v));return true}catch(e){if(v!==undefined&&k==='pm_dos')saveErr();return null}}
@@ -759,8 +761,9 @@ $('#b_free').onclick=function(){openSheet(freeLine())};
 function freeLine(e){return {id:'libre',free:1,kind:'single',des:(e&&e.des)||'',c:(e&&e.c)||''}}
 function openSheet(l,key){SL=l;if(key){SD=DB.cur.e.filter(function(x){return x.k===key})[0];SNEW=false;if(!SD){SL=null;return}}else{SD={k:'e'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),id:l.id};if(l.kind==='single'&&l.id!=='n_local_region')SD.q=1;SNEW=true}drawSheet();$('#sheet').classList.remove('hid');$('#sh_p').scrollTop=0}
 function stp(id,v,k){return '<div class="st"><button data-s="m" data-id="'+id+'" data-k="'+k+'">−</button><b data-s="n" data-id="'+id+'" data-k="'+k+'" style="cursor:pointer">'+(+v||0)+'</b><button data-s="p" data-id="'+id+'" data-k="'+k+'">＋</button></div>'}
-function optRow(o,v,k,chk){var im=o.img?'<div class="th" data-s="z" data-i="'+o.img+'"><img data-i="'+o.img+'" alt=""></div>':'';var d=o.L&&o.H?'<small>'+o.L+' × '+o.H+' mm</small>':(o.w?'<small>'+[].concat(o.w).join(' + ')+' mm</small>':'');
- return '<div class="o'+(+v>0?' on':'')+'">'+im+'<div class="tx">'+esc(o.l)+d+'</div>'+(chk?'<input type="checkbox" data-s="c" data-id="'+o.id+'" data-k="'+k+'"'+(+v>0?' checked':'')+'>':stp(o.id,v,k))+'</div>'}
+function canBar(c){return '<span class="cbw"><span class="cbar '+(/^r/i.test(c[1])?'r':'b')+'" style="width:'+Math.round(+c[2]/2000*104)+'px"></span></span>'}
+function optRow(o,v,k,chk){var im=o.bar?'':o.img?'<div class="th" data-s="z" data-i="'+o.img+'"><img data-i="'+o.img+'" alt=""></div>':'';var d=o.L&&o.H?'<small>'+o.L+' × '+o.H+' mm</small>':(o.w?'<small>'+[].concat(o.w).join(' + ')+' mm</small>':'');
+ return '<div class="o'+(+v>0?' on':'')+'">'+im+'<div class="tx">'+(o.bar||'')+esc(o.l)+d+'</div>'+(chk?'<input type="checkbox" data-s="c" data-id="'+o.id+'" data-k="'+k+'"'+(+v>0?' checked':'')+'>':stp(o.id,v,k))+'</div>'}
 function drawSheet(){var l=SL,s=ST(l);if(l.free){l.des=s.des||'';l.c=s.c||''}var h='<div class="hd"><h2>'+(l.free?'Article hors catalogue':esc(l.des))+'</h2><button class="btn sm sec" data-s="x">'+(SNEW?'Annuler':'Fermer')+'</button></div>'+(SNEW?'':'<p class="tag g" style="align-self:flex-start;font-size:13px;padding:4px 10px">Déjà dans le survey : tu modifies cette fiche</p>');
  if(l.img)h+='<div class="o" style="justify-content:center"><div class="th" data-s="z" data-i="'+l.img+'" style="width:100%;height:170px"><img data-i="'+l.img+'" alt=""></div></div>';
  if(l.info)h+='<p class="mute">'+esc(l.info)+'</p>';
@@ -770,7 +773,7 @@ function drawSheet(){var l=SL,s=ST(l);if(l.free){l.des=s.des||'';l.c=s.c||''}var
  if(l.kind==='single'&&!l.opts&&l.id!=='n_local_region'&&!l.zones){h+='<div class="row"><b>Quantité</b>'+stp(l.id,s.q,'q')+'</div>'}
  if(l.contents){h+='<div class="sl">Contenu du kit ('+l.contents.length+')</div><p class="mute">La quantité saisie vaut pour chaque élément du kit.</p>';l.contents.forEach(function(m){h+='<div class="o">'+(m.img?'<div class="th" data-s="z" data-i="'+m.img+'"><img data-i="'+m.img+'" alt=""></div>':'')+'<div class="tx">'+esc(m.l)+'</div></div>'})}
  if(l.cp){var c=s.cp||{};h+='<div class="sl">Composition de l’enseigne'+(s.cp?'':' <small style="color:var(--warn)">(à choisir)</small>')+'</div><div class="row">';[['c','t','Texte seul'],['c','c','Complet'],['e','i','Inerte'],['e','l','Lumineux'],['f','A','Format A'],['f','B','Format B'],['f','C','Format C']].forEach(function(x){h+='<button class="chip'+(c[x[0]]===x[1]?' on':'')+'" data-s="cp" data-k="'+x[0]+'" data-v="'+x[1]+'">'+x[2]+'</button>'});h+='</div>'}
- if(l.canopy){h+='<div class="sl">Canopée associée</div>';CAT.cano.forEach(function(c){h+=optRow({id:c[0],l:c[1]+' · '+c[2]+' × 150 mm',img:l.canimg||''},(s.can||{})[c[0]],'can')})}
+ if(l.canopy){h+='<div class="sl">Canopée associée</div>';CAT.cano.forEach(function(c){h+=optRow({id:c[0],l:c[1]+' · '+c[2]+' × 150 mm',bar:canBar(c)},(s.can||{})[c[0]],'can')})}
  if(l.zones){var z=s.z!=null?s.z:l.zones[0].k;h+='<div class="sl">Zone</div><div class="row">'+l.zones.map(function(x){var n=0;x.b.concat(x.n).forEach(function(m){if(+o[m.id]>0)n++});return '<button class="chip'+(x.k===z?' on':'')+'" data-s="zn" data-v="'+esc(x.k)+'">'+esc(x.l)+(n?' ('+n+')':'')+'</button>'}).join('')+'</div>';var Z=l.zones.filter(function(x){return x.k===z})[0]||l.zones[0];
   if(Z.b.length){h+='<div class="sl">Bande de rive</div>';Z.b.forEach(function(m){h+=optRow(m,o[m.id],'o',1)})}if(Z.n.length){h+='<div class="sl">Banne</div>';Z.n.forEach(function(m){h+=optRow(m,o[m.id],'o',1)})}}
  if(l.opts&&l.kind==='qty')l.opts.forEach(function(m){h+=optRow(m,o[m.id],'o')});
@@ -1035,10 +1038,10 @@ function openEdit(){if(!ES&&!ET._i){ET._i=1;var r0=CAT.nodes0[0];ES=r0.code;ET[r
 var ES='',ET={},EH=false;
 function ehit(l){if(EC&&(EC==='N'?l.c:l.c!==EC))return false;if(EM&&!l.mod&&!l.custom)return false;if(EH&&l.vis)return false;if(EQ){if(!l._t)l._t=na(l.des+' '+l.info+' '+l.mat+' '+(l.opts||[]).map(function(o){return o.l}).join(' '));if(l._t.indexOf(na(EQ))<0)return false}return true}
 function kindTxt(l){var K={single:'article simple (quantité)',qty:'quantité par option',multi:'choix multiples',kit:'kit',monde:'monde'},a=[K[l.kind]||l.kind];if(l.opts)a.push(l.opts.length+' option'+(l.opts.length>1?'s':''));if(l.cp)a.push('composition d’enseigne');if(l.canopy)a.push('canopée associée');if(l.zones)a.push(l.zones.length+' zones');if(l.slots)a.push(l.slots.length+' emplacements');if(l.comps)a.push('compositions');if(l.contents)a.push('kit de '+l.contents.length+' éléments');if(l.pages&&l.pages.length)a.push(l.pages.length+' page'+(l.pages.length>1?'s':'')+' du book');return a.join(' · ')}
-function cit(m){return '<div class="ci">'+(m.img?'<span class="cim"><img data-i="'+m.img+'" data-z="1" alt="" style="visibility:hidden"></span>':'<span class="cim"></span>')+'<span>'+esc(m.l||m.des||'')+((m.L&&m.H)?' <small>'+m.L+' × '+m.H+' mm</small>':'')+'</span></div>'}
+function cit(m){return '<div class="ci">'+(m.bar?m.bar:m.img?'<span class="cim"><img data-i="'+m.img+'" data-z="1" alt="" style="visibility:hidden"></span>':'<span class="cim"></span>')+'<span>'+esc(m.l||m.des||'')+((m.L&&m.H)?' <small>'+m.L+' × '+m.H+' mm</small>':'')+'</span></div>'}
 function cgo(l,path){var a=path.split('.'),o=l;for(var i=0;i<a.length;i++){if(o==null)return null;o=o[a[i]]}return o||null}
 function ced(l,path,fn){var top=path.split('.')[0],cl=JSON.parse(JSON.stringify(l[top]||[])),a=path.split('.'),o=cl;for(var i=1;i<a.length;i++){if(o[a[i]]==null)o[a[i]]=[];o=o[a[i]]}fn(o);var c=Object.assign({},l.cmp||{});c[top]=cl;cmSet(l.id,{comp:c})}
-function cit(m){return '<div class="ci">'+(m.img?'<span class="cim"><img data-i="'+m.img+'" data-z="1" alt="" style="visibility:hidden"></span>':'<span class="cim"></span>')+'<span>'+esc(m.l||m.des||'')+((m.L&&m.H)?' <small>'+m.L+' × '+m.H+' mm</small>':'')+'</span></div>'}
+function cit(m){return '<div class="ci">'+(m.bar?m.bar:m.img?'<span class="cim"><img data-i="'+m.img+'" data-z="1" alt="" style="visibility:hidden"></span>':'<span class="cim"></span>')+'<span>'+esc(m.l||m.des||'')+((m.L&&m.H)?' <small>'+m.L+' × '+m.H+' mm</small>':'')+'</span></div>'}
 function cie(m,i,path,n){return '<div class="ci ce" data-p="'+path+'" data-x="'+i+'"><button class="cim" data-c="img" title="Changer l’image">'+(m.img?'<img data-i="'+m.img+'" alt="" style="visibility:hidden">':'<span>+ image</span>')+'</button><input class="in" data-c="l" value="'+esc(m.l||'')+'" placeholder="Nom de l’élément"><button class="eb" data-c="up" aria-label="Avancer"'+(i?'':' disabled')+'>◀</button><button class="eb" data-c="dn" aria-label="Reculer"'+(i<n-1?'':' disabled')+'>▶</button><button class="eb bad" data-c="rm" aria-label="Retirer">✕</button></div>'}
 function comp(l){var B=[],n=0,ro=function(t,items){n+=items.length;B.push('<div class="cb"><div class="ct">'+esc(t)+' · '+items.length+'</div><div class="cl">'+items.map(cit).join('')+'</div></div>')},
   ed=function(t,path){var it=cgo(l,path)||[];n+=it.length;B.push('<div class="cb"><div class="ct">'+esc(t)+' · '+it.length+'</div><div class="cl">'+it.map(function(m,i){return cie(m,i,path,it.length)}).join('')+'<button class="eb cadd" data-c="add" data-p="'+path+'">+ Ajouter un élément</button></div></div>')};
@@ -1049,7 +1052,7 @@ function comp(l){var B=[],n=0,ro=function(t,items){n+=items.length;B.push('<div 
  if(l.comps)ro('Compositions',l.comps.map(function(m){return {l:m.l+' — '+(m.parts||[]).join(' + ')}}));
  if(l.visu&&l.visu.length)ro('Visuels',l.visu.map(function(v){return {l:v[1]}}));
  if(l.cp)ro('Composition d’enseigne',[{l:'Contenu : texte seul ou complet'},{l:'Éclairage : inerte ou lumineux'},{l:'Format du visuel : A, B ou C'}]);
- if(l.canopy)ro('Canopée associée',CAT.cano.map(function(c){return {l:c[1]+' · '+c[2]+' × 150 mm',img:l.canimg||''}}));
+ if(l.canopy)ro('Canopée associée',CAT.cano.map(function(c){return {l:c[1]+' · '+c[2]+' × 150 mm',bar:canBar(c)}}));
  if(l.pages&&l.pages.length)ro('Pages du book',l.pages.map(function(g,i){return {l:'Page '+(i+1),img:g}}));
  var simple=!l.slots&&!l.zones&&!l.comps,ft='';
  if(simple&&l.opts&&l.kind!=='kit')ft+='<label class="ck">Type de saisie<select class="in" data-c="kind"><option value="qty"'+(l.kind==='qty'?' selected':'')+'>Une quantité par option</option><option value="multi"'+(l.kind==='multi'?' selected':'')+'>Choix multiples à cocher</option><option value="single"'+(l.kind==='single'?' selected':'')+'>Options à cocher (quantité 1)</option></select></label>';
