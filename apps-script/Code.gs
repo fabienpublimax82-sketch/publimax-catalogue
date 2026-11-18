@@ -22,7 +22,7 @@ function root_() {
   var f = DriveApp.createFolder(ROOT_NAME); P.setProperty('ROOT', f.getId()); return f;
 }
 function folder_(d, create) {
-  var id = P.getProperty('F_' + d.id); if (id) { try { return DriveApp.getFolderById(id); } catch (e) {} }
+  var id = P.getProperty('F_' + d.id); if (id) { try { var fo0 = DriveApp.getFolderById(id); if (!fo0.isTrashed()) return fo0; } catch (e) {} }
   if (!create) return null;
   var f = root_().createFolder(clean_(d.ville || 'Magasin') + ' ' + clean_(d.date || '') + ' [' + clean_(d.id) + ']'); P.setProperty('F_' + d.id, f.getId()); return f;
 }
@@ -40,20 +40,20 @@ function sheet_(ss, name, head) {
 /** Remplace toutes les lignes d'un dossier (colonne A) par les nouvelles. */
 function replace_(sh, did, rows, width) {
   var last = sh.getLastRow(), keep = [];
-  if (last > 1) keep = sh.getRange(2, 1, last - 1, width).getValues().filter(function (r) { return String(r[0]) !== String(did); });
-  var all = keep.concat(rows);
-  if (last > 1) sh.getRange(2, 1, last - 1, width).clearContent();
-  if (all.length) sh.getRange(2, 1, all.length, width).setValues(all);
+  if (last > 1) keep = sh.getRange(2, 1, last - 1, width).getDisplayValues().filter(function (r) { return String(r[0]) !== String(did); });
+  var all = keep.concat(rows.map(function (r) { return r.map(function (v) { return v == null ? '' : String(v); }); }));
+  if (all.length) sh.getRange(2, 1, all.length, width).setNumberFormat('@').setValues(all);
+  var extra = (last - 1) - all.length;
+  if (extra > 0) sh.getRange(2 + all.length, 1, extra, width).clearContent();
 }
 
 function doPost(ev) {
   var lock = LockService.getScriptLock();
   try {
     var b = JSON.parse(ev.postData.contents);
-    if (b.a === 'req') return json_(req_(b));
     if (b.a === 'st') return json_(st_(b));
-    if (b.a === 'code') return json_(code_(b));
-    if (b.a === 'decinfo' || b.a === 'dec') return json_(dec_(b));
+    if (b.a === 'decinfo') return json_(dec_(b));
+    if (b.a === 'req' || b.a === 'code' || b.a === 'dec') { lock.waitLock(25000); return json_(b.a === 'req' ? req_(b) : b.a === 'code' ? code_(b) : dec_(b)); }
     if (!auth_(b.h)) return json_({ ok: false, err: 'accès refusé (clé du catalogue différente de celle du script)' });
     lock.waitLock(25000);
     if (b.a === 'photo') {
@@ -70,8 +70,14 @@ function doPost(ev) {
       return json_({ ok: true });
     }
     if (b.a === 'lignes') {
-      var d = b.dossier || {}, L = b.lignes || [], fo = folder_(d, true), ph = {}, np = 0, fi = fo.getFiles();
-      while (fi.hasNext()) { var x = fi.next(), lid = String(x.getDescription() || '').split(' | ')[0]; if (!lid) continue; (ph[lid] = ph[lid] || []).push(x.getUrl()); np++; }
+      var d = b.dossier || {}, L = b.lignes || [], fo = folder_(d, true), ph = {}, np = 0, fi = fo.getFiles(), names = {};
+      var old = getJson_(fo, 'survey.json'), acc = acct_(b);
+      if (old && old.upd && b.base !== undefined && String(b.base || '') !== String(old.upd) && String(d.upd || '') !== String(old.upd) && !b.force) return json_({ ok: false, err: 'conflit', ver: old.upd });
+      var own = (old && old.own) ? old.own : (acc ? acc.e : '');
+      d.own = own; if (b.etat) b.etat.own = own;
+      while (fi.hasNext()) { var x = fi.next(), lid = String(x.getDescription() || '').split(' | ')[0]; names[x.getName()] = 1; if (!lid) continue; (ph[lid] = ph[lid] || []).push(x.getUrl()); np++; }
+      var miss = [], pk0 = (b.etat && b.etat.pk) || {};
+      for (var pe in pk0) (pk0[pe] || []).forEach(function (k) { if (!names[clean_(k).replace(/ /g, '_') + '.jpg']) miss.push(k); });
       var now = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'dd/MM/yyyy HH:mm');
       var rows = L.map(function (r) {
         var op = (r.options || []).map(function (o) { return o.l + (o.q > 1 ? ' × ' + o.q : ''); });
@@ -83,7 +89,7 @@ function doPost(ev) {
       var ss = ss_();
       replace_(sheet_(ss, 'Lignes', HL), d.id, rows, HL.length);
       replace_(sheet_(ss, 'Dossiers', HD), d.id, [[d.id, d.ville || '', d.num || '', d.date || '', d.aut || '', L.length, np, now, fo.getUrl(), d.client || '', d.contact || '', d.tel || '', d.mail || '', d.adresse || '', d.cp || '', d.commune || '', d.pose || '', d.acces || '', d.note || '', d.own || '', 'v' + (d.upd || '')]], HD.length);
-      return json_({ ok: true, lignes: L.length, photos: np });
+      return json_({ ok: true, lignes: L.length, photos: np, own: own, miss: miss });
     }
     if (b.a === 'list') {
       var sh = ss_().getSheetByName('Dossiers'), out = [], last = sh ? sh.getLastRow() : 0;
@@ -121,6 +127,8 @@ function doPost(ev) {
 function putJson_(folder, name, obj) { var s = JSON.stringify(obj), it = folder.getFilesByName(name); if (it.hasNext()) it.next().setContent(s); else folder.createFile(name, s, 'application/json'); }
 function getJson_(folder, name) { var it = folder.getFilesByName(name); if (!it.hasNext()) return null; try { return JSON.parse(it.next().getBlob().getDataAsString()); } catch (e) { return null; } }
 function cat_() { var c = getJson_(root_(), 'catalogue-modifs.json'); if (!c || typeof c !== 'object') c = { v: 0, lock: false, lines: {} }; c.lines = c.lines || {}; c.add = c.add || {}; c.nodes = c.nodes || {}; c.v = Number(c.v) || 0; return c; }
+/** Le compte autorisé correspondant à cet appareil (e-mail + jeton), ou null. */
+function acct_(b) { var e = String(b.e || '').trim().toLowerCase(), t = String(b.t || ''); if (!e || !t) return null; var cur = P.getProperty(rid_(e, t)); if (!cur) return null; try { var r = JSON.parse(cur); return r.st === 'ok' ? r : null; } catch (x) { return null; } }
 function isEd_(b) { var e = String(b.e || '').trim().toLowerCase(), t = String(b.t || ''); if (!e || !t) return false; var cur = P.getProperty(rid_(e, t)); if (!cur) return false; var r = JSON.parse(cur); return r.st === 'ok' && r.ed === true; }
 function line_(o, m) {
   var CATS = { '': 1, S: 1, M: 1, T: 1, L: 1 }, TXT = { des: 160, mat: 160, info: 600 };
@@ -182,7 +190,9 @@ function req_(b) {
   var known = findOk_(e);
   if (known) {
     if (cache.get('rq_' + e)) return { ok: true, st: 'code' };
-    var code = ('00000' + Math.floor(Math.random() * 1000000)).slice(-6);
+    if (Number(cache.get('cf_' + e) || 0) >= 10) return { ok: false, st: 'err', err: 'Trop d\'essais pour cette adresse : réessaie dans une heure.' };
+    if (!NOMAIL && MailApp.getRemainingDailyQuota() < 1) return { ok: false, st: 'err', err: 'Envoi de mail impossible aujourd\'hui (quota atteint) : réessaie demain ou préviens Publimax.' };
+    var code = ('00000' + (parseInt(sha_(Utilities.getUuid() + e + Date.now()).slice(0, 8), 16) % 1000000)).slice(-6);
     r = { e: e, t: t, n: known.n || n, ua: String(b.ua || '').slice(0, 120), st: 'code', code: code, exp: Date.now() + 15 * 60000, tries: 0, at: new Date().toISOString(), nonce: Utilities.getUuid(), inh: !!known.ed };
     P.setProperty(id, JSON.stringify(r)); cache.put('rq_' + e, '1', 60);
     if (!NOMAIL) MailApp.sendEmail({ to: e, subject: 'Survey Publimax : ton code de connexion',
@@ -193,7 +203,8 @@ function req_(b) {
   }
   if (n.length < 2) return { ok: false, st: 'nom', err: 'Adresse inconnue : indique ton prénom et ton nom pour demander l\'accès.' };
   if (cache.get('rq_' + e)) return { ok: true, st: 'att' };
-  var nb = P.getKeys().filter(function (x) { return x.indexOf('R_') === 0; }).length;
+  var allp = P.getProperties(), nb = 0, nowms = Date.now();
+  for (var pk in allp) { if (pk.indexOf('R_') !== 0) continue; try { var q = JSON.parse(allp[pk]); if (q.st === 'att') nb++; else if ((q.st === 'code' && nowms > (q.exp || 0) + 3600000) || (q.st === 'refus' && nowms - new Date(q.dec || q.at).getTime() > 30 * 86400000)) P.deleteProperty(pk); } catch (x) {} }
   if (!r && nb >= 60) return { ok: false, st: 'err', err: 'Trop de demandes en attente : contacte Publimax.' };
   r = { e: e, t: t, n: n, ua: String(b.ua || '').slice(0, 120), st: 'att', at: new Date().toISOString(), nonce: Utilities.getUuid() };
   P.setProperty(id, JSON.stringify(r)); cache.put('rq_' + e, '1', 90);
@@ -212,7 +223,9 @@ function code_(b) {
   if (!r || r.st !== 'code') return { ok: false, err: 'Aucun code en attente : redemande-le.' };
   if (Date.now() > r.exp) return { ok: false, err: 'Code expiré : redemande-le.' };
   if (r.tries >= 5) return { ok: false, err: 'Trop d\'essais : redemande un code.' };
-  if (String(b.code || '').replace(/\D/g, '') !== r.code) { r.tries++; P.setProperty(id, JSON.stringify(r)); return { ok: false, err: 'Code incorrect.' }; }
+  var cch = CacheService.getScriptCache();
+  if (Number(cch.get('cf_' + e) || 0) >= 10) return { ok: false, err: 'Trop d\'essais pour cette adresse : réessaie dans une heure.' };
+  if (String(b.code || '').replace(/\D/g, '') !== r.code) { r.tries++; P.setProperty(id, JSON.stringify(r)); cch.put('cf_' + e, String(Number(cch.get('cf_' + e) || 0) + 1), 3600); return { ok: false, err: 'Code incorrect.' }; }
   r.st = 'ok'; r.ed = !!r.inh; delete r.code; delete r.inh; r.dec = new Date().toISOString(); P.setProperty(id, JSON.stringify(r));
   var k = P.getProperty('K');
   return k ? { ok: true, st: 'ok', k: k, ed: r.ed, n: r.n } : { ok: false, err: 'Clé pas encore disponible côté Publimax.' };
@@ -233,37 +246,7 @@ function st_(b) {
   if (r.st === 'ok') { var k = P.getProperty('K'); return k ? { ok: true, st: 'ok', k: k, ed: !!r.ed } : { ok: true, st: 'ok', ed: !!r.ed }; }
   return { ok: true, st: r.st };
 }
-/** Appelée par la page de décision (bouton Autoriser / Refuser). */
-function decide(id, nonce, yes) {
-  var cur = P.getProperty(String(id)); if (!cur || String(id).indexOf('R_') !== 0) throw new Error('Demande introuvable.');
-  var r = JSON.parse(cur); if (r.nonce !== nonce) throw new Error('Lien invalide.');
-  r.st = yes ? 'ok' : 'refus'; r.dec = new Date().toISOString(); P.setProperty(String(id), JSON.stringify(r));
-  return r.st;
-}
-/** Page de décision hébergée avec l'appli (évite la page Google qui casse quand plusieurs comptes sont connectés). */
-var SITE = 'https://fabienpublimax82-sketch.github.io/publimax-catalogue/';
-function dec_(b) {
-  var id = String(b.id || ''), cur = id.indexOf('R_') === 0 ? P.getProperty(id) : null, r = cur ? JSON.parse(cur) : null;
-  if (!r || !b.n || r.nonce !== String(b.n)) return { ok: false, err: 'Lien invalide ou demande supprimée.' };
-  if (b.a === 'dec') { r.st = b.yes === true ? 'ok' : 'refus'; r.ed = b.yes === true && b.ed === true; r.dec = new Date().toISOString(); P.setProperty(id, JSON.stringify(r)); }
-  return { ok: true, r: { n: r.n, e: r.e, ua: r.ua, at: r.at, st: r.st, ed: !!r.ed } };
-}
-function doGet(ev) {
-  var q = ev.parameter || {};
-  if (q.a !== 'dec') return json_({ st: 'indispo' });
-  var cur = P.getProperty(String(q.id || '')), r = cur ? JSON.parse(cur) : null;
-  if (!r || r.nonce !== q.n) return HtmlService.createHtmlOutput('<p style="font:18px Arial;padding:30px">Lien invalide ou demande supprimée.</p>');
-  var lab = { att: 'en attente', ok: 'AUTORISÉE', refus: 'REFUSÉE' }[r.st] || r.st;
-  var h = '<div style="font:17px Arial,sans-serif;color:#10242B;max-width:520px;margin:40px auto;padding:0 20px">' +
-    '<h2 style="color:#00849B">Survey Publimax : demande d\'accès</h2>' +
-    '<p><b>' + html_(r.n) + '</b><br>' + html_(r.e) + '</p><p style="color:#5B6B72;font-size:14px">Demandée le ' + html_(r.at.slice(0, 16).replace('T', ' à ')) + ' (UTC)<br>Appareil : ' + html_(r.ua) + '</p>' +
-    '<p>État actuel : <b id="st">' + lab + '</b></p>' +
-    '<p><button onclick="go(true)" style="font:inherit;font-weight:bold;padding:14px 26px;border:0;border-radius:10px;background:#00849B;color:#fff;cursor:pointer">Autoriser</button> &nbsp; ' +
-    '<button onclick="go(false)" style="font:inherit;font-weight:bold;padding:14px 26px;border:2px solid #C62828;border-radius:10px;background:#fff;color:#C62828;cursor:pointer">Refuser</button></p>' +
-    '<p id="m" style="font-weight:bold"></p><p style="color:#5B6B72;font-size:13px">Tu peux changer d\'avis en revenant sur cette page. Attention : une fois la tablette ouverte, refuser ensuite ne retire pas le catalogue déjà reçu.</p></div>' +
-    '<script>function go(y){document.getElementById("m").textContent="…";google.script.run.withSuccessHandler(function(s){document.getElementById("st").textContent=s==="ok"?"AUTORISÉE":"REFUSÉE";document.getElementById("m").textContent=s==="ok"?"Accès autorisé. La tablette va se débloquer toute seule.":"Accès refusé."}).withFailureHandler(function(e){document.getElementById("m").textContent="Erreur : "+e.message}).decide(' + JSON.stringify(String(q.id)) + ',' + JSON.stringify(String(q.n)) + ',y)}</' + 'script>';
-  return HtmlService.createHtmlOutput(h).setTitle('Survey Publimax : demande d\'accès');
-}
+function doGet() { return json_({ st: 'indispo' }); }
 
 /** À lancer une fois à la main dans l'éditeur pour accorder les autorisations (Drive + Sheets). */
 function autoriser() { MailApp.getRemainingDailyQuota(); CacheService.getScriptCache(); var r = root_(), s = ss_(); sheet_(s, 'Lignes', HL); sheet_(s, 'Dossiers', HD); Logger.log('OK. Dossier : ' + r.getUrl() + ' — Classeur : ' + s.getUrl()); }
@@ -315,7 +298,7 @@ function autotest() {
     r = call({ a: 'dec', id: rid_(e, t1), n: rec.nonce, yes: true, ed: true }); ok('accord avec modification', r.ok && r.r.st === 'ok' && r.r.ed === true, r);
     r = call({ a: 'st', e: e, t: t1 }); ok('appareil 1 reçoit la clé', r.st === 'ok' && !!r.k && r.ed === true, { st: r.st, k: !!r.k, ed: r.ed });
     r = call({ a: 'photo', h: H, did: did, ville: 'AUTOTEST', date: '2026-11-18', k: did + '|e1|1', lid: 'e1', des: 'essai', data: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==' }); ok('envoi photo', r.ok === true, r);
-    r = call({ a: 'lignes', h: H, dossier: { id: did, ville: 'AUTOTEST', date: '2026-11-18', aut: 'Auto Test', upd: U1, own: e }, lignes: [{ k: 'e1', id: 'x', rubrique: 'Essai', des: 'Ligne essai', q: 2 }], etat: { id: did, ville: 'AUTOTEST', date: '2026-11-18', aut: 'Auto Test', upd: U1, own: e, info: {}, e: [{ k: 'e1', id: 'x', q: 2 }], pk: { e1: [did + '|e1|1'] } } }); ok('envoi survey', r.ok === true && r.photos === 1, r);
+    r = call({ a: 'lignes', h: H, e: e, t: t1, dossier: { id: did, ville: 'AUTOTEST', date: '2026-11-18', aut: 'Auto Test', upd: U1 }, lignes: [{ k: 'e1', id: 'x', rubrique: 'Essai', des: 'Ligne essai', q: 2 }], etat: { id: did, ville: 'AUTOTEST', date: '2026-11-18', aut: 'Auto Test', upd: U1, own: e, info: {}, e: [{ k: 'e1', id: 'x', q: 2 }], pk: { e1: [did + '|e1|1'] } } }); ok('envoi survey', r.ok === true && r.photos === 1, r);
     r = call({ a: 'list', h: H }); var it = (r.list || []).filter(function (x) { return x.id === did; })[0] || {};
     ok('liste : compte et version relus à l\'identique', it.own === e && it.ver === U1, it);
     CacheService.getScriptCache().remove('rq_' + e);
@@ -327,6 +310,14 @@ function autotest() {
     r = call({ a: 'get', h: H, did: did }); ok('récupération du survey', r.ok && r.etat && r.etat.upd === U1 && r.etat.e.length === 1, r.ok ? { upd: r.etat.upd } : r);
     r = call({ a: 'phget', h: H, did: did, k: did + '|e1|1' }); ok('récupération de la photo', r.ok && /^data:image\//.test(r.data || ''), { ok: r.ok, err: r.err });
     r = call({ a: 'catset', h: H, e: 'inconnu@exemple.invalid', t: 'x', ch: { zz: { des: 'x' } } }); ok('modification du catalogue refusée sans droit', r.ok === false, r);
+    var U2 = new Date(Date.now() + 1000).toISOString();
+    r = call({ a: 'lignes', h: H, e: e, t: t2, base: 'une-autre-version', dossier: { id: did, ville: 'AUTOTEST', date: '2026-11-18', aut: 'Auto Test', upd: U2, num: '007', tel: '0612345678' }, lignes: [], etat: { id: did, upd: U2, e: [], pk: {} } }); ok('envoi sur une version dépassée refusé (conflit)', r.ok === false && r.err === 'conflit' && r.ver === U1, r);
+    r = call({ a: 'lignes', h: H, e: 'pirate@exemple.invalid', t: 'x', base: U1, dossier: { id: did, ville: 'AUTOTEST', date: '2026-11-18', aut: 'Auto Test', upd: U2, num: '007', tel: '0612345678', own: 'pirate@exemple.invalid' }, lignes: [{ k: 'e1', id: 'x', rubrique: 'Essai', des: '=1+1', q: 2 }], etat: { id: did, ville: 'AUTOTEST', upd: U2, own: 'pirate@exemple.invalid', info: {}, e: [{ k: 'e1', id: 'x', q: 2 }], pk: { e1: [did + '|e1|1', did + '|e1|absente'] } } });
+    ok('envoi à jour accepté, compte d\'origine conservé, photo manquante signalée', r.ok === true && r.own === e && r.miss.length === 1 && r.miss[0] === did + '|e1|absente', r);
+    r = call({ a: 'list', h: H }); it = (r.list || []).filter(function (x) { return x.id === did; })[0] || {};
+    ok('feuille : zéros et signes conservés', it.num === '007' && it.own === e && it.ver === U2, it);
+    var sl = ss_().getSheetByName('Lignes'), vals = sl.getRange(2, 1, Math.max(1, sl.getLastRow() - 1), HL.length).getDisplayValues().filter(function (x) { return x[0] === did; })[0] || [];
+    ok('feuille : un texte commençant par = reste du texte', vals[6] === '=1+1', vals[6]);
   } catch (x) { res.push('ERREUR ' + (x && x.message || x)); }
   try { clean(); res.push('nettoyage fait'); } catch (x) { res.push('nettoyage en erreur : ' + x); }
   NOMAIL = false;
