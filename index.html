@@ -468,6 +468,7 @@ details.kres{margin-top:10px}details.kres>summary{cursor:pointer;font-weight:600
 .pmini{display:flex;flex-wrap:wrap;gap:2px;justify-content:center;align-items:center;max-width:88px}.pmini span{flex:0 0 100%;display:flex;justify-content:center}.lt td.vi .pmini img{max-width:42px!important;max-height:30px!important;display:block;width:auto;height:auto}.lt td.vi .pmini span img{max-width:86px!important;max-height:22px!important}.lt td.vi .pmini.one span img{max-height:44px!important}
 #deb{position:fixed;inset:0;z-index:30;background:#EEF3F5;overflow:auto;display:flex;flex-direction:column}#deb.hid{display:none}#deb .top{position:sticky;top:0;z-index:2}#deb_body,#deb_print{padding:14px 12px 60px;max-width:900px;margin:0 auto;width:100%;box-sizing:border-box}
 .dbt{width:100%;border-collapse:collapse;font-size:13.5px;margin:0 0 4px}.dbt td{padding:6px 8px;border-bottom:1px solid #E3EAED;vertical-align:top}.dbt td.q{white-space:nowrap;font-weight:700;color:var(--acc);text-align:right;width:74px}.dbt td.po{color:#5B6B73;width:30%}.dbt tr.ar td{background:#F4F7F8;font-weight:700;border-bottom:0}.dbt .fl{display:block;color:#B3261E;font-size:12px;font-weight:600;margin-top:2px}.dbn{font-size:13px;color:#5B6B73;margin:10px 2px}
+#deb_fr{flex:1;width:100%;border:0;background:#F2F4F6;min-height:0}
 /* ---- téléphone ---- */
 @media (max-width:640px){
  .top{padding:6px 10px;min-height:52px;gap:6px}.top .t{font-size:16px}.top .btn{height:40px;padding:0 12px;font-size:14px}
@@ -558,7 +559,7 @@ details.kres{margin-top:10px}details.kres>summary{cursor:pointer;font-weight:600
 <button class="lnk" id="b_alt" style="display:none;color:#10242B;text-shadow:0 1px 8px rgba(255,255,255,.8)">J’ai un lien ou une clé d’accès</button>
 <div id="g_alt" class="pane hid"><label class="l" style="color:#1E2124;font-weight:600">Lien ou clé d’accès<input class="in" id="g_key" placeholder="Colle ici le lien reçu de Publimax"></label><button class="btn" id="b_key" style="width:100%">Continuer ›</button></div>
 <div id="g_msg" class="msg hid"></div>
-<p class="ver">Catalogue 20261119-080249 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261119-084457 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- CODE -->
@@ -570,7 +571,7 @@ details.kres{margin-top:10px}details.kres>summary{cursor:pointer;font-weight:600
 <button class="btn" id="b_pin">Ouvrir ›</button><div id="p_msg" class="msg err hid"></div>
 <button class="btn gr inst hid" data-inst>Installer l’application</button>
 <button class="lnk hid" id="b_forget">Code oublié ?</button></div>
-<p class="ver">Catalogue 20261119-080249 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261119-084457 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- DOSSIERS -->
@@ -617,7 +618,7 @@ details.kres{margin-top:10px}details.kres>summary{cursor:pointer;font-weight:600
 <div class="row noprint" style="margin-bottom:12px"><button class="btn" id="r_dep">Envoyer sur le Drive</button><button class="btn sec" id="r_exp">Exporter</button><button class="btn sec" id="r_share">Partager</button><button class="btn hid" id="r_take">Reprendre sur cet appareil</button><button class="btn hid" id="r_copy">En faire ma copie</button><button class="btn bad hid" id="r_delall">Supprimer partout</button><button class="btn sec hid" id="r_deb">Débits</button><button class="btn sec" id="r_prt">Imprimer</button></div>
 <div id="r_msg" class="msg hid noprint" style="margin-bottom:12px"></div><div id="r_body"></div></div></div>
 
-<div id="deb" class="hid"><div class="top"><button class="btn sm sec" id="deb_back">← Récap</button><span class="t" id="deb_t"></span><button class="btn sm" id="deb_prt">Imprimer</button></div><div id="deb_body"></div></div>
+<div id="deb" class="hid"><div class="top"><button class="btn sm sec" id="deb_back">← Récap</button><span class="t" id="deb_t"></span></div><iframe id="deb_fr" title="Liste débits matière"></iframe></div>
 <div id="sheet" class="hid"><div class="p" id="sh_p"></div></div>
 <div id="zoom" class="hid"><img alt=""></div>
 <div id="pick" class="hid"><div class="pp"><div class="hd"><h2 id="pk_t"></h2><button class="btn sm sec" id="pk_x">Annuler</button></div><div id="pk_l"></div></div></div>
@@ -630,7 +631,7 @@ details.kres{margin-top:10px}details.kres>summary{cursor:pointer;font-weight:600
 (function(){'use strict';
 var $=function(s){return document.querySelector(s)},$$=function(s){return [].slice.call(document.querySelectorAll(s))};
 var CFG={apps:''},CAT=null,IMG={},KEY=null,DB={d:[],cur:null},NM={},CH={},PENDKEY=null,NSHARD=0,LB={};
-var KS='',VER='20261119-080249',NFILES=24,SYH='',SYB=false,SYT=null;
+var KS='',VER='20261119-084457',NFILES=25,SYH='',SYB=false,SYT=null;
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 var WIPE=false;
 function ls(k,v){if(WIPE&&v!==undefined&&v!==null)return true;try{if(v===undefined){var r=localStorage.getItem(k);return r?JSON.parse(r):null}if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v));return true}catch(e){if(v!==undefined&&k==='pm_dos')saveErr();return null}}
@@ -1133,7 +1134,7 @@ const artRank = (cat, art) => { const i = CATS[cat]?.arts.indexOf(art) ?? -1; re
 const TRIG = {cadre30:['cadrePvc30','encadrement pvc 30'],socle:['soclePvc30','socle pvc 30'],etagere:['etagere','etagere'],texsusp:['texxalis','texxalis'],texenc:['texEncadre','crossile'],texbl:['texBlanc','crossline'],crochets:['crochets','2 crochets de suspension'],bandeau:['bandeau','bandeau aerien'],canopee:['canopee','alveolaire'],lisse:['lisse','lisse de facade'],rehausse:['rehausse','rehausses de tg'],fronton:['fronton','fronton tg'],joue:['joueTg','joue de tg bache'],rue:['panneauRue','panneau de rue'],pocha5:['pochetteA5','pochette a5']};
 const ONDES = {bandeau:1,lisse:1,rehausse:1,fronton:1,joue:1,rue:1};
 function strip(t, re){ return t.replace(new RegExp(re.source, 'g'), ' '); }
-function run(pieces, inp){ INV = inp || {}; SET = {...DEF};
+function prep(pieces){
   pieces.forEach(function(p){ p.des0 = p.des; var ti = nrm(p.info), R = p.rules || {};
     for (var id in TRIG) { var re = DICO[TRIG[id][0]], on = R[id];
       if (on === false) { ti = strip(ti, re); if (ONDES[id] && re.test(nrm(p.des))) p.des = strip(nrm(p.des), re).replace(/\s+/g,' ').trim() || 'article'; }
@@ -1142,7 +1143,8 @@ function run(pieces, inp){ INV = inp || {}; SET = {...DEF};
     if (R.cadrepoch === false) ti = ti.replace(/(\d+(?:\s*ou\s*\d+)?)\s*cadres?\s+pochettes?\s*(a\d)/g, ' ');
     if (R.pochette === true && !/\d\s*pochettes?\s*a\d/.test(ti)) { ti += ' ; 1 pochettes a4'; p.pochDef = 1; }
     if (R.cadrepoch === true && !/\d\s*cadres?\s+pochettes?\s*a\d/.test(ti)) { ti += ' ; 1 cadres pochettes a4'; p.pochDef = 1; }
-    p.info = ti; });
+    p.info = ti; }); }
+function run(pieces, inp){ INV = inp || {}; SET = {...DEF}; prep(pieces);
   var out = computeDebits(pieces), rows = out.rows, syn = out.syn, by = {};
   pieces.forEach(function(p){ by[p.id] = p; });
   rows = rows.filter(function(r){ var p = by[r.pid]; if (!p) return true; if (p.rules && p.rules.filins === false && r.fam === 'Crochets et filins') return false; return true; });
@@ -1153,7 +1155,7 @@ function run(pieces, inp){ INV = inp || {}; SET = {...DEF};
   rows.sort(function(a, b){ return (a.cat - b.cat) || (artRank(a.cat, a.art) - artRank(b.cat, b.art)) || a.art.localeCompare(b.art) || (a.order - b.order); });
   return {rows: rows, syn: syn, cats: CATS.map(function(c){ return c.name; }), unknown: out.unknown};
 }
-return {run: run, nf: nf};
+return {run: run, prep: prep, nf: nf};
 })();
 
 function debPieces(d){var P=[];flat(d).forEach(function(r){var s=entK(r.k)||{},l=CAT.byId[r.id];
@@ -1166,24 +1168,16 @@ function debPieces(d){var P=[];flat(d).forEach(function(r){var s=entK(r.k)||{},l
  if(l.canopy&&s.can)CAT.cano.forEach(function(c){can(c[0],'Canopée '+l.des.replace(/^Enseigne\s+/i,''),+s.can[c[0]]||0,c[2],150)});
  if(l.id==='n_can13')(l.opts||[]).forEach(function(o){can(o.id,'Canopée zone promo',+(s.o||{})[o.id]||0,o.L,o.H)})});
  return P}
-function debHtml(d){var P=debPieces(d),O=DEB.run(P,{}),rows=O.rows,nf=DEB.nf,i=d.info||{},num=d.num||d.ville,used={},nfl=0;var HORS={};P.forEach(function(p){if(p.hors)HORS[p.id]=1});rows.forEach(function(r){if(r.pid&&HORS[r.pid]&&!r.flag)r.flag='Article hors catalogue : règle déduite du texte saisi, à confirmer';if(r.pid)used[String(r.pid).split('|')[0]]=1;if(r.flag)nfl++});
- var nFi=(d.e||[]).length,nU=Object.keys(used).length;
- var h='<div class="pv"><div class="dhead"><img src="'+$('#gate img.logo').src+'" alt="Publimax"><div class="t"><b>Liste de débits matière</b><span>calculée depuis le survey · à vérifier avant lancement</span></div><div class="r"><b>Dossier '+esc(num)+'</b><br>'+esc(i.client||'Carrefour Market')+' — '+esc(d.ville)+'<br>Visite du '+esc(fdate(d.date))+'</div></div>';
- h+='<div class="kp"><div><b>'+nFi+'</b><span>fiches au survey</span></div><div><b>'+nU+'</b><span>fiches avec règle</span></div><div><b>'+rows.length+'</b><span>lignes de débit</span></div><div class="kT"><b>'+nfl+'</b><span>à vérifier</span></div></div>';
- if(!rows.length)h+='<p class="dbn">Aucune règle de débit ne s’applique aux fiches de ce survey.</p>';
- O.cats.forEach(function(nm,ci){var L=rows.filter(function(r){return r.cat===ci});if(!L.length)return;var last='';
-  h+='<div class="rblk"><div class="rh">'+esc(nm)+'<span>'+L.length+' ligne'+(L.length>1?'s':'')+'</span></div><table class="dbt">';
-  L.forEach(function(r){if(r.art!==last){last=r.art;var tot=0,un='';L.forEach(function(x){if(x.art===r.art){tot+=+x.q||0;un=x.unit}});h+='<tr class="ar"><td colspan="2">'+esc(r.art)+'</td><td class="q">'+(tot?nf(tot)+' '+esc(un||''):'')+'</td></tr>'}
-   h+='<tr><td class="po">'+esc(r.poste||'')+'</td><td>'+esc(r.det||r.des||'')+(r.flag?'<span class="fl">'+esc(r.flag)+'</span>':'')+'</td><td class="q">'+(r.q?nf(r.q)+' '+esc(r.unit||''):'à saisir')+'</td></tr>'});
-  h+='</table></div>'});
- var rest=P.filter(function(p){return !/\|/.test(p.id)&&!used[p.id]}),hors=rest.filter(function(p){return p.hors}).length;
- h+='<p class="dbn"><b>'+rest.length+' fiche'+(rest.length>1?'s':'')+' sans règle de débit</b> (plaques, adhésifs, PVC… : dimensions et quantités dans le récap)'+(hors?', dont '+hors+' hors catalogue':'')+'.</p>';
- if(O.unknown&&O.unknown.length)h+='<p class="dbn"><b>À regarder :</b> le descriptif évoque une règle, mais rien n’a été calculé pour '+O.unknown.map(function(p){return esc(p.des0||p.des)}).filter(function(x,k,a){return a.indexOf(x)===k}).join(', ')+'.</p>';
- h+='<p class="dbn">Règles suivies : celles cochées sur chaque article dans le mode édition du catalogue. Les dimensions sont celles des fiches ; les remarques ne sont pas lues.</p></div>';
- return h}
-function openDeb(){var d=DB.cur;if(!d)return;try{$('#deb_body').innerHTML=debHtml(d)}catch(e){alert('Liste de débits non calculée : '+(e&&e.message||e));return}$('#deb_t').textContent='Débits · '+d.ville;$('#deb').classList.remove('hid');$('#deb').scrollTop=0}
-$('#r_deb').onclick=openDeb;$('#deb_back').onclick=function(){$('#deb').classList.add('hid')};
-$('#deb_prt').onclick=function(){$('#print').innerHTML='<div id="deb_print">'+$('#deb_body').innerHTML+'</div>';setTimeout(function(){window.print()},150)};
+function debSnap(d){var P=debPieces(d),i=d.info||{};DEB.prep(P);var th={},need=[];
+ P.forEach(function(p){p.des=p.des0||p.des;if(p.rules&&p.rules.cadre30&&p.img&&IMG[p.img]){need.push(p)}else p.img=null});
+ return Promise.all(need.map(function(p){return new Promise(function(ok){var im=new Image();im.onload=function(){th[p.img]={data:IMG[p.img],w:im.naturalWidth,h:im.naturalHeight,entry:'apercu.'+((/^data:image\/(\w+)/.exec(IMG[p.img])||[])[1]||'png'),orig:IMG[p.img]};ok()};im.onerror=function(){p.img=null;ok()};im.src=IMG[p.img]})})).then(function(){
+  return {v:1,savedAt:new Date().toISOString(),header:{dossier:String(d.num||d.ville||''),magasin:String(d.ville||''),pose:fdate(i.pose)||''},SET:{},store:{},thumbs:th,sheets:['Survey'],source:'Survey Publimax · '+d.ville+' · '+(d.e||[]).length+' fiches · visite du '+fdate(d.date),
+   pieces:P.map(function(p){return {id:p.id,sheet:'',poste:p.poste,rep:p.rep||'',des:p.des,info:p.info,q:p.q,w:p.w,h:p.h,L:p.L,note:p.note||'',parts:[],qBlank:false,img:p.img||null}})}})}
+var DEBU='';
+function openDeb(){var d=DB.cur;if(!d)return;$('#deb_t').textContent='Débits · '+d.ville;
+ Promise.all([fetch('debits.html').then(function(r){if(!r.ok)throw new Error('page des débits introuvable ('+r.status+')');return r.text()}),debSnap(d)]).then(function(a){var h=a[0],tag='<script id="snap" type="application/json">'+JSON.stringify(a[1]).replace(/</g,'\\u003c')+'</'+'script>',x=h.indexOf('<script>');if(x<0)throw new Error('page des débits illisible');
+  if(DEBU)URL.revokeObjectURL(DEBU);DEBU=URL.createObjectURL(new Blob([h.slice(0,x)+tag+h.slice(x)],{type:'text/html'}));$('#deb_fr').src=DEBU;$('#deb').classList.remove('hid')}).catch(function(e){alert('Liste de débits non ouverte : '+(e&&e.message||e))})}
+$('#r_deb').onclick=openDeb;$('#deb_back').onclick=function(){$('#deb').classList.add('hid');$('#deb_fr').src='about:blank'};
 /* ---------- démarrage ---------- */
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(PAN){PAN='';drawSubs();drawCrumbState();return}if(!$('#zoom').classList.contains('hid'))$('#zoom').click();else if(SL)doneSheet()}});
 function verTxt(){var m=/^(\d{4})(\d\d)(\d\d)-(\d\d)(\d\d)/.exec(VER);return m?'mise à jour du '+m[3]+'/'+m[2]+'/'+m[1]+' à '+m[4]+' h '+m[5]:VER}

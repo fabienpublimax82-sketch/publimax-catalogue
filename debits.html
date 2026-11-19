@@ -1,0 +1,894 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Débits matière Publimax</title>
+<style>
+/* Fiche d'atelier Publimax : gris du logo + cyan, fond clair pour l'impression. */
+:root{
+  --bg:#F3F4F6; --panel:#FFFFFF; --panel2:#F7F8FA; --line:#D3D7DC; --fg:#1E2124; --mute:#777471;
+  --acc:#008099; --acc-ink:#FFFFFF; --warn:#A35A00; --warn-bg:#FFF1DA; --ok:#2E7D32;
+  --f:"Segoe UI",system-ui,-apple-system,Arial,sans-serif; --mono:Consolas,"Cascadia Mono","Courier New",monospace;
+}
+*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--f);font-size:15px;line-height:1.45}
+.wrap{max-width:1180px;margin:0 auto;padding:22px 20px 70px;display:flex;flex-direction:column;gap:26px}
+h1,h2,h3{margin:0;text-wrap:balance}
+h2{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);border-bottom:1px solid var(--line);padding-bottom:6px}
+h3{font-size:17px;font-weight:700}
+p{margin:0}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+button{font:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.head{display:grid;grid-template-columns:auto 1fr auto;gap:18px 28px;align-items:center;background:var(--panel);border:1px solid var(--line);padding:16px 20px}
+.head img{height:52px;width:auto;display:block}
+.head h1{font-size:24px;font-weight:700}
+.head .sub{color:var(--mute);font-size:13px;margin-top:2px}
+.meta{display:grid;grid-template-columns:auto auto;gap:3px 12px;font-size:13px;border-left:1px solid var(--line);padding-left:20px}
+.meta dt{color:var(--mute)} .meta dd{margin:0;font-family:var(--mono)} .meta dd b,.fiche header b{font-weight:800;color:var(--acc)}
+@media (max-width:760px){.head{grid-template-columns:1fr}.meta{border-left:0;padding-left:0}}
+/* dépôt */
+.drop{border:2px dashed var(--acc);background:var(--panel);padding:28px 20px;text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center}
+.drop.over{background:#E3F3F7}
+.drop b{font-size:18px}
+.drop .hint{color:var(--mute);font-size:13px;max-width:70ch}
+.btn{background:var(--acc);color:var(--acc-ink);border:0;padding:9px 18px;font-weight:600}
+.btn.sec{background:var(--panel);color:var(--fg);border:1px solid var(--line)}
+.btn.sec:hover{border-color:var(--acc)}
+.prog{font-family:var(--mono);font-size:13px;color:var(--mute);min-height:1.4em}
+.err{border:1px solid #B3261E;background:#FDECEA;color:#7A1C15;padding:10px 14px}
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:13px;color:var(--mute)}
+/* réglages */
+details.set{background:var(--panel);border:1px solid var(--line);padding:10px 14px}
+details.set summary{cursor:pointer;font-weight:600}
+.set .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px 24px;margin-top:10px;font-size:14px}
+.set label{display:flex;gap:8px;align-items:center;min-height:32px}
+.set input[type=number]{width:70px;font:inherit;padding:3px 6px;border:1px solid var(--line)}
+.set input[type=checkbox]{width:18px;height:18px;accent-color:var(--acc)}
+/* blocs */
+.sec{display:flex;flex-direction:column;gap:12px}
+.secwrap{display:flex;flex-direction:column;gap:26px}
+.pt,.pt>tbody,.pt>tbody>tr,.pt>tbody>tr>td{display:block;width:100%;padding:0;border:0;min-width:0}
+.pt>thead{display:none}
+.cat{background:var(--panel);border:1px solid var(--line);padding:14px 18px;display:flex;flex-direction:column;gap:14px;margin-bottom:18px}
+.cat>h2,.sec>h2{border:0;background:var(--acc);color:var(--acc-ink);padding:8px 14px;font-size:16px;letter-spacing:.06em;border-radius:3px}
+.cat>h2{margin:-14px -18px 0}
+.sec>h2{margin:0}
+.art{display:flex;flex-direction:column;gap:4px}
+.art h3{font-size:15px;color:var(--acc);display:flex;justify-content:space-between;gap:12px;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:3px}
+.art h3 .tot{border:0;padding:0;margin:0;font-family:var(--mono);color:var(--acc);white-space:nowrap}
+.art h3 .tot.sm{display:inline;font-weight:400;font-size:12px;color:var(--mute);margin-left:6px;font-family:inherit}
+.art h3 small{color:var(--mute);font-weight:400;font-size:12px}
+.toggle{display:flex;gap:10px;align-items:center;font-weight:600;cursor:pointer}
+.toggle input{width:20px;height:20px;accent-color:var(--acc)}
+.box{background:var(--panel);border:1px solid var(--line);padding:12px 14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.box h3{font-size:15px}
+.box h3 small{color:var(--mute);font-weight:400;font-size:13px;margin-left:6px}
+.li{display:flex;flex-direction:column;gap:5px;margin:0;padding:0;list-style:none}
+.li li{display:flex;gap:14px;align-items:baseline;padding:4px 0;border-top:1px dashed var(--line)}
+.li li:first-child{border-top:0}
+.li .n{order:2;margin-left:auto;font-family:var(--mono);font-weight:700;color:var(--acc);min-width:74px;text-align:right;white-space:nowrap}
+.li .t{order:1;min-width:0;overflow-wrap:anywhere;flex:1}
+.li .t b.pr{font-weight:700}
+.par{color:#9a9a9a}
+.li li.gap{margin-top:14px;border-top:2px solid var(--line)}
+.li .t small{display:block;color:var(--mute);font-size:12px}
+.flag{color:var(--warn);font-size:12px}
+.foot{color:var(--mute);font-size:12px}
+.tot{border-top:1px solid var(--acc);padding-top:6px;margin-top:2px;display:flex;justify-content:space-between;gap:10px;font-weight:700}
+.saisie{border:1px solid var(--acc);background:#eef7f9;padding:10px 14px;font-size:14px;max-width:90ch;display:flex;gap:8px 24px;align-items:center;flex-wrap:wrap}
+.saisie label{display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap}
+.confbox{border:1px solid var(--warn);background:var(--warn-bg);padding:10px 14px;font-size:14px;max-width:90ch}
+.confbox ul{margin:6px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.confbox li{display:flex;gap:10px;align-items:center}
+.cbtn{font:inherit;font-size:12px;font-weight:700;padding:3px 10px;border:1px solid var(--warn);background:#fff;color:var(--warn);border-radius:4px;cursor:pointer;min-width:84px}
+.cbtn.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.confbox li.ok{color:var(--ok)}
+.sep{border:0;border-top:3px solid var(--acc);margin:4px 0}
+.cart{display:none}
+.art.more>h3,.cont,.printhead{display:none}
+.saisie b{color:var(--acc)}
+.notice{border:1px solid var(--warn);background:var(--warn-bg);padding:10px 14px;font-size:14px;max-width:90ch}
+.notice b{color:var(--warn)}
+/* encadrements */
+.encs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:560px){.encs{grid-template-columns:1fr}}
+.pbox{position:relative}
+.pbox summary{list-style:none;display:inline-block}
+.pbox summary::-webkit-details-marker{display:none}
+.pbox[open]>summary{border-color:var(--acc)}
+.pmenu{position:absolute;z-index:20;top:100%;left:0;margin-top:4px;background:var(--panel);border:1px solid var(--line);box-shadow:0 6px 20px rgba(0,0,0,.15);padding:12px 14px;display:flex;flex-direction:column;gap:10px;min-width:300px;max-width:90vw}
+#plist{display:flex;flex-direction:column;gap:6px}
+#plist label{display:flex;gap:8px;align-items:center;cursor:pointer;color:var(--fg);font-size:14px}
+#plist label.sub{border-top:1px solid var(--line);padding-top:6px}
+#plist input{width:18px;height:18px;accent-color:var(--acc)}
+.pact{display:flex;flex-wrap:wrap;gap:6px;border-top:1px solid var(--line);padding-top:10px}
+#glob td:first-child{font-weight:700}
+.encwrap{min-width:0}
+.enc{background:#fff;border:1px solid var(--fg);padding:12px 14px;display:flex;flex-direction:column;gap:2px;min-width:0;box-sizing:border-box;height:320px}
+.enc .des{font-weight:800;font-size:17px;line-height:1.2;overflow-wrap:anywhere}
+.enc .sub{color:var(--mute);font-size:13px}
+.enc .sub b{color:var(--fg);font-weight:800;text-transform:uppercase}
+/* tables */
+.tbl{overflow-x:auto;background:var(--panel);border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:6px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);font-weight:600;background:var(--panel2)}
+td.q{font-family:var(--mono);font-weight:700;text-align:right;white-space:nowrap}
+td.c{text-align:center;width:46px}
+tr.grp td{background:var(--acc);color:var(--acc-ink);font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:12px}
+td small{display:block;color:var(--mute);font-size:12px}
+.inp{width:70px;font:inherit;font-size:14px;padding:3px 6px;border:1px solid var(--fg);border-radius:4px;color:var(--fg);background:#fff}
+
+input[type=checkbox].chk{width:20px;height:20px;accent-color:var(--acc);margin:0;cursor:pointer;vertical-align:middle}
+tr.done td{color:var(--mute)} tr.done td:not(.c){text-decoration:line-through}
+/* fiches */
+.fiche{background:var(--panel);border:1px solid var(--line);border-top:4px solid var(--acc);padding:14px 16px;display:flex;flex-direction:column;gap:8px;break-inside:avoid}
+.fiche header{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 14px;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:8px}
+.fiche h3{font-size:24px}
+.fiche header span{color:var(--mute);font-size:13px}
+.fl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.fl li{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:9px 0;border-bottom:1px dashed var(--line);font-size:18px}
+.fl li:last-child{border-bottom:0}
+.fl .n{font-family:var(--mono);font-weight:700;color:var(--acc);font-size:22px;white-space:nowrap}
+.fl .t small{display:block;font-size:14px;color:var(--mute)}
+.fl .t .flag{font-size:13px}
+.fl li.done{opacity:.5} .fl li.done .t{text-decoration:line-through}
+.fl input.chk{width:26px;height:26px}
+.pieces{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.pc{background:var(--panel);border:1px solid var(--line);padding:8px;display:flex;gap:8px;align-items:center;font-size:13px}
+.pc img{width:70px;height:50px;object-fit:contain;background:#fff;flex:none}
+.pc .t{min-width:0}
+.pc .t b{display:block}
+.pc .t small{color:var(--mute)}
+[hidden]{display:none!important}
+@media print{
+  @page{size:A4 portrait;margin:8mm 6mm 8mm 8mm}
+  body{zoom:.93}
+  .pt{display:table;width:100%;border-collapse:collapse}.pt>tbody{display:table-row-group}.pt>tbody>tr{display:table-row}.pt>tbody>tr>td{display:table-cell;padding:0;vertical-align:top}
+  .printhead{display:flex;justify-content:space-between;gap:6px 12px;align-items:baseline;border-bottom:1.5px solid #000;padding:0 0 4px;margin-bottom:8px;font-size:10px;color:#000;flex-wrap:wrap}
+  .pt{table-layout:fixed}
+  .printhead b{font-size:12px}.printhead .ville{font-weight:800}.printhead span{white-space:nowrap}
+  .head{display:none}
+  :root{--bg:#fff;--panel:#fff;--panel2:#f2f2f2;--line:#999;--mute:#444}
+  .drop,.tools,details.set,.noprint,.toggle,.notice{display:none!important}
+  .wrap,.secwrap,.sec,#out,.cat,.art,.fiche,#fiches{display:block}
+  .wrap{padding:8mm 6mm 0 8mm;max-width:none}
+  .secwrap>*,.sec>*,.cat>*,.art>*{margin-bottom:10px}
+  .head{display:flex}
+  .cat{border:1px solid #999;margin-bottom:10px;padding:10px 12px;gap:10px;break-inside:auto;page-break-inside:auto;break-before:page;page-break-before:always}
+  .cat.first{break-before:auto;page-break-before:auto}
+  .cat>h2{margin:0 -12px 8px;border-radius:0;font-size:14px;padding:6px 12px}.sec>h2{border-radius:0;font-size:14px;padding:6px 12px}
+  body[data-print] .cat:not(.po),body[data-print] .sec:not(.po){display:none!important}
+  body[data-print] #fiches-sec.po #fiches{display:block!important}
+  #unk-sec,#glob-sec,#fiches-sec{break-before:page;page-break-before:always}
+  #unk-sec.first,#glob-sec.first,#fiches-sec.first{break-before:auto;page-break-before:auto}
+  .sec{border:1px solid #999;padding:10px 12px}.sec>h2{margin:0 -12px 8px}
+  #glob tr.grp{break-before:auto}
+  .cat>h2,.art h3,h2{break-after:avoid;page-break-after:avoid}
+  .enc,tr,.li li{break-inside:avoid;page-break-inside:avoid}
+  .art{break-inside:avoid;page-break-inside:avoid}
+  .encs{display:block;font-size:0}.encwrap{display:inline-block;vertical-align:top;width:49%;margin:0 2% 8px 0;box-sizing:border-box;break-inside:avoid;font-size:12px}.encwrap:nth-child(2n){margin-right:0}.enc{width:100%}
+  .enc{padding:8px 10px;height:58mm;border:1px solid #000}.enc .des{font-size:13px}.enc .sub{font-size:11px}
+  .head{display:none!important}
+  .cart{display:flex;flex-wrap:wrap;gap:8px 24px;align-items:center;padding:8px 12px;border:1px solid #999;margin:0 0 8px}.cart img{height:36px}.cart h1{font-size:18px}.cart .sub{color:#444;font-size:11px}.meta{border:0;padding:0;grid-template-columns:auto auto auto auto;gap:2px 10px}
+  .cat .cart{margin:0 0 8px}.cat>h2{margin-top:0}
+  .sep{border-top:3px solid var(--acc);margin:6px 0}
+  .art.more{break-before:page;page-break-before:always}.art.more>h3{display:flex}.art.more .printhead{display:flex}.cont{display:block;text-align:right;font-size:11px;color:#444;margin-top:6px}
+
+  .fiche{page-break-before:always}
+  body{font-size:12px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<table class="pt"><tbody><tr><td>
+  <header class="head">
+    <img src="data:image/png;base64,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" alt="Publimax, enseignes et publicité">
+    <div><h1>Liste débits matière</h1><p class="sub" id="sub">Dépose le classeur de fabrication (.xlsx ou .xlsm) pour générer la liste.</p></div>
+    <dl class="meta" id="meta" hidden></dl>
+  </header>
+
+  <div class="drop" id="drop">
+    <b>Glisse ici le classeur de fabrication</b>
+    <p class="hint">Un fichier .xlsx ou .xlsm, de n'importe quelle taille : la page lit uniquement les feuilles STANDARD, SUR MESURE et SOUS-TRAITANCE, et les visuels des lignes à produire. Rien ne quitte ton poste. Tu peux aussi déposer plusieurs classeurs à la fois (une feuille par fichier).</p>
+    <div><button type="button" class="btn" id="pick">Choisir un fichier</button> <input type="file" id="file" accept=".xlsx,.xlsm" multiple hidden></div>
+    <p class="prog" id="prog"></p>
+  </div>
+  <div class="err" id="err" hidden></div>
+
+  <details class="set" id="set">
+    <summary>Réglages des règles de calcul</summary>
+    <div class="grid">
+      <label><input type="number" id="s-socle" min="0" step="10"> mm ajoutés à la largeur du chevalet pour le socle</label>
+      <label><input type="checkbox" id="s-crochets"> Crochets de suspension arrondis à la dizaine supérieure (50 → 60)</label>
+      <label><input type="number" id="s-equerres" min="0"> équerres par barre de 3 m</label>
+      <label><input type="checkbox" id="s-pattes"> Compter 1 patte de jonction entre deux barres d'un même poste</label>
+      <label><input type="number" id="s-rehausses" min="0"> rehausses de TG (valeur fixe)</label>
+    </div>
+    <p class="foot" style="margin-top:8px">Ces réglages sont mémorisés sur ce poste. Le dictionnaire de détection est modifiable en tête du code de la page (bloc DICO).</p>
+  </details>
+
+  <div id="out" hidden>
+    <div class="secwrap">
+      <div class="tools">
+        <button type="button" class="btn" id="exp">Exporter pour Illustrator (.zip)</button>
+        <button type="button" class="btn" id="save">Enregistrer la fiche (.html)</button>
+        <details class="pbox"><summary class="btn sec">Exporter modifiable ▾</summary><div class="pmenu"><div class="pact"><button type="button" class="btn" id="xlsx">Excel (.xlsx)</button><button type="button" class="btn" id="docx">Word / Docs (.docx)</button></div></div></details>
+        <details class="pbox"><summary class="btn sec">Imprimer / PDF ▾</summary><div class="pmenu"><div id="plist"></div><div class="pact"><button type="button" class="btn sec" id="pall">Tout cocher</button><button type="button" class="btn sec" id="pnone">Tout décocher</button><button type="button" class="btn" id="print">Imprimer la sélection</button></div></div></details>
+        <button type="button" class="btn sec" id="new">Nouveau dossier</button>
+        <button type="button" class="btn sec" id="reset">Tout décocher</button>
+        <span id="cnt"></span>
+      </div>
+      <p class="notice"><b>À vérifier.</b> Les quantités sortent du tableur tel qu'il est saisi ; les lignes en orange attendent une réponse du responsable du dossier. Coche au fur et à mesure, puis « Enregistrer la fiche » : tu obtiens un fichier HTML autonome pour ce dossier, à ranger sur le NAS et à rouvrir n'importe où, sans le classeur.</p>
+      <div class="saisie noprint" id="saisie"><b>À saisir</b>
+        <label id="sg-cab">Cadres pochettes — colonnes : <input type="number" id="in-ncol" class="inp" min="0" step="1" placeholder="0"> · cadres par colonne : <input type="number" id="in-ncpc" class="inp" min="0" step="1" placeholder="0"> <span id="sg-cab-r" class="foot"></span></label>
+        <label id="sg-eta" hidden>Étagères « L » — nombre : <input type="number" id="in-etn" class="inp" min="0" step="1" placeholder="0"> · longueur : <input type="number" id="in-etl" class="inp" min="0" step="1" placeholder="mm"> mm</label>
+      </div>
+      <div class="confbox noprint" id="confbox" hidden><b>À confirmer</b><ul id="conflist"></ul></div>
+      <div id="cats"></div>
+      <section class="sec" id="unk-sec"><h2>Lignes à vérifier</h2>
+        <p class="foot">Lignes à produire dont le texte évoque un article de la liste sans correspondre à une règle connue. À lire avant de valider la fiche.</p>
+        <div class="tbl"><table id="unk"><thead><tr><th>Feuille</th><th>Rayon</th><th>Rep.</th><th>Désignation</th><th>Informations</th><th style="text-align:right">Qté</th></tr></thead><tbody></tbody></table></div></section>
+      <section class="sec" id="glob-sec"><h2>Fiche récap globale</h2>
+        <p class="foot">Toutes les lignes, rangées par poste, avec une case à cocher.</p>
+        <div class="tbl"><table id="glob"><thead><tr><th>Article</th><th>Détail</th><th>Rayon</th><th>Rep.</th><th style="text-align:right">Qté</th><th class="c">Fait</th></tr></thead><tbody></tbody></table></div></section>
+      <section class="sec" id="fiches-sec">
+        <label class="toggle"><input type="checkbox" id="showfiches"> Afficher les fiches rayon (une fiche par rayon, texte agrandi pour l'atelier)</label>
+        <div class="sec" id="fiches" style="gap:18px" hidden></div></section>
+      <section class="sec noprint">
+        <label class="toggle"><input type="checkbox" id="showpieces"> Afficher les pièces lues dans le tableur <span class="foot" id="pieces-sub"></span></label>
+        <div class="pieces" id="pieces" hidden></div></section>
+    </div>
+  </div>
+</td></tr></tbody></table>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   DICO : dictionnaire de détection. Chaque règle est testée sur le texte
+   « désignation + largeur + hauteur + informations », mis en minuscules,
+   sans accents. Modifie ou ajoute des motifs ici, sans toucher au reste.
+   ===================================================================== */
+const DICO = {
+  cadrePvc30:   /encadrement[^.;]{0,25}pvc\s*30/,
+  soclePvc30:   /socle[^.;]{0,25}pvc\s*30/,
+  etagere:      /etager[ea]/,
+  texxalis:     /texxalis|cimaise/,
+  texEncadre:   /crossile/,                 // « profilé » en encadrement (coquille présente dans le tableur, conservée pour la détection)
+  texBlanc:     /crossline/,                // barre blanche de suspension du bandeau
+  bois:         /chene|casella|adhesiv[ea]?\s*bois|habill[ea]?\s*bois/,
+  crochets:     /(\d+)?\s*crochets?\s*de\s*suspension/,
+  bandeau:      /bandeau\s*aerien/,
+  canopee:      /alveolaire/,
+  rouge:        /rouge|ral\s*3020/,
+  lisse:        /lisse\s*bois|lisse\s*de\s*facade/,
+  fronton:      /fronton\s*tg/,
+  joueTg:       /joue\s*de\s*tg\s*bache/,
+  panneauRue:   /panneau\s*de\s*rue/,
+  rehausse:     /re?hausses?\s*de\s*tg/,
+  pochette:     /(\d+(?:\s*ou\s*\d+)?)\s*(cadres?\s+)?pochettes?\s*(a\d)/g,
+  joueMeuble:   /joue\s*de\s*meuble/,
+  pochetteA5:   /\bpochette\s*a5\b/,
+  enseigne:     /^enseigne/,
+  selonCdc:     /selon\s*(cahier\s*des\s*charges|charte)/,
+  suspect:      /pvc\s*30(?!\d)|texxalis|crossil|crossline|cimaise|alveolaire|canop|lisse|hausse|fronton|joue\s*de\s*tg|panneau\s*de\s*rue|pochette|socle|etager|crochet|bandeau/
+};
+const ZONES = ['EXTERIEURS','SAS-ACCUEIL-CAISSES ET ARRIERE CAISSE','PFT/PLS','PGC','TG','ZONE PROMOS-ACTU-SAISON','RSE','Transverses','DIVERS FRAIS'];
+const ZN = {'EXTERIEURS':'Extérieurs','SAS-ACCUEIL-CAISSES ET ARRIERE CAISSE':'SAS, accueil, caisses','PFT/PLS':'Rayons frais (PFT/PLS)','PGC':'PGC','TG':'Têtes de gondole','ZONE PROMOS-ACTU-SAISON':'Zone promos','RSE':'RSE','Transverses':'Transverses'};
+const PN = {'SAS et arrière caisse':'SAS','ZONE PROMOS-ACTU-SAISON':'Zone promos, actu, saison','Enseigne rayon PGC Alimentaire et Nonal':'Enseignes rayon PGC','Enseigne rayon PFT/PLS':'Enseignes rayons frais','BRECHE PLS':'Brèches PLS'};
+const SHEETS = {STANDARD:'Standard', SURMESURE:'Sur mesure', SOUSTRAITANCE:'Sous-traitance'};
+const ENSEIGNE = 'CARREFOUR MARKET';   // enseigne affichée devant le nom de la ville
+const ORDER = ['La façade','Station service','Abris chariots / Totems extérieurs','SAS','Accueil','Caisses','Marché','Fournée','Poissonnerie','Fromagerie','Boucherie','Charcuterie','PIPV','Canopée PGC','Œufs et Lait','Enseignes rayons frais','Enseignes rayon PGC','Zone promos, actu, saison','TG Secs','Transverses'];
+
+/* ---------- utilitaires ---------- */
+const par = s => esc(s).replace(/\(([^)]*)\)/g, '<span class="par">($1)</span>');
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const nf = n => Number(n).toLocaleString('fr-FR');
+const nrm = s => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+const num = x => { const s = String(x ?? '').replace(/\s/g,'').replace(',','.'); return /^-?\d+(\.\d+)?$/.test(s) ? parseFloat(s) : null; };
+const r3 = ml => Math.ceil(ml/3)*3;
+const $ = id => document.getElementById(id);
+const td = new TextDecoder('utf-8');
+
+/* ---------- réglages ---------- */
+const DEF = {socle:40, crochets:true, equerres:2, pattes:true, canop:true, rehausses:10};
+let SET = {...DEF};
+try { SET = {...DEF, ...(JSON.parse(localStorage.getItem('publimax-debits-set')||'{}'))}; } catch(_){}
+function setToForm(){ $('s-socle').value=SET.socle; $('s-crochets').checked=SET.crochets; $('s-equerres').value=SET.equerres; $('s-pattes').checked=SET.pattes; $('s-rehausses').value=SET.rehausses; }
+function formToSet(){ SET={socle:+$('s-socle').value||0, crochets:$('s-crochets').checked, equerres:+$('s-equerres').value||0, pattes:$('s-pattes').checked, rehausses:+$('s-rehausses').value||0}; try{localStorage.setItem('publimax-debits-set',JSON.stringify(SET));}catch(_){} }
+setToForm();
+$('set').addEventListener('change', ()=>{ formToSet(); if (STATE.pieces) render(); });
+
+/* =====================================================================
+   1. Lecture d'une archive zip par morceaux (le .xlsx en est une).
+   Seule la table des matières est lue en entier ; chaque entrée est
+   ensuite extraite à la demande, sans charger le fichier complet.
+   ===================================================================== */
+async function openZip(file){
+  const size = file.size;
+  const tailLen = Math.min(size, 70000);
+  const tail = new DataView(await file.slice(size - tailLen, size).arrayBuffer());
+  let eocd = -1;
+  for (let i = tail.byteLength - 22; i >= 0; i--) { if (tail.getUint32(i, true) === 0x06054b50) { eocd = i; break; } }
+  if (eocd < 0) throw new Error("Ce fichier n'est pas une archive lisible (.xlsx attendu).");
+  let n = tail.getUint16(eocd + 10, true), cdSize = tail.getUint32(eocd + 12, true), cdOff = tail.getUint32(eocd + 16, true);
+  if (n === 0xFFFF || cdSize === 0xFFFFFFFF || cdOff === 0xFFFFFFFF) {
+    const loc = eocd - 20;
+    if (loc >= 0 && tail.getUint32(loc, true) === 0x07064b50) {
+      const z64 = Number(tail.getBigUint64(loc + 8, true));
+      const z = new DataView(await file.slice(z64, z64 + 56).arrayBuffer());
+      n = Number(z.getBigUint64(32, true)); cdSize = Number(z.getBigUint64(40, true)); cdOff = Number(z.getBigUint64(48, true));
+    }
+  }
+  const cd = new DataView(await file.slice(cdOff, cdOff + cdSize).arrayBuffer());
+  const entries = {}; let p = 0;
+  for (let i = 0; i < n && p + 46 <= cd.byteLength; i++) {
+    if (cd.getUint32(p, true) !== 0x02014b50) break;
+    const method = cd.getUint16(p + 10, true);
+    let csize = cd.getUint32(p + 20, true), usize = cd.getUint32(p + 24, true);
+    const nlen = cd.getUint16(p + 28, true), elen = cd.getUint16(p + 30, true), clen = cd.getUint16(p + 32, true);
+    let lho = cd.getUint32(p + 42, true);
+    const name = td.decode(new Uint8Array(cd.buffer, cd.byteOffset + p + 46, nlen));
+    if (usize === 0xFFFFFFFF || csize === 0xFFFFFFFF || lho === 0xFFFFFFFF) {
+      let q = p + 46 + nlen; const end = q + elen;
+      while (q + 4 <= end) {
+        const id = cd.getUint16(q, true), sz = cd.getUint16(q + 2, true);
+        if (id === 1) { let r = q + 4;
+          if (usize === 0xFFFFFFFF) { usize = Number(cd.getBigUint64(r, true)); r += 8; }
+          if (csize === 0xFFFFFFFF) { csize = Number(cd.getBigUint64(r, true)); r += 8; }
+          if (lho === 0xFFFFFFFF) { lho = Number(cd.getBigUint64(r, true)); r += 8; }
+          break; }
+        q += 4 + sz;
+      }
+    }
+    entries[name] = {method, csize, usize, lho};
+    p += 46 + nlen + elen + clen;
+  }
+  async function read(name){
+    const e = entries[name]; if (!e) return null;
+    const lh = new DataView(await file.slice(e.lho, e.lho + 30).arrayBuffer());
+    const start = e.lho + 30 + lh.getUint16(26, true) + lh.getUint16(28, true);
+    const blob = file.slice(start, start + e.csize);
+    if (e.method === 0) return await blob.arrayBuffer();
+    if (e.method !== 8) throw new Error('Compression non gérée dans ' + name);
+    return await new Response(blob.stream().pipeThrough(new DecompressionStream('deflate-raw'))).arrayBuffer();
+  }
+  return {entries, read, text: async n => { const b = await read(n); return b ? td.decode(b) : null; }, file};
+}
+const px = (s) => new DOMParser().parseFromString(s, 'application/xml');
+const NS = {m:'http://schemas.openxmlformats.org/spreadsheetml/2006/main', r:'http://schemas.openxmlformats.org/officeDocument/2006/relationships', rel:'http://schemas.openxmlformats.org/package/2006/relationships', xdr:'http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing', a:'http://schemas.openxmlformats.org/drawingml/2006/main'};
+const tags = (el, ns, name) => Array.from(el.getElementsByTagNameNS(NS[ns], name));
+function resolve(base, target){ if (target.startsWith('/')) return target.slice(1); const parts = base.split('/'); parts.pop(); for (const seg of target.split('/')) { if (seg === '..') parts.pop(); else if (seg !== '.') parts.push(seg); } return parts.join('/'); }
+async function rels(zip, path){ const dir = path.split('/').slice(0,-1).join('/'), fn = path.split('/').pop(); const t = await zip.text(`${dir}/_rels/${fn}.rels`); const m = {}; if (!t) return m; for (const r of tags(px(t), 'rel', 'Relationship')) m[r.getAttribute('Id')] = resolve(path, r.getAttribute('Target')); return m; }
+
+/* =====================================================================
+   2. Lecture des feuilles utiles d'un classeur
+   ===================================================================== */
+function sheetKey(name){ const k = nrm(name).replace(/[^a-z]/g,'').toUpperCase(); return SHEETS[k] ? k : null; }
+async function readWorkbook(file, progress){
+  const zip = await openZip(file);
+  const wbx = await zip.text('xl/workbook.xml'); if (!wbx) throw new Error(`${file.name} : pas un classeur Excel (.xlsx).`);
+  const wb = px(wbx), wrels = await rels(zip, 'xl/workbook.xml');
+  const ss = []; const sst = await zip.text('xl/sharedStrings.xml');
+  if (sst) for (const si of tags(px(sst), 'm', 'si')) ss.push(tags(si, 'm', 't').map(t=>t.textContent).join(''));
+  const header = {}; const out = [];
+  const LABELS = new Set(['PRODUCTION','BE','ATELIER','LOGISTIQUE','POSEUR','VISUEL','QTE','INFORMATIONS','TOTAL','PAR','ASSEMBLE','EMBALLE','POINTE','CHARGE','POSE','BAT','FABRIQUE','EXTERIEURS']);
+  const readHeader = (rows) => {
+    const g = (r, c) => rows[r]?.cells[c]?.v ?? null;
+    const h = {dossier: g(1,'Q'), magasin: g(2,'M'), commercial: g(3,'C')};
+    const d = num(g(4,'C')); h.pose = d ? new Date(Date.UTC(1899,11,30) + d*86400000).toLocaleDateString('fr-FR') : (g(4,'C')||'');
+    for (let r = 1; r <= 6 && (!h.dossier || !h.magasin); r++) for (const [c, cell] of Object.entries(rows[r]?.cells || {})) {
+      const v = String(cell.v ?? '').trim();
+      if (!h.dossier && /^\d{5,7}$/.test(v)) h.dossier = v;
+      if (!h.magasin && /^[A-ZÀ-Ý][A-ZÀ-Ý' \-]{3,}$/.test(v) && !LABELS.has(v) && !/^N°|:$/.test(v) && !/CARREFOUR|MARKET/.test(v)) h.magasin = v;
+    }
+    return h;
+  };
+  const parseRows = (doc) => {
+    const rows = {};
+    for (const row of tags(doc, 'm', 'row')) {
+      const r = +row.getAttribute('r'); const hidden = row.getAttribute('hidden') === '1' || row.getAttribute('hidden') === 'true';
+      const cells = {};
+      for (const c of tags(row, 'm', 'c')) {
+        const col = c.getAttribute('r').replace(/\d+/g,''); const t = c.getAttribute('t'); const v = c.getElementsByTagNameNS(NS.m, 'v')[0]; const f = c.getElementsByTagNameNS(NS.m, 'f')[0];
+        let val = null;
+        if (t === 'inlineStr') val = tags(c, 'm', 't').map(x=>x.textContent).join('');
+        else if (v) val = t === 's' ? ss[+v.textContent] : v.textContent;
+        if ((val !== null && val !== '') || f) cells[col] = {v: val, f: f ? f.textContent : null};
+      }
+      if (Object.keys(cells).length) rows[r] = {cells, hidden};
+    }
+    return rows;
+  };
+  for (const sh of tags(wb, 'm', 'sheet')) {
+    const key = sheetKey(sh.getAttribute('name'));
+    if (!key) {
+      if (/balade/.test(nrm(sh.getAttribute('name'))) && (!header.magasin || !header.dossier)) {   // feuille souche : en-tête de secours
+        const path0 = wrels[sh.getAttributeNS(NS.r, 'id')]; if (!path0) continue;
+        try { const r0 = parseRows(px(await zip.text(path0))); const g0 = (r, c) => r0[r]?.cells[c]?.v ?? null;
+          const h0 = readHeader(r0); h0.dossier = h0.dossier || g0(2,'I'); h0.magasin = h0.magasin || g0(3,'D');
+          const d0 = num(g0(3,'I')); if (!h0.pose && d0) h0.pose = new Date(Date.UTC(1899,11,30) + d0*86400000).toLocaleDateString('fr-FR');
+          for (const k in h0) if (h0[k] && !header[k]) header[k] = h0[k]; } catch (_) {}
+      }
+      continue;
+    }
+    const path = wrels[sh.getAttributeNS(NS.r, 'id')]; if (!path) continue;
+    progress(`Lecture de la feuille ${sh.getAttribute('name')}…`);
+    const doc = px(await zip.text(path));
+    const rows = parseRows(doc);
+    { const h = readHeader(rows); for (const k in h) if (h[k] && !header[k]) header[k] = h[k]; }
+    /* images ancrées en colonne B */
+    const srels = await rels(zip, path); const anchors = []; let drels = {};
+    const drawing = Object.values(srels).find(p => p.includes('/drawings/'));
+    if (drawing) {
+      const dx = px(await zip.text(drawing)); drels = await rels(zip, drawing);
+      const use = {}; for (const b of tags(dx, 'a', 'blip')) { const t = drels[b.getAttributeNS(NS.r, 'embed')]; if (t) use[t] = (use[t]||0)+1; }
+      for (const anc of Array.from(dx.documentElement.children)) {
+        const blip = anc.getElementsByTagNameNS(NS.a, 'blip')[0]; if (!blip) continue;
+        const target = drels[blip.getAttributeNS(NS.r, 'embed')]; if (!target || /\.emf$|\.wmf$/i.test(target) || use[target] > 20) continue;
+        const from = anc.getElementsByTagNameNS(NS.xdr, 'from')[0], to = anc.getElementsByTagNameNS(NS.xdr, 'to')[0]; if (!from) continue;
+        if (from.getElementsByTagNameNS(NS.xdr, 'col')[0].textContent !== '1') continue;
+        const r0 = +from.getElementsByTagNameNS(NS.xdr, 'row')[0].textContent + 1;
+        const r1 = to ? +to.getElementsByTagNameNS(NS.xdr, 'row')[0].textContent + 1 : r0;
+        anchors.push({r0, r1, target});
+      }
+    }
+    out.push({key, name: SHEETS[key], rows, anchors, zip});
+  }
+  if (!out.length) throw new Error(`${file.name} : aucune feuille STANDARD, SUR MESURE ou SOUS-TRAITANCE trouvée.`);
+  return {sheets: out, header};
+}
+
+/* =====================================================================
+   3. Pièces : une ligne maître par pièce, visible dans une seule feuille
+   ===================================================================== */
+function buildPieces(sheets){
+  const uni = new Map();
+  for (const S of sheets) {
+    let zone = null, poste = null;
+    const rs = Object.keys(S.rows).map(Number).sort((a,b)=>a-b);
+    for (const r of rs) {
+      if (r < 10) continue;
+      const d = S.rows[r].cells, g = c => d[c]?.v ?? null;
+      const B = String(g('B') ?? '').trim();
+      if (B && !g('C') && !g('A')) { if (ZONES.includes(B)) { zone = B; poste = null; } else poste = B; if (zone === 'DIVERS FRAIS') break; continue; }
+      if (zone === 'DIVERS FRAIS' || !zone) continue;
+      if (!g('A') && !(g('C') && g('F'))) continue;
+      if (!g('C') && !g('F')) continue;
+      const src = d.C ? (d.C.f || '') : (d.A?.f || ''); const m = src.match(/!\$?[A-Z]+\$?(\d+)/);
+      const key = m ? +m[1] : `L|${S.key}|${r}`;
+      if (!uni.has(key)) uni.set(key, {key, zone, poste: poste || zone, rep: g('A'), des: g('C'), L: g('D'), H: g('E'), q: g('F'), info: g('G'), vis: {}, rows: {}, manual: !m});
+      const rec = uni.get(key); rec.vis[S.key] = !S.rows[r].hidden; rec.rows[S.key] = r;
+    }
+  }
+  for (const [k, v] of Array.from(uni.entries())) {
+    if (typeof k === 'number') continue;
+    const twins = Array.from(uni.entries()).filter(([kk, vv]) => typeof kk === 'number' && vv.rep === v.rep && vv.poste === v.poste && !Object.values(vv.vis).some(Boolean));
+    if (twins.length === 1) { const [tk, t] = twins[0]; for (const s in t.rows) if (!(s in v.rows)) { v.rows[s] = t.rows[s]; v.vis[s] = t.vis[s]; } v.key = tk; uni.set(tk, v); uni.delete(k); }
+  }
+  const list = Array.from(uni.values()).filter(v => Object.values(v.vis).some(Boolean)).sort((a,b) => Math.min(...Object.values(a.rows)) - Math.min(...Object.values(b.rows)));
+  return list.map(v => {
+    const vis = Object.keys(v.vis).find(s => v.vis[s]) || Object.keys(v.vis)[0];
+    const L = String(v.L ?? '').trim(), H = String(v.H ?? '').trim(); let des = String(v.des ?? '').trim(); const info = String(v.info ?? '').trim();
+    const q = num(v.q) || 0; const flags = []; let parts = [], w = null, h = null, note = null;
+    const nl = num(L), nh = num(H); const txt = [L, H].filter(x => num(x) === null).join(' ');
+    const ml = (H + ' ' + L).match(/(\d+(?:[.,]\d+)?)\s*ml/i);
+    if (ml) { w = parseFloat(ml[1].replace(',','.')) * 1000; h = 40; note = 'ml'; }
+    else if (nl !== null && nh !== null) { w = nl; h = nh; }
+    else {
+      for (const mm of txt.matchAll(/(?:(\d+)\s*[A-Za-zÀ-ÿ][^\d/]*?)?(\d{1,2} \d{3}|\d+)\s*x\s*(\d{1,2} \d{3}|\d+)/g)) parts.push({n: mm[1] ? +mm[1] : 1, nx: !!mm[1], w: +mm[2].replace(' ',''), h: +mm[3].replace(' ','')});
+      if (parts.length) { w = parts[0].w; h = parts[0].h; note = txt; }
+      else if (/\d+\s*ou\s*\d+/.test(L) && nh) { w = +L.match(/\d+/)[0]; h = nh; note = 'Largeur : ' + L; }
+      else { w = nl; h = nh; }
+    }
+    if (parts.length < 2) parts = [];
+    if (/#REF/.test(L + H)) flags.push('Cellule en erreur (#REF!) dans le tableur');
+    if (des === '0' || des === '') { flags.push('Désignation vide (lien cassé)'); des = '(sans désignation)'; }
+    if (q > 0) {
+      if (!(w > 0) || !(h > 0)) flags.push((w || h) ? 'Une dimension manque (largeur ou hauteur à 0)' : 'Format non renseigné');
+      if (DICO.selonCdc.test(nrm(info))) flags.push('Fabrication « selon cahier des charges » : détail à récupérer');
+      if (/\d\s*ou\s*\d/.test(info + ' ' + L)) flags.push('Choix non tranché (« ou ») dans le tableur');
+      if (/format selon/i.test(L + H)) flags.push('Format « selon taille TG » : à mesurer');
+      if (v.manual) flags.push('Ligne saisie à la main, non liée à la feuille maître');
+    }
+    return {id: String(v.key).replace(/\W/g,'_'), key: v.key, zone: ZN[v.zone] || v.zone, poste: PN[v.poste] || v.poste, rep: v.rep || '', des, L, H, q, info, sheet: SHEETS[vis], sheetKey: vis, w: w || 0, h: h || 0, note, parts, flags, rows: v.rows, vis: v.vis, img: null, qBlank: String(v.q ?? '').trim() === ''};
+  });
+}
+
+/* ---------- images : vignettes, et référence à l'original ---------- */
+async function attachImages(pieces, sheets, progress){
+  const byRow = {}; for (const p of pieces) for (const s in p.rows) (byRow[s] ??= {})[p.rows[s]] = p;
+  const thumbs = {}; let done = 0; const todo = [];
+  for (const S of sheets) for (const a of S.anchors) {
+    let cand = []; for (let r = a.r0; r <= a.r1; r++) { const p = byRow[S.key]?.[r]; if (p && !S.rows[r].hidden) cand.push(p); }
+    if (!cand.length) for (let r = a.r0; r <= a.r1; r++) { const p = byRow[S.key]?.[r]; if (p) cand.push(p); }
+    if (!cand.length) continue;
+    const p = cand[0]; const visHere = !!p.vis[S.key];
+    if (p.img && !visHere) continue;
+    if (p.q <= 0 && !DICO.canopee.test(nrm(p.info))) continue;   // on ne décode pas les visuels des lignes à quantité 0
+    todo.push({p, S, a});
+  }
+  for (const {p, S, a} of todo) {
+    const tid = S.key.slice(0,3) + ':' + a.target;
+    if (!thumbs[tid]) {
+      try {
+        const buf = await S.zip.read(a.target); const blob = new Blob([buf]);
+        const bmp = await createImageBitmap(blob);
+        const k = Math.min(1, 300 / bmp.width, 220 / bmp.height);
+        const c = document.createElement('canvas'); c.width = Math.max(1, Math.round(bmp.width * k)); c.height = Math.max(1, Math.round(bmp.height * k));
+        const ctx = c.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0,0,c.width,c.height); ctx.drawImage(bmp, 0, 0, c.width, c.height); bmp.close();
+        thumbs[tid] = {data: c.toDataURL('image/jpeg', 0.7), zip: S.zip, entry: a.target, w: bmp.width, h: bmp.height};
+      } catch (e) { thumbs[tid] = null; }
+      done++; if (done % 10 === 0) progress(`Visuels : ${done} / ${todo.length}…`);
+    }
+    if (thumbs[tid] && (!p.img || p.vis[S.key])) p.img = tid;
+  }
+  return thumbs;
+}
+
+/* =====================================================================
+   4. Débits matière : règles du cahier des charges
+   ===================================================================== */
+function computeDebits(pieces){
+  const rows = []; const matched = new Set();
+  let etag = null;
+  const add = (p, fam, art, det, q, unit='ex', flag=null, extra={}) => { rows.push({poste: p.poste, rep: p.rep, des: p.des, fam, art, det, q, unit, flag, img: extra.img ? p.img : null, w: p.w, h: p.h, pid: p.id}); matched.add(p.id); };
+  for (const p of pieces) {
+    const info = p.info, q = p.q, t = nrm(p.des + ' ' + info), ti = nrm(info);
+    if (q <= 0 && !DICO.canopee.test(ti)) continue;
+    if (DICO.cadrePvc30.test(ti)) add(p,'PVC 30 mm habillé bois','Cadre PVC 30x30 habillé chêne',`${p.des} — panneau ${nf(p.w)} × ${nf(p.h)} mm`,q,'cadre','Côtés à encadrer à définir sur le visuel',{img:true});
+    if (DICO.soclePvc30.test(ti)) add(p,'PVC 30 mm habillé bois','Socle PVC 30 mm rainuré habillé chêne',`longueur ${p.w + SET.socle} mm — pour ${p.des} (largeur ${nf(p.w)} + ${SET.socle})`,q,'ex');
+    if (DICO.etagere.test(ti)) { const I = IN(); const n = +I.etn || q, L = +I.etl || 0; etag = {n, L, q}; add(p,'PVC 30 mm habillé bois','Étagères « L » PVC 30 mm habillées chêne', L ? `${nf(L)} mm — pour ${p.des}` : `pour ${p.des} — longueur à saisir en haut de page`, n, 'ex', L ? null : 'Longueur à saisir'); }
+    if (DICO.enseigne.test(nrm(p.des)) && p.poste.startsWith('Enseignes') && q > 0 && !DICO.joueMeuble.test(t)) {
+      const sans = /sans visuels/.test(t), avec = /avec visuels/.test(t);
+      const taille = p.h === 700 ? 'B' : p.h === 550 ? 'C' : 'A';
+      const vis = sans ? 'texte seul' : `texte + visuel taille ${taille}${avec ? '' : ' (par défaut)'}`;
+      add(p,'Enseignes','Semelle enseigne PVC 30 mm habillée chêne',`${p.des} — ${vis}`,q,'ex');
+    }
+    if (DICO.texxalis.test(ti) && p.note === 'ml') { const ml = p.w/1000, bois = DICO.bois.test(ti); add(p,'Barres de cimaise',`Profilé Texxalis noir${bois?' habillé bois':''} — suspension`,`${ml} ml demandés → ${r3(ml)} ml (${r3(ml)/3} barres de 3 m)`,r3(ml),'ml'); }
+    if (DICO.texEncadre.test(ti)) { add(p,'Barres de cimaise','Profilé Texxalis noir habillé bois — encadrement',`${nf(p.w)} mm (${p.des} ${nf(p.w)} × ${nf(p.h)})`,2*q,'ex',null,{img:true}); add(p,'Barres de cimaise','Profilé Texxalis noir habillé bois — encadrement',`${nf(p.h)} mm (${p.des} ${nf(p.w)} × ${nf(p.h)})`,2*q,'ex'); }
+    if (DICO.texBlanc.test(ti)) for (const a of (p.parts.length ? p.parts : [{n:q,w:p.w,h:p.h}])) { const n3 = Math.floor(a.w/3000), r = a.w - 3000*n3; const bars = (n3 + (r?1:0))*a.n; if (n3) { add(p,'Barres de cimaise','Profilé Texxalis blanc — suspension',`3 000 mm (bandeau de ${nf(a.w)}${a.n>1?', '+a.n+' ex':''})`,n3*a.n,'ex'); rows[rows.length-1].bars = bars; rows[rows.length-1].joints = Math.max(bars - a.n, 0); } if (r) { add(p,'Barres de cimaise','Profilé Texxalis blanc — suspension',`${nf(r)} mm (bandeau de ${nf(a.w)}${a.n>1?', '+a.n+' ex':''})`,a.n,'ex'); if (!n3) { rows[rows.length-1].bars = bars; rows[rows.length-1].joints = 0; } } }
+    { const mc = ti.match(DICO.crochets); if (mc) { const n = mc[1] ? +mc[1] : 2; add(p,'Barres de cimaise','Crochets de suspension',`${n} par panneau — ${p.des} × ${q}`,n*q,'ex'); } }
+    if (DICO.bandeau.test(t)) for (const a of (p.parts.length ? p.parts : [{n:q,w:p.w,h:p.h}])) { const n3 = Math.floor(a.w/3000), r = a.w - 3000*n3; if (n3) add(p,'Bandeau « les offres market »','Bandeau dibond 3 mm rouge RAL 3020 / verso chêne',`3 000 × ${nf(a.h)} mm (bandeau de ${nf(a.w)}${a.n>1?', '+a.n+' ex':''})`,n3*a.n,'ex'); if (r) add(p,'Bandeau « les offres market »','Bandeau dibond 3 mm rouge RAL 3020 / verso chêne',`${nf(r)} × ${nf(a.h)} mm (bandeau de ${nf(a.w)}${a.n>1?', '+a.n+' ex':''})`,a.n,'ex'); }
+    if (DICO.canopee.test(ti)) { const rouge = DICO.rouge.test(ti); const art = `Canopée ${rouge?'rouge RAL 3020':'effet bois'} R/V`;
+      if (p.parts.length) { for (const a of p.parts) add(p,'Canopées carton alvéolaire 16 mm',art,`${nf(a.w)} × ${nf(a.h)} mm (${p.des})`,a.n,'ex',(q===0 && !p.qBlank && !p.parts.every(x=>x.nx))?'Quantité à 0 dans le tableur : à confirmer':null); }
+      else if (q > 0) add(p,'Canopées carton alvéolaire 16 mm',art,`${nf(p.w)} × ${nf(p.h)} mm (${p.des})`,q,'ex'); }
+    if (DICO.lisse.test(t) && q > 0) { const n3 = Math.floor(p.w/3000), r = p.w - 3000*n3; if (n3) add(p,'Lisse de façade','Lisse de façade alu plié + habillage chêne',`3 000 × ${nf(p.h)} mm (lisse de ${nf(p.w)}${q>1?', '+q+' ex':''})`,n3*q,'ex'); if (r) add(p,'Lisse de façade','Lisse de façade alu plié + habillage chêne',`${nf(r)} × ${nf(p.h)} mm (lisse de ${nf(p.w)}${q>1?', '+q+' ex':''})`,q,'ex'); }
+    if (DICO.fronton.test(t)) add(p,'Sous-traitance','Frontons de TG','format selon taille TG',q,'ex','Format à mesurer');
+    if (DICO.joueTg.test(t)) add(p,'Sous-traitance','Joues de TG (bâche)',`${nf(p.w)} × ${nf(p.h)} mm`,q,'ex');
+    if (DICO.panneauRue.test(t)) add(p,'Sous-traitance','Panneaux de rue acier plié laqué blanc',`${p.L} mm, 1 pochette A3 portrait`,q,'ex');
+    if (DICO.rehausse.test(t)) add(p,'Sous-traitance','Rehausses de TG laquées noir','',SET.rehausses,'ex','À confirmer au lancement');
+    for (const m of ti.matchAll(DICO.pochette)) { const nums = m[1].match(/\d+/g).map(Number); const nn = Math.max(...nums); const cadre = !!m[2];
+      if (cadre) add(p,'Cadres pochettes',`Cadre pochette ${m[3].toUpperCase()}`,`${p.des} × ${q}`,nn*q,'ex');
+      else add(p,'Pochettes',`Pochette ${m[3].toUpperCase()}`,`${nums.length>1 ? m[1]+' (le plus grand retenu)' : nn} par panneau — ${p.des} × ${q}`,nn*q,'ex'); }
+    if (DICO.pochetteA5.test(ti)) add(p,'Pochettes','Pochette A5',`1 par panneau — ${p.des} × ${q}`,q,'ex');
+  }
+  rows.sort((a,b) => (ORDER.indexOf(a.poste)+1||99) - (ORDER.indexOf(b.poste)+1||99) || a.fam.localeCompare(b.fam) || a.art.localeCompare(b.art) || String(a.rep).localeCompare(String(b.rep)));
+  const unknown = pieces.filter(p => p.q > 0 && !matched.has(p.id) && DICO.suspect.test(nrm(p.des + ' ' + p.info)));
+  /* synthèses */
+  const syn = {etag};
+  const soc = {}; for (const r of rows) if (r.art.startsWith('Socle')) { const l = +r.det.match(/longueur (\d+)/)[1]; soc[l] = (soc[l]||0) + r.q; } syn.socles = Object.entries(soc).map(([l,q])=>[+l,q]).sort((a,b)=>a[0]-b[0]);
+  const cro = rows.filter(r=>r.art==='Crochets de suspension').reduce((s,r)=>s+r.q,0); syn.crochets = cro; syn.crochetsArr = SET.crochets ? Math.floor(cro/10)*10 + 10 : cro; syn.crochetsPanneaux = rows.filter(r=>r.art==='Crochets de suspension').reduce((s,r)=>s+ +r.det.split(' × ').pop(),0);
+  syn.texxalis = {}; for (const r of rows) if (r.art.startsWith('Profilé') && r.art.endsWith('suspension') && r.unit==='ml') (syn.texxalis[r.art.replace(' — suspension','')] ??= []).push([r.poste, r.det, r.q]);
+  const barres = rows.filter(r=>r.unit==='ml').reduce((s,r)=>s+r.q/3,0) + rows.reduce((s,r)=>s+(r.bars||0),0); syn.barres = barres; syn.equerres = barres*SET.equerres; syn.pattes = SET.pattes ? rows.filter(r=>r.unit==='ml').reduce((s,r)=>s+Math.max(r.q/3-1,0),0) + rows.reduce((s,r)=>s+(r.joints||0),0) : 0; syn.blancBars = rows.reduce((s,r)=>s+(r.bars||0),0);
+  const can = {}; for (const r of rows) if (r.fam.startsWith('Canop')) { const k = [r.art, r.det.split(' (')[0], r.des==='Canopée'?r.poste:r.des, !!r.flag].join('|'); can[k] = (can[k]||0)+r.q; } syn.canopees = Object.entries(can).map(([k,q])=>{const [art,fmt,poste,flag]=k.split('|'); return {art,fmt,poste,q,flag:flag==='true'};});
+  const poc = {}; for (const r of rows) if (r.fam==='Pochettes') poc[r.art]=(poc[r.art]||0)+r.q; syn.pochettes = Object.entries(poc).sort();
+  const cad = {}; for (const r of rows) if (r.fam==='Cadres pochettes') cad[r.art]=(cad[r.art]||0)+r.q; syn.cadres = Object.entries(cad).sort();
+  const cadres = rows.filter(r=>r.fam==='Cadres pochettes').reduce((s,r)=>s+r.q,0); syn.attaches = cadres*4; syn.cadresPoch = cadres;
+  if (cadres) { const I = IN(); const nc = +I.ncol || 0; const cpc = +I.ncpc || (nc ? Math.ceil(cadres/nc) : 0); const cad = nc && cpc ? nc*cpc : cadres; syn.cab = {nc, cpc, cad}; syn.attaches = cad*4;
+    rows.push({poste:'Tous postes', rep:'', des:'', fam:'Cadres pochettes', art:'Câbles de fixation haut / bas', det:nc?`${nc} colonne${nc>1?'s':''} de cadres`:'nombre de colonnes à saisir en haut de page', q:nc*2, unit:'ex', flag:nc?null:'À saisir'});
+    rows.push({poste:'Tous postes', rep:'', des:'', fam:'Cadres pochettes', art:'Attaches cadre-câbles', det:nc?`${nc} colonne${nc>1?'s':''} × ${cpc} cadres = ${cad} cadres`:`${cadres} cadres`, q:cad*4, unit:'ex', flag:(nc && cad!==cadres)?`${cadres} cadres pochettes au dossier`:null}); }
+  syn.encadrements = rows.filter(r=>r.art.startsWith('Cadre PVC')).map(r=>({pid:r.pid,des:r.des,w:r.w,h:r.h,img:r.img,poste:r.poste,rep:r.rep}));
+  syn.tex_enc = rows.filter(r=>r.art.includes('encadrement')).map(r=>({des:r.des,w:r.w,h:r.h}));
+  syn.tex_blanc = rows.filter(r=>r.art.startsWith('Profilé Texxalis blanc')).map(r=>r.det);
+  syn.enseignes = rows.filter(r=>r.fam==='Enseignes').map(r=>({des:r.des,det:r.det.split(' — ').pop(),flag:r.flag}));
+  syn.bandeau = rows.filter(r=>r.fam.startsWith('Bandeau')).map(r=>r.det);
+  syn.st = rows.filter(r=>r.fam==='Sous-traitance').map(r=>[r.art,r.det,r.q,r.flag]);
+  syn.lisse = rows.filter(r=>r.fam==='Lisse de façade').map(r=>[r.det,r.q,r.flag]);
+  syn.etageres = rows.filter(r=>r.art.startsWith('Étag')).map(r=>[r.poste,r.det,r.flag]);
+  return {rows, syn, unknown};
+}
+
+/* =====================================================================
+   5. Rendu
+   ===================================================================== */
+const STATE = {};
+const li = (n, t, sub, flag) => `<li><span class="n">${n}</span><span class="t">${esc(t)}${sub?`<small>${esc(sub)}</small>`:''}${flag?`<small class="flag">${esc(flag)}</small>`:''}</span></li>`;
+const box = (title, body, small) => `<div class="box"><h3>${esc(title)}${small?`<small>${esc(small)}</small>`:''}</h3>${body}</div>`;
+const thumbOf = p => p.img && STATE.thumbs[p.img] ? STATE.thumbs[p.img].data : null;
+const magasinHTML = h => `${esc(ENSEIGNE)} - <b>${esc((h.magasin||'?').toUpperCase())}</b>`;
+const magasinTxt = h => `${ENSEIGNE} - ${(h.magasin||'?').toUpperCase()}`;
+const CATS = [
+  {name:'Cadres PVC 30×30 habillés bois', fams:['PVC 30 mm habillé bois'], only: r => r.art.startsWith('Cadre PVC'), arts:['Cadre PVC 30x30 habillé chêne']},
+  {name:'PVC 30 mm habillé bois — socles, étagères, semelles', fams:['PVC 30 mm habillé bois','Enseignes'], only: r => !r.art.startsWith('Cadre PVC'), arts:['Socle PVC 30 mm rainuré habillé chêne','Étagères « L » PVC 30 mm habillées chêne','Semelle enseigne PVC 30 mm habillée chêne']},
+  {name:'Barres de cimaise', fams:['Barres de cimaise'], arts:['Profilé Texxalis noir habillé bois — encadrement','Profilé Texxalis noir habillé bois — suspension','Profilé Texxalis noir — suspension','Profilé Texxalis blanc — suspension','Équerres de fixation Texxalis noir pré-percées','Pattes de jonction profilés Texxalis','Crochets de suspension']},
+  {name:'Bandeau « les offres market »', fams:['Bandeau « les offres market »'], arts:[]},
+  {name:'Canopées carton alvéolaire', fams:['Canopées carton alvéolaire 16 mm'], arts:['Canopée effet bois R/V','Canopée rouge RAL 3020 R/V']},
+  {name:'Lisse de façade extérieur', fams:['Lisse de façade'], arts:[]},
+  {name:'Éléments en sous-traitance', fams:['Sous-traitance'], arts:['Rehausses de TG laquées noir','Frontons de TG','Joues de TG (bâche)','Panneaux de rue acier plié laqué blanc']},
+  {name:'Cadres pochettes', fams:['Cadres pochettes'], arts:['Cadre pochette A3','Cadre pochette A4','Câbles de fixation haut / bas','Attaches cadre-câbles']},
+  {name:'Pochettes sur panneaux', fams:['Pochettes'], arts:['Pochette A3','Pochette A4','Pochette A5']}
+];
+const catOf = r => CATS.findIndex(c => c.fams.includes(r.fam) && (!c.only || c.only(r)));
+const artRank = (cat, art) => { const i = CATS[cat]?.arts.indexOf(art) ?? -1; return i < 0 ? 99 : i; };
+function render(){
+  const {rows, syn, unknown} = computeDebits(STATE.pieces);
+  /* lignes globales ajoutées pour la fiche à cocher */
+  if (syn.barres) rows.push({poste:'Tous postes', rep:'', des:'', fam:'Barres de cimaise', art:'Équerres de fixation Texxalis noir pré-percées', det:`${SET.equerres} par barre de 3 m, sur ${syn.barres} barres de suspension`, q:syn.equerres, unit:'ex', flag:null, pid:'', order:1e6});
+  if (syn.barres && SET.pattes) rows.push({poste:'Tous postes', rep:'', des:'', fam:'Barres de cimaise', art:'Pattes de jonction profilés Texxalis', det:'1 entre deux barres qui se suivent, poste par poste', q:syn.pattes, unit:'ex', flag:null, pid:'', order:1e6});
+  const pieceOrder = new Map(STATE.pieces.map((p,i)=>[p.id,i]));
+  rows.forEach(r => { r.cat = catOf(r); r.order = r.order ?? (pieceOrder.get(r.pid) ?? 1e5); });
+  rows.sort((a,b) => a.cat - b.cat || artRank(a.cat,a.art) - artRank(b.cat,b.art) || a.art.localeCompare(b.art) || a.order - b.order);
+  STATE.rows = rows; STATE.syn = syn;
+  const H = STATE.header;
+  const art = (title, body, tot, big, inl) => `<div class="art${big?' big':''}"><h3><span>${esc(title)}${inl&&tot?` <span class="tot sm">${tot}</span>`:''}</span>${tot&&!inl?`<span class="tot">${tot}</span>`:''}</h3>${body}</div>`;
+  const qcell = r => r.qtxt ? esc(r.qtxt) : (r.q ? nf(r.q)+' '+esc(r.unit) : '______');
+  const pre = r => (r.poste && r.poste!=='Tous postes' ? `<b class="pr">${esc(r.poste)}${r.rep?' · '+esc(r.rep):''}</b>` : '');
+  const lines = (rs, opt={}) => {
+    if (!rs.length) return '<ul class="li"><li class="foot">aucun</li></ul>';
+    const single = rs.length === 1 && opt.single !== false;
+    let gk = null;
+    return `<ul class="li">${rs.map(r=>{ let gap = false; if (opt.group) { const k = opt.group(r); gap = gk !== null && k !== gk; gk = k; } const p = pre(r); const txt = opt.text ? opt.text(r) : [p, r.det ? par(r.det) : ''].filter(Boolean).join(' · '); return `<li${gap?' class="gap"':''}><span class="n">${opt.qfn ? opt.qfn(r) : (single && !r.qtxt ? '' : qcell(r))}</span><span class="t">${txt}${r.flag?`<small class="flag">${esc(r.flag)}</small>`:''}</span></li>`; }).join('')}</ul>`;
+  };
+  const byArt = a => rows.filter(r=>r.art===a);
+  const sum = rs => rs.reduce((s,r)=>s+r.q,0);
+  let html = '';
+
+  const CH = 22;
+  const grp = r => r.det.split('(')[1] || '';
+  const artL = (title, rs, opt, tot, inl) => {
+    if (rs.length <= CH) return art(title, lines(rs, opt), tot, false, inl);
+    let h = '';
+    for (let i = 0; i < rs.length; i += CH) { const last = i + CH >= rs.length; h += `<div class="art${i?' more':''}">${i?`<div class="printhead">${printHeadHTML()}</div>`:''}<h3><span>${esc(title)}${i?' <span class="tot sm">(suite)</span>':''}${!i&&inl&&tot?` <span class="tot sm">${tot}</span>`:''}</span>${!i&&tot&&!inl?`<span class="tot">${tot}</span>`:''}</h3>${lines(rs.slice(i, i+CH), opt)}${last?'':'<p class="cont">suite page suivante →</p>'}</div>`; }
+    return h;
+  };
+  const cart = `<div class="cart">${document.querySelector('.head').innerHTML}</div>`;
+  const conf = CONF(); const confItems = [];
+  const secs = [];
+  const sec = (idx, inner) => { const rs = rows.filter(r=>r.cat===idx); const empty = !rs.some(r=>r.q>0); if (empty) confItems.push({key:'cat:'+idx, label:`Poste « ${CATS[idx].name} » : aucune quantité dans le tableur — poste masqué`}); secs.push(`<section class="cat"${empty?' hidden':''}>${cart}<h2>${esc(CATS[idx].name)}</h2>${inner}</section>`); };
+  rows.forEach(r => { if (r.flag && /à 0 dans le tableur/.test(r.flag)) confItems.push({key:'row:'+r.art+'|'+r.poste+'|'+r.rep+'|'+r.det, label:`${r.art} — ${r.poste}${r.rep?' · '+r.rep:''} · ${r.det} : quantité à 0 dans le tableur`}); });
+
+  /* 1. PVC 30 mm habillé bois */
+  let c = '';
+  const encs = syn.encadrements.slice().sort((x,y)=>(pieceOrder.get(x.pid)??0)-(pieceOrder.get(y.pid)??0));
+  { const po = new Map(); encs.forEach(e=>{ if(!po.has(e.poste)) po.set(e.poste, po.size); }); encs.sort((x,y)=>(po.get(x.poste)-po.get(y.poste)) || ((pieceOrder.get(x.pid)??0)-(pieceOrder.get(y.pid)??0))); }
+  sec(0, art('Cadres imitation bois en PVC 30x30 mm', `<div class="encs">${encs.map(x=>`<div class="encwrap"><div class="enc"><div class="des">${esc(x.des)}</div><div class="sub"><b>${esc(x.poste)}</b> · rep. ${esc(x.rep)}</div></div></div>`).join('')||'<p class="foot">aucun</p>'}</div>`, '', true));
+  c += art('Socles PVC 30 mm habillés bois', `<ul class="li">${syn.socles.map(([l,q])=>{ const ps = {}; rows.filter(r=>r.art.startsWith('Socle') && r.det.startsWith('longueur '+l+' ')).forEach(r=>{ps[r.poste]=(ps[r.poste]||0)+r.q;}); return li(nf(q)+' ex', 'Socle '+l+' mm', Object.entries(ps).map(([p,n])=>p+' '+n).join(', ')); }).join('')||'<li class="foot">aucun</li>'}</ul>`);
+  const eta = byArt('Étagères « L » PVC 30 mm habillées chêne');
+  c += art('Étagères « L » en PVC 30 mm habillées bois', lines(eta, {single:false}));
+  $('sg-eta').hidden = !eta.length; if (syn.etag) { $('in-etn').value = syn.etag.n || ''; $('in-etl').value = syn.etag.L || ''; }
+  const ens = byArt('Semelle enseigne PVC 30 mm habillée chêne');
+  c += artL('Semelles enseignes inertes / lumineuses en PVC 30 mm habillées bois', ens, {single:false, text: r => `<b class="pr">${esc(r.des)}</b>`}, ens.length+' enseignes');
+  sec(1, c);
+
+  /* 2. Barres de cimaise */
+  c = '';
+  const prof = (name, label) => { const rs = byArt(name); const tot = sum(rs); return artL(label, rs, {single:false, qfn: r => String(r.q/3)}, tot ? `${tot} ml = ${tot/3} barres` : ''); };
+  c += artL('Profilés TEXXALIS noir habillés bois — encadrement', byArt('Profilé Texxalis noir habillé bois — encadrement'), {single:false, group: grp});
+  c += '<hr class="sep">';
+  c += prof('Profilé Texxalis noir habillé bois — suspension','Profilés TEXXALIS noir habillés bois — suspension');
+  c += prof('Profilé Texxalis noir — suspension','Profilés TEXXALIS noir — suspension');
+  { const rs = byArt('Profilé Texxalis blanc — suspension'); c += artL('Profilés TEXXALIS blancs — suspension (découpe)', rs, {single:false, group: grp}, syn.blancBars ? `${syn.blancBars} barres` : ''); }
+  c += art('Équerres de fixation TEXXALIS noir pré-percées', '', nf(syn.equerres)+' ex');
+  if (SET.pattes) c += art('Pattes de jonction profilés TEXXALIS', '', nf(syn.pattes)+' ex');
+  const cr = byArt('Crochets de suspension');
+  c += art('Crochets de suspension', `<p class="foot">${syn.crochets} demandés sur ${syn.crochetsPanneaux} panneaux${SET.crochets?', arrondis à la dizaine supérieure':''}</p><details><summary class="foot">Détail par panneau</summary>${lines(cr, {single:false})}</details>`, nf(syn.crochetsArr)+' ex');
+  sec(2, c);
+
+  /* 3. Bandeau */
+  sec(3, artL('Bandeaux dibond 3 mm R° rouge RAL 3020 // V° habillage bois', rows.filter(r=>r.fam.startsWith('Bandeau')), {single:false, group: grp}));
+
+  /* 4. Canopées */
+  c = artL('Canopées carton alvéolaire 16 mm effet bois R/V', byArt('Canopée effet bois R/V'), {single:false}, nf(sum(byArt('Canopée effet bois R/V')))+' ex', true);
+  c += artL('Canopées carton alvéolaire 16 mm rouge RAL 3020 R/V', byArt('Canopée rouge RAL 3020 R/V'), {single:false}, nf(sum(byArt('Canopée rouge RAL 3020 R/V')))+' ex', true);
+  sec(4, c);
+
+  /* 5. Lisse */
+  sec(5, artL('Lisse de façade ext. en alu plié + habillage bois', rows.filter(r=>r.fam==='Lisse de façade'), {single:false, group: grp}));
+
+  /* 6. Sous-traitance */
+  c = '';
+  for (const a of CATS[6].arts) c += artL(a, byArt(a), {single:false}, nf(sum(byArt(a)))+' ex', true);
+  sec(6, c);
+
+  /* 7. Cadres pochettes */
+  c = artL('Cadres pochettes', rows.filter(r=>r.art.startsWith('Cadre pochette')), {single:false}, nf(syn.cadresPoch)+' ex', true);
+  { const cb = syn.cab || {nc:0,cpc:0,cad:syn.cadresPoch}; $('in-ncol').value = cb.nc || ''; $('in-ncpc').value = cb.nc ? cb.cpc : ''; $('sg-cab-r').textContent = cb.nc ? `→ ${nf(cb.nc*2)} câbles, ${nf(cb.cad*4)} attaches (${nf(syn.cadresPoch)} cadres au dossier)` : `${nf(syn.cadresPoch)} cadres pochettes au dossier`; $('sg-cab').hidden = !syn.cadresPoch;
+    c += art('Câbles de fixation haut / bas', lines(byArt('Câbles de fixation haut / bas'), {single:false}), cb.nc ? nf(cb.nc*2)+' ex' : '______', false, true);
+    c += art('Attaches cadre-câbles', lines(byArt('Attaches cadre-câbles'), {single:false}), nf(syn.attaches)+' ex', false, true); }
+  sec(7, c);
+
+  /* 8. Pochettes sur panneaux */
+  sec(8, art('Pochettes', `<ul class="li">${syn.pochettes.map(([a,q])=>li(nf(q)+' ex',a)).join('')||'<li class="foot">aucune</li>'}</ul><details><summary class="foot">Détail par panneau</summary>${lines(rows.filter(r=>r.fam==='Pochettes'), {single:false})}</details>`));
+  html = secs.join('');
+  $('confbox').hidden = !confItems.length;
+  $('conflist').innerHTML = confItems.map(it => `<li class="${conf[it.key]?'ok':''}"><button type="button" class="cbtn${conf[it.key]?' ok':''}" data-k="${esc(it.key)}">${conf[it.key]?'OK':'Confirmer'}</button><span>${esc(it.label)}</span></li>`).join('');
+  document.querySelectorAll('.sec > h2').forEach(h => { const old = h.parentElement.querySelector(':scope > .cart'); if (old) old.remove(); h.insertAdjacentHTML('beforebegin', cart); });
+  $('cats').innerHTML = html; fillPrintSel();
+
+  $('unk-sec').hidden = !unknown.length;
+  $('unk').querySelector('tbody').innerHTML = unknown.map(p=>`<tr><td>${esc(p.sheet||'?')}</td><td>${esc(p.poste)}</td><td class="mono">${esc(p.rep)}</td><td>${esc(p.des)}</td><td>${esc(p.info)}</td><td class="q">${p.q}</td></tr>`).join('');
+  /* récap global par catégorie */
+  let g = '', lastCat = -1;
+  rows.forEach((r,i) => {
+    if (r.cat !== lastCat) { g += `<tr class="grp"><td colspan="6">${esc(CATS[r.cat]?.name || r.fam)}</td></tr>`; lastCat = r.cat; }
+    g += `<tr data-i="${i}"><td>${esc(r.art)}</td><td>${par(r.det)}${r.flag?`<small class="flag">${esc(r.flag)}</small>`:''}</td><td>${esc(r.poste)}</td><td class="mono">${esc(r.rep)}</td><td class="q">${r.qtxt?esc(r.qtxt):(r.q?nf(r.q)+' '+esc(r.unit):'______')}</td><td class="c"><input type="checkbox" class="chk" data-i="${i}" aria-label="Fait"></td></tr>`;
+  });
+  $('glob').querySelector('tbody').innerHTML = g;
+  const postes = [...new Set(rows.map(r=>r.poste))];
+  $('fiches').innerHTML = postes.map(p => `<section class="fiche"><header><h3>${esc(p)}</h3><span>Dossier ${esc(H.dossier)} · ${magasinHTML(H)} · pose le ${esc(H.pose)}</span></header><ul class="fl">${rows.map((r,i)=> r.poste!==p ? '' : `<li data-i="${i}"><span class="n">${r.qtxt?esc(r.qtxt):(r.q?nf(r.q)+' '+esc(r.unit):'______')}</span><span class="t">${esc(r.art)}<small>${esc(r.det)}</small>${r.flag?`<small class="flag">${esc(r.flag)}</small>`:''}</span><input type="checkbox" class="chk" data-i="${i}" aria-label="Fait"></li>`).join('')}</ul></section>`).join('');
+  const prod = STATE.pieces.filter(p=>p.q>0);
+  $('pieces-sub').textContent = `${prod.length} pièces à produire (${nf(prod.reduce((s,p)=>s+p.q,0))} exemplaires), ${STATE.pieces.length-prod.length} lignes à quantité 0 ignorées.`;
+  $('pieces').innerHTML = prod.map(p=>{ const im = thumbOf(p); return `<div class="pc">${im?`<img src="${im}" alt="">`:'<span style="width:70px;flex:none"></span>'}<div class="t"><b>${esc(p.rep)} · ${esc(p.des)}</b><small>${esc(p.poste)} · ${p.w?nf(p.w):'?'} × ${p.h?nf(p.h):'?'} mm · × ${p.q}</small></div></div>`; }).join('');
+  paint();
+}
+$('showfiches').addEventListener('change', e => { $('fiches').hidden = !e.target.checked; });
+/* cases à cocher mémorisées par dossier */
+let store = {};
+const storeKey = () => 'publimax-debits-' + (STATE.header?.dossier || 'x');
+function IN(){ try { return (JSON.parse(localStorage.getItem(storeKey())||'{}')||{})._in || {}; } catch(_){ return {}; } }
+function CONF(){ try { return (JSON.parse(localStorage.getItem(storeKey())||'{}')||{})._conf || {}; } catch(_){ return {}; } }
+document.addEventListener('change', ev => { const el = ev.target; if (!el.id || !el.id.startsWith('in-')) return; store._in = store._in || {}; store._in[el.id.slice(3)] = el.value; try{localStorage.setItem(storeKey(),JSON.stringify(store));}catch(_){} render(); });
+document.addEventListener('click', ev => { const b = ev.target.closest('.cbtn'); if (!b) return; store._conf = store._conf || {}; store._conf[b.dataset.k] = !store._conf[b.dataset.k]; try{localStorage.setItem(storeKey(),JSON.stringify(store));}catch(_){} b.classList.toggle('ok', !!store._conf[b.dataset.k]); b.textContent = store._conf[b.dataset.k] ? 'OK' : 'Confirmer'; b.closest('li').classList.toggle('ok', !!store._conf[b.dataset.k]); });
+function paint(){ try { store = JSON.parse(localStorage.getItem(storeKey())||'{}')||{}; } catch(_){ store = {}; }
+  let n = 0; document.querySelectorAll('input.chk[data-i]').forEach(c=>{ const on = !!store[c.dataset.i]; c.checked = on; c.closest('[data-i]').classList.toggle('done', on); });
+  Object.entries(store).forEach(([k,x])=>{ if (x && k[0]!=='_') n++; }); $('cnt').textContent = `${n} / ${STATE.rows.length} lignes cochées`; }
+document.addEventListener('change', ev => { const c = ev.target; if (!c.matches('input.chk[data-i]')) return; store[c.dataset.i] = c.checked; try{localStorage.setItem(storeKey(),JSON.stringify(store));}catch(_){} paint(); });
+$('reset').addEventListener('click', ()=>{ store = {_in: store._in||{}, _conf: store._conf||{}}; try{localStorage.setItem(storeKey(),JSON.stringify(store));}catch(_){} paint(); });
+$('print').addEventListener('click', ()=>{
+  const sel = [...document.querySelectorAll('#plist input:checked')].map(i=>i.value);
+  if (!sel.length) return;
+  document.body.dataset.print = 'sel';
+  document.querySelectorAll('.po').forEach(e=>e.classList.remove('po'));
+  const cats = document.querySelectorAll('#cats .cat');
+  let first = true; sel.forEach(v => { const el = v.startsWith('cat:') ? cats[+v.slice(4)] : $(v); if (el && !el.hidden) { el.classList.add('po'); if (first) el.classList.add('first'); first = false; } });
+  const fichesHidden = $('fiches').hidden; if (sel.includes('fiches-sec')) $('fiches').hidden = false;
+  document.querySelector('.pbox').open = false;
+  const done = () => { delete document.body.dataset.print; document.querySelectorAll('.po,.first').forEach(e=>e.classList.remove('po','first')); $('fiches').hidden = fichesHidden; window.removeEventListener('afterprint', done); };
+  window.addEventListener('afterprint', done);
+  setTimeout(()=>window.print(), 50);
+});
+$('pall').addEventListener('click', ()=>document.querySelectorAll('#plist input').forEach(i=>i.checked=true));
+$('pnone').addEventListener('click', ()=>document.querySelectorAll('#plist input').forEach(i=>i.checked=false));
+$('showpieces').addEventListener('change', e => { $('pieces').hidden = !e.target.checked; });
+function printHeadHTML(){ const H = STATE.header || {}; return `<span><b>PUBLIMAX</b> · Liste débits matière</span><span>Dossier <b>${esc(H.dossier||'?')}</b> · ${esc(ENSEIGNE)} - <span class="ville">${esc((H.magasin||'?').toUpperCase())}</span> · pose le ${esc(H.pose||'?')} · édité le ${new Date().toLocaleDateString('fr-FR')}</span>`; }
+function fillPrintHead(){}
+function fillPrintSel(){ const s = $('plist'); if (s.children.length) return; s.innerHTML = CATS.map((c,i)=>`<label><input type="checkbox" value="cat:${i}" checked> ${esc(c.name)}</label>`).join('') + `<label><input type="checkbox" value="unk-sec" checked> Lignes à vérifier</label><label><input type="checkbox" value="glob-sec" checked> Fiche récap globale</label><label><input type="checkbox" value="fiches-sec"> Fiches rayon</label>`; }
+
+/* =====================================================================
+   6. Export pour Illustrator : un zip (sans compression) avec debits.json
+   et les visuels d'origine des panneaux à encadrer.
+   ===================================================================== */
+const CRC = (()=>{ const t = new Int32Array(256); for (let i=0;i<256;i++){ let c=i; for (let k=0;k<8;k++) c = c&1 ? (0xEDB88320 ^ (c>>>1)) : (c>>>1); t[i]=c; } return b => { let c=-1; for (let i=0;i<b.length;i++) c = t[(c ^ b[i]) & 0xFF] ^ (c>>>8); return (c ^ -1) >>> 0; }; })();
+function makeZip(files){ // files: [{name, data:Uint8Array}]
+  const enc = new TextEncoder(); const parts = []; const cd = []; let off = 0;
+  const u16 = n => [n&255, (n>>8)&255], u32 = n => [n&255,(n>>8)&255,(n>>16)&255,(n>>>24)&255];
+  for (const f of files) { const name = enc.encode(f.name), crc = CRC(f.data), sz = f.data.length;
+    const lh = new Uint8Array([...u32(0x04034b50),...u16(20),...u16(0x800),...u16(0),...u16(0),...u16(0),...u32(crc),...u32(sz),...u32(sz),...u16(name.length),...u16(0),...name]);
+    parts.push(lh, f.data);
+    cd.push(new Uint8Array([...u32(0x02014b50),...u16(20),...u16(20),...u16(0x800),...u16(0),...u16(0),...u16(0),...u32(crc),...u32(sz),...u32(sz),...u16(name.length),...u16(0),...u16(0),...u16(0),...u16(0),...u32(0),...u32(off),...name]));
+    off += lh.length + sz; }
+  const cdLen = cd.reduce((s,c)=>s+c.length,0);
+  const eocd = new Uint8Array([...u32(0x06054b50),...u16(0),...u16(0),...u16(files.length),...u16(files.length),...u32(cdLen),...u32(off),...u16(0)]);
+  return new Blob([...parts, ...cd, eocd], {type:'application/zip'});
+}
+/* ---- export modifiable : tableau des débits par poste ---- */
+function exportRows(){ const H = STATE.header || {}; const out = []; let last = -1;
+  for (const r of STATE.rows) { if (r.cat !== last) { out.push({sec: CATS[r.cat]?.name || r.fam}); last = r.cat; } out.push({art: r.art, det: r.det, rayon: r.poste, rep: r.rep, q: r.q, unit: r.unit, flag: r.flag||''}); }
+  return {H, out, title: `Liste débits matière — dossier ${H.dossier||'?'} — ${magasinTxt(H)} — pose le ${H.pose||'?'}`}; }
+const xml = s => String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const dl = (blob, name) => { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove();}, 2000); };
+const baseName = () => `Debits_${(STATE.header||{}).dossier||'dossier'}_${magasinTxt(STATE.header||{}).replace(/\W+/g,'_')}`;
+$('xlsx').addEventListener('click', ()=>{
+  const {H, out, title} = exportRows(); const enc = new TextEncoder();
+  const cs = (v, s) => typeof v === 'number' ? `<c${s?` s="${s}"`:''}><v>${v}</v></c>` : `<c t="inlineStr"${s?` s="${s}"`:''}><is><t xml:space="preserve">${xml(v)}</t></is></c>`;
+  const rowsX = []; const row = (cells, s) => rowsX.push(`<row>${cells.map(v=>cs(v,s)).join('')}</row>`);
+  row([title], 1); row([]); row(['Poste / Article','Détail','Rayon','Rep.','Qté','Unité','Remarque'], 2);
+  for (const r of out) { if (r.sec) { row([]); row([r.sec], 1); } else row([r.art, r.det, r.rayon, r.rep, r.q, r.unit, r.flag]); }
+  const sheet = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><cols><col min="1" max="1" width="48" customWidth="1"/><col min="2" max="2" width="60" customWidth="1"/><col min="3" max="3" width="26" customWidth="1"/><col min="4" max="4" width="8" customWidth="1"/><col min="5" max="6" width="9" customWidth="1"/><col min="7" max="7" width="40" customWidth="1"/></cols><sheetData>${rowsX.join('')}</sheetData></worksheet>`;
+  const styles = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="3"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="14"/><color rgb="FF008099"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellXfs count="3"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/><xf numFmtId="0" fontId="1" fillId="0" borderId="0" applyFont="1"/><xf numFmtId="0" fontId="2" fillId="0" borderId="0" applyFont="1"/></cellXfs></styleSheet>`;
+  const wb = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="Débits" sheetId="1" r:id="rId1"/></sheets></workbook>`;
+  const wbRels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`;
+  const rels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`;
+  const ct = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>`;
+  const files = [['[Content_Types].xml',ct],['_rels/.rels',rels],['xl/workbook.xml',wb],['xl/_rels/workbook.xml.rels',wbRels],['xl/styles.xml',styles],['xl/worksheets/sheet1.xml',sheet]].map(([name,s])=>({name, data: enc.encode(s)}));
+  dl(makeZip(files), baseName()+'.xlsx');
+});
+$('docx').addEventListener('click', ()=>{
+  const {H, out, title} = exportRows(); const enc = new TextEncoder();
+  const p = (txt, opt={}) => `<w:p>${opt.style?`<w:pPr><w:pStyle w:val="${opt.style}"/></w:pPr>`:''}<w:r>${opt.b||opt.color?`<w:rPr>${opt.b?'<w:b/>':''}${opt.color?`<w:color w:val="${opt.color}"/>`:''}</w:rPr>`:''}<w:t xml:space="preserve">${xml(txt)}</w:t></w:r></w:p>`;
+  const tc = (txt, w, opt={}) => `<w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/></w:tcPr>${p(txt, opt)}</w:tc>`;
+  const W = [3000, 4200, 1600, 500, 800]; const bordered = `<w:tblPr><w:tblW w:w="0" w:type="auto"/><w:tblBorders><w:top w:val="single" w:sz="4" w:color="BBBBBB"/><w:left w:val="single" w:sz="4" w:color="BBBBBB"/><w:bottom w:val="single" w:sz="4" w:color="BBBBBB"/><w:right w:val="single" w:sz="4" w:color="BBBBBB"/><w:insideH w:val="single" w:sz="4" w:color="BBBBBB"/><w:insideV w:val="single" w:sz="4" w:color="BBBBBB"/></w:tblBorders></w:tblPr>`;
+  let body = p(title, {b:true, color:'008099'}) + p('');
+  let tbl = null; const flush = () => { if (tbl) { body += `<w:tbl>${bordered}${tbl}</w:tbl>` + p(''); tbl = null; } };
+  for (const r of out) { if (r.sec) { flush(); body += p(r.sec.toUpperCase(), {b:true, color:'008099'}); tbl = `<w:tr>${['Article','Détail','Rayon','Rep.','Qté'].map((h,i)=>tc(h, W[i], {b:true})).join('')}</w:tr>`; }
+    else tbl += `<w:tr>${tc(r.art, W[0], {b:true})}${tc(r.det + (r.flag?' — '+r.flag:''), W[1])}${tc(r.rayon, W[2])}${tc(r.rep, W[3])}${tc(r.q ? nf(r.q)+' '+r.unit : '', W[4])}</w:tr>`; }
+  flush();
+  const doc = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>${body}<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="850" w:right="850" w:bottom="850" w:left="850" w:header="0" w:footer="0" w:gutter="0"/></w:sectPr></w:body></w:document>`;
+  const rels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>`;
+  const ct = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>`;
+  const files = [['[Content_Types].xml',ct],['_rels/.rels',rels],['word/document.xml',doc]].map(([name,s])=>({name, data: enc.encode(s)}));
+  dl(makeZip(files), baseName()+'.docx');
+});
+$('exp').addEventListener('click', async ()=>{
+  const H = STATE.header, files = []; const encs = [];
+  const po = new Map(STATE.pieces.map((p,i)=>[p.id,i]));
+  for (const e of STATE.syn.encadrements.slice().sort((x,y)=>(po.get(x.pid)??0)-(po.get(y.pid)??0))) {
+    const t = e.img && STATE.thumbs[e.img]; let file = null;
+    if (t && (t.zip || t.orig)) { try { const buf = t.zip ? await t.zip.read(t.entry) : b64buf(t.orig); const ext = (t.entry.split('.').pop()||'png').toLowerCase(); file = `encadrements/${e.rep}_${nrm(e.des).replace(/[^a-z0-9]+/g,'_').slice(0,40)}.${ext}`; files.push({name:file, data:new Uint8Array(buf)}); } catch(_){} }
+    encs.push({rep:e.rep, poste:e.poste, des:e.des, w:e.w, h:e.h, file});
+  }
+  const json = {dossier:H.dossier, magasin:magasinTxt(H), ville:H.magasin, pose:H.pose, genere:new Date().toISOString(), reglages:SET, encadrements:encs, lignes:STATE.rows.map(r=>({poste:r.poste,rep:r.rep,famille:r.fam,article:r.art,detail:r.det,qte:r.q,unite:r.unit,a_verifier:r.flag})), synthese:{socles:STATE.syn.socles,crochets:STATE.syn.crochetsArr,texxalis:STATE.syn.texxalis,equerres:STATE.syn.equerres,pattes:STATE.syn.pattes,canopees:STATE.syn.canopees,pochettes:STATE.syn.pochettes}};
+  files.unshift({name:'debits.json', data:new TextEncoder().encode(JSON.stringify(json, null, 1))});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(makeZip(files)); a.download = `debits_${H.dossier||'dossier'}.zip`; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove();}, 2000);
+});
+
+/* =====================================================================
+   7. Chargement
+   ===================================================================== */
+async function load(fileList){
+  const files = Array.from(fileList); $('err').hidden = true; $('out').hidden = true;
+  const bad = files.find(f => /\.xls$/i.test(f.name));
+  if (bad) { showErr(`« ${bad.name} » est un classeur à l'ancien format .xls, que cette page ne peut pas lire par morceaux. Dans Excel : Fichier > Enregistrer sous > Classeur Excel (.xlsx), puis redépose le nouveau fichier.`); return; }
+  const prog = m => { $('prog').textContent = m; };
+  try {
+    const t0 = performance.now(); let sheets = [], header = {};
+    for (const f of files) { prog(`Ouverture de ${f.name} (${(f.size/1048576).toFixed(0)} Mo)…`); const wb = await readWorkbook(f, prog); sheets.push(...wb.sheets); header = {...wb.header, ...Object.fromEntries(Object.entries(header).filter(([,v])=>v))}; }
+    prog('Analyse des lignes…'); const pieces = buildPieces(sheets);
+    prog('Lecture des visuels…'); const thumbs = await attachImages(pieces, sheets, prog);
+    Object.assign(STATE, {pieces, thumbs, header, sheets});
+    $('meta').hidden = false; $('meta').innerHTML = `<dt>Dossier</dt><dd>${esc(header.dossier||'?')}</dd><dt>Magasin</dt><dd>${magasinHTML(header)}</dd><dt>Date de pose</dt><dd>${esc(header.pose||'?')}</dd><dt>Feuilles lues</dt><dd>${sheets.map(s=>s.name).join(', ')}</dd>`;
+    const manq = Object.values(SHEETS).filter(n => !sheets.some(s => s.name === n));
+    $('sub').textContent = `Généré le ${new Date().toLocaleDateString('fr-FR')} à partir de ${files.map(f=>f.name).join(', ')}` + (manq.length ? ` — ATTENTION, liste partielle : feuille(s) ${manq.join(', ')} absente(s)` : '');
+    render(); $('out').hidden = false; fillPrintHead();
+    prog(`Terminé en ${((performance.now()-t0)/1000).toFixed(1)} s : ${pieces.filter(p=>p.q>0).length} pièces à produire, ${STATE.rows.length} lignes de débits.`);
+  } catch (e) { console.error(e); showErr(e.message || String(e)); prog(''); }
+}
+/* =====================================================================
+   8. Sauvegarde d'une fiche autonome (.html) et réouverture
+   ===================================================================== */
+function b64buf(dataUrl){ const bin = atob(dataUrl.split(',')[1]); const u = new Uint8Array(bin.length); for (let i=0;i<bin.length;i++) u[i] = bin.charCodeAt(i); return u.buffer; }
+function bufb64(buf, mime){ let s = ''; const u = new Uint8Array(buf); for (let i=0;i<u.length;i+=0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i+0x8000)); return `data:${mime};base64,` + btoa(s); }
+$('save').addEventListener('click', async ()=>{
+  const thumbs = {};
+  for (const [k, t] of Object.entries(STATE.thumbs)) { if (!t) continue; thumbs[k] = {data: t.data, w: t.w, h: t.h, entry: t.entry, orig: t.orig || null}; }
+  for (const e of STATE.syn.encadrements) { const t = e.img && STATE.thumbs[e.img]; if (t && t.zip && !thumbs[e.img].orig) { try { const buf = await t.zip.read(t.entry); const ext = (t.entry.split('.').pop()||'png').toLowerCase(); thumbs[e.img].orig = bufb64(buf, ext==='jpg'||ext==='jpeg' ? 'image/jpeg' : 'image/'+ext); } catch(_){} } }
+  const snap = {v:1, savedAt: new Date().toISOString(), header: STATE.header, SET, store, pieces: STATE.pieces.map(p => ({...p, vis: undefined, rows: undefined})), thumbs, sheets: STATE.sheets.map(s=>s.name), source: $('sub').textContent};
+  const old = $('snap'); if (old) old.remove();
+  const DYN = ['cats','fiches','pieces']; const kept = DYN.map(id => $(id).innerHTML); for (const id of DYN) $(id).innerHTML = ''; const kt = [$('unk').querySelector('tbody').innerHTML, $('glob').querySelector('tbody').innerHTML]; $('unk').querySelector('tbody').innerHTML = ''; $('glob').querySelector('tbody').innerHTML = '';
+  const el = document.createElement('script'); el.id = 'snap'; el.type = 'application/json'; el.textContent = JSON.stringify(snap).replace(/<\//g, '<\\/'); document.body.appendChild(el);
+  const html = '<!doctype html>\n' + document.documentElement.outerHTML;
+  el.remove(); DYN.forEach((id,i) => { $(id).innerHTML = kept[i]; }); $('unk').querySelector('tbody').innerHTML = kt[0]; $('glob').querySelector('tbody').innerHTML = kt[1]; paint();
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([html], {type:'text/html'})); a.download = `Debits_${STATE.header.dossier||'dossier'}_${magasinTxt(STATE.header).replace(/\W+/g,'_')}.html`; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove();}, 2000);
+});
+$('new').addEventListener('click', ()=>{ for (const k of Object.keys(STATE)) delete STATE[k]; $('out').hidden = true; $('meta').hidden = true; $('drop').hidden = false; $('sub').textContent = 'Dépose le classeur de fabrication (.xlsx ou .xlsm) pour générer la liste.'; $('prog').textContent = ''; $('file').value = ''; });
+function restore(){
+  const el = $('snap'); if (!el) return;
+  try {
+    const S = JSON.parse(el.textContent);
+    Object.assign(STATE, {pieces: S.pieces, thumbs: S.thumbs, header: S.header, sheets: (S.sheets||[]).map(n=>({name:n}))});
+    for (const p of STATE.pieces) { p.vis = p.vis || {}; p.rows = p.rows || {}; }
+    SET = {...DEF, ...(S.SET||{})}; setToForm();
+    try { if (!localStorage.getItem('publimax-debits-' + (S.header?.dossier||'x'))) localStorage.setItem('publimax-debits-' + (S.header?.dossier||'x'), JSON.stringify(S.store||{})); } catch(_){}
+    $('meta').hidden = false; $('meta').innerHTML = `<dt>Dossier</dt><dd>${esc(S.header.dossier||'?')}</dd><dt>Magasin</dt><dd>${magasinHTML(S.header)}</dd><dt>Date de pose</dt><dd>${esc(S.header.pose||'?')}</dd><dt>Fiche enregistrée</dt><dd>${new Date(S.savedAt).toLocaleString('fr-FR')}</dd>`;
+    $('sub').textContent = S.source || '';
+    $('drop').hidden = true; render(); $('out').hidden = false; fillPrintHead();
+  } catch (e) { console.error(e); showErr('La fiche enregistrée est illisible : ' + e.message); }
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', restore); else restore();
+function showErr(m){ $('err').textContent = m; $('err').hidden = false; }
+$('pick').addEventListener('click', ()=>$('file').click());
+$('file').addEventListener('change', e => { if (e.target.files.length) load(e.target.files); });
+const drop = $('drop');
+drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('over'); });
+drop.addEventListener('dragleave', () => drop.classList.remove('over'));
+drop.addEventListener('drop', e => { e.preventDefault(); drop.classList.remove('over'); if (e.dataTransfer.files.length) load(e.dataTransfer.files); });
+if (!('DecompressionStream' in window)) showErr('Ce navigateur est trop ancien (il lui manque la décompression intégrée). Utilise Edge ou Chrome récents.');
+</script>
+</body>
+</html>
