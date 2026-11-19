@@ -469,6 +469,7 @@ details.kres{margin-top:10px}details.kres>summary{cursor:pointer;font-weight:600
 #deb{position:fixed;inset:0;z-index:30;background:#EEF3F5;overflow:auto;display:flex;flex-direction:column}#deb.hid{display:none}#deb .top{position:sticky;top:0;z-index:2}#deb_body,#deb_print{padding:14px 12px 60px;max-width:900px;margin:0 auto;width:100%;box-sizing:border-box}
 .dbt{width:100%;border-collapse:collapse;font-size:13.5px;margin:0 0 4px}.dbt td{padding:6px 8px;border-bottom:1px solid #E3EAED;vertical-align:top}.dbt td.q{white-space:nowrap;font-weight:700;color:var(--acc);text-align:right;width:74px}.dbt td.po{color:#5B6B73;width:30%}.dbt tr.ar td{background:#F4F7F8;font-weight:700;border-bottom:0}.dbt .fl{display:block;color:#B3261E;font-size:12px;font-weight:600;margin-top:2px}.dbn{font-size:13px;color:#5B6B73;margin:10px 2px}
 #deb_fr{flex:1;width:100%;border:0;background:#F2F4F6;min-height:0}
+.flr{gap:6px}#sheet .chip.flb{height:auto;min-height:0;padding:6px 7px;color:#C8102E;display:inline-flex;align-items:center;justify-content:center}#sheet .chip.flb.on{color:#fff}.chip.flb svg{display:block}
 /* ---- téléphone ---- */
 @media (max-width:640px){
  .top{padding:6px 10px;min-height:52px;gap:6px}.top .t{font-size:16px}.top .btn{height:40px;padding:0 12px;font-size:14px}
@@ -559,7 +560,7 @@ details.kres{margin-top:10px}details.kres>summary{cursor:pointer;font-weight:600
 <button class="lnk" id="b_alt" style="display:none;color:#10242B;text-shadow:0 1px 8px rgba(255,255,255,.8)">J’ai un lien ou une clé d’accès</button>
 <div id="g_alt" class="pane hid"><label class="l" style="color:#1E2124;font-weight:600">Lien ou clé d’accès<input class="in" id="g_key" placeholder="Colle ici le lien reçu de Publimax"></label><button class="btn" id="b_key" style="width:100%">Continuer ›</button></div>
 <div id="g_msg" class="msg hid"></div>
-<p class="ver">Catalogue 20261119-084457 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261119-094008 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- CODE -->
@@ -571,7 +572,7 @@ details.kres{margin-top:10px}details.kres>summary{cursor:pointer;font-weight:600
 <button class="btn" id="b_pin">Ouvrir ›</button><div id="p_msg" class="msg err hid"></div>
 <button class="btn gr inst hid" data-inst>Installer l’application</button>
 <button class="lnk hid" id="b_forget">Code oublié ?</button></div>
-<p class="ver">Catalogue 20261119-084457 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261119-094008 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- DOSSIERS -->
@@ -631,7 +632,7 @@ details.kres{margin-top:10px}details.kres>summary{cursor:pointer;font-weight:600
 (function(){'use strict';
 var $=function(s){return document.querySelector(s)},$$=function(s){return [].slice.call(document.querySelectorAll(s))};
 var CFG={apps:''},CAT=null,IMG={},KEY=null,DB={d:[],cur:null},NM={},CH={},PENDKEY=null,NSHARD=0,LB={};
-var KS='',VER='20261119-084457',NFILES=25,SYH='',SYB=false,SYT=null;
+var KS='',VER='20261119-094008',NFILES=25,SYH='',SYB=false,SYT=null;
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 var WIPE=false;
 function ls(k,v){if(WIPE&&v!==undefined&&v!==null)return true;try{if(v===undefined){var r=localStorage.getItem(k);return r?JSON.parse(r):null}if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v));return true}catch(e){if(v!==undefined&&k==='pm_dos')saveErr();return null}}
@@ -843,8 +844,22 @@ function freeLine(e){return {id:'libre',free:1,kind:'single',des:(e&&e.des)||'',
 function openSheet(l,key){KOPEN=false;POPEN=false;SL=l;if(key){SD=DB.cur.e.filter(function(x){return x.k===key})[0];SNEW=false;if(!SD){SL=null;return}}else{SD={k:'e'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),id:l.id};if(l.kind==='single'&&l.id!=='n_local_region')SD.q=1;SNEW=true}drawSheet();$('#sheet').classList.remove('hid');$('#sh_p').scrollTop=0}
 var CPF={A:[[1000,600],[1200,900]],B:[[900,525],[935,700]],C:[[700,400],[750,550]]};
 function cpTxt(c){c=c||{};if(c.c==='t')return {t:'Texte seul',d:'Lettres hauteur 280 mm, sans cadre ni visuel.'};var F=CPF[c.f];if(!F)return c.c==='c'?{t:'Complet',d:'Choisis le format A, B ou C pour voir les dimensions.'}:null;return {t:'Format '+c.f,d:'Lettres hauteur 280 mm · cadre texte '+F[0][0]+' × '+F[0][1]+' mm · cadre visuel '+F[1][0]+' × '+F[1][1]+' mm'}}
-var POOLM=null,KOPEN=false,POPEN=false,FLS=[['g','← Gauche'],['d','→ Droite'],['h','↑ Tout droit'],['dt','↩ Demi-tour']];
-function flTxt(v){var x=FLS.filter(function(f){return f[0]===v})[0];return x?x[1].replace(/^\S+\s/,''):''}
+var POOLM=null,KOPEN=false,POPEN=false,FLG=[['Flèche simple','s',[['s1','légèrement à gauche'],['s2','virage à gauche'],['s3','à gauche'],['s4','en biais à gauche'],['s5','tout droit'],['s6','en biais à droite'],['s7','à droite'],['s8','virage à droite'],['s9','légèrement à droite']]],
+ ['Rond-point','r',[['r1','demi-tour à gauche'],['r2','sortie à gauche'],['r3','sortie en biais à gauche'],['r4','tout droit'],['r5','sortie en biais à droite'],['r6','sortie à droite'],['r7','demi-tour à droite']]],
+ ['Double rond-point','d',[['d1','demi-tour à gauche'],['d2','sortie à gauche'],['d3','sortie en biais à gauche'],['d4','tout droit'],['d5','sortie en biais à droite'],['d6','sortie à droite'],['d7','demi-tour à droite']]]],
+ FLOLD={g:'s3',d:'s7',h:'s5'};
+function flId(v){return FLOLD[v]||v||''}
+function flTxt(v){v=flId(v);if(v==='dt')return 'Flèche : demi-tour';for(var i=0;i<FLG.length;i++)for(var j=0;j<FLG[i][2].length;j++)if(FLG[i][2][j][0]===v)return (i?FLG[i][0]:'Flèche')+' : '+FLG[i][2][j][1];return ''}
+function flSvg(id){var k=id.charAt(0),n=+id.slice(1),P='',ar=function(x1,y1,x2,y2){var a=Math.atan2(y2-y1,x2-x1),h=8,w=.5;return 'M'+x1+' '+y1+'L'+x2+' '+y2+'M'+(x2-h*Math.cos(a-w)).toFixed(1)+' '+(y2-h*Math.sin(a-w)).toFixed(1)+'L'+x2+' '+y2+'L'+(x2-h*Math.cos(a+w)).toFixed(1)+' '+(y2-h*Math.sin(a+w)).toFixed(1)},H=48;
+ if(k==='s'){var m=n>5,q=m?10-n:n,X=function(x){return m?40-x:x};
+  if(q===5)P=ar(20,42,20,7);else if(q===3)P=ar(X(35),24,X(6),24);else if(q===4)P=ar(X(32),39,X(8),9);
+  else if(q===2)P='M'+X(30)+' 42V19'+ar(X(30),19,X(7),19);else P='M'+X(26)+' 42V24'+ar(X(26),24,X(13),7)}
+ else{var A=[225,180,135,90,45,0,-45][n-1]*Math.PI/180,cy=k==='d'?20:26,r=6,L=21,cx=24,hh=k==='d'?62:52;
+  var body='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'"/>'+(k==='d'?'<circle cx="'+cx+'" cy="42" r="'+r+'"/><path d="M'+cx+' '+(cy+r)+'V36M'+cx+' 48V59"/>':'<path d="M'+cx+' '+(cy+r)+'V49"/>');
+  var x1=cx+r*Math.cos(A),y1=cy-r*Math.sin(A),x2=cx+L*Math.cos(A),y2=cy-L*Math.sin(A),a=Math.atan2(y2-y1,x2-x1),h=7,w=.55;
+  var d='M'+x1.toFixed(1)+' '+y1.toFixed(1)+'L'+x2.toFixed(1)+' '+y2.toFixed(1)+'M'+(x2-h*Math.cos(a-w)).toFixed(1)+' '+(y2-h*Math.sin(a-w)).toFixed(1)+'L'+x2.toFixed(1)+' '+y2.toFixed(1)+'L'+(x2-h*Math.cos(a+w)).toFixed(1)+' '+(y2-h*Math.sin(a+w)).toFixed(1);
+  return '<svg viewBox="0 0 48 '+hh+'" width="38" height="'+Math.round(hh*38/48)+'" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+body+'<path d="'+d+'"/></svg>'}
+ return '<svg viewBox="0 0 40 '+H+'" width="34" height="'+Math.round(H*34/40)+'" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="'+P+'"/></svg>'}
 function hasPic(l){return !!l.pic&&!(l.optlabel&&l.opts&&l.opts.length>=40)&&CAT.pictos&&CAT.pictos.length}
 function poolM(){if(!POOLM){POOLM={};((CAT&&CAT.pool)||[]).forEach(function(x){POOLM[x.id]=x})}return POOLM}
 function inKit(l,id){return !!(l&&l.contents&&l.contents.some(function(m){return m.id===id}))}
@@ -884,7 +899,7 @@ function drawSheet(){var l=SL,s=ST(l);if(l.free){l.des=s.des||'';l.c=s.c||''}var
  if(l.opts&&l.kind==='multi')l.opts.forEach(function(m){h+=optRow(m,o[m.id],'o',1)});
  if(l.opts&&l.kind==='kit')l.opts.forEach(function(m){h+=optRow(m,o[m.id],'o')});
  if(l.opts&&l.kind==='single'&&l.optlabel){h+='<div class="sl">Options</div>';l.opts.forEach(function(m){h+=optRow(m,o[m.id],'o',1)})}
- if(l.fl){h+='<div class="sl">Flèche</div><div class="row">'+FLS.map(function(f){return '<button class="chip'+(s.fl===f[0]?' on':'')+'" data-s="fl" data-v="'+f[0]+'">'+f[1]+'</button>'}).join('')+'</div>'}
+ if(l.fl){var fcur=flId(s.fl);h+='<div class="sl">Flèche directionnelle'+(fcur?' <small style="font-weight:600;color:var(--acc)">'+esc(flTxt(fcur))+'</small>':' <small style="color:var(--warn)">(à choisir)</small>')+'</div>';FLG.forEach(function(G){h+='<div class="kg0">'+G[0]+'</div><div class="row flr">'+G[2].map(function(f){return '<button class="chip flb'+(fcur===f[0]?' on':'')+'" data-s="fl" data-v="'+f[0]+'" title="'+esc(f[1])+'" aria-label="'+esc(G[0]+' : '+f[1])+'">'+flSvg(f[0])+'</button>'}).join('')+'</div>'});if(fcur==='dt')h+='<p class="mute">Ancienne saisie : demi-tour. Choisis la flèche de la charte qui correspond.</p>'}
  if(hasPic(l)){var PCS=s.pc||{},npc=Object.keys(PCS).length;h+='<details class="kres" data-pres="1"'+(POPEN?' open':'')+'><summary>Pictos · '+(npc?npc+' choisi'+(npc>1?'s':''):'à choisir')+'</summary><p class="mute">Coche les pictos à mettre sur ce panneau.</p>';CAT.pictos.forEach(function(m){h+=optRow(m,PCS[m.id],'pc',1)});h+='</details>';if(npc&&!POPEN)h+='<p class="mute">'+CAT.pictos.filter(function(m){return PCS[m.id]}).map(function(m){return esc(m.l)}).join(' · ')+'</p>'}
  if(l.slots){var MP=[];h+='<div class="sl">Composer le kit</div>';l.slots.forEach(function(sl,si){var any=sl.o.some(function(m){return +o[m.id]>0});h+='<div class="kg0">'+esc(sl.s)+'</div><div class="row"><button class="chip'+(any?'':' on')+'" data-s="slc" data-k="'+si+'" data-v="">Aucun</button>'+sl.o.map(function(m){var q=+o[m.id]||0;if(q>0)for(var z=0;z<Math.min(q,6);z++)[].concat(m.w||[]).forEach(function(w){MP.push({w:+w||725,r:sl.s,c:sl.c,img:m.img})});return '<button class="chip'+(q>0?' on':'')+'" data-s="slc" data-k="'+si+'" data-v="'+esc(m.id)+'">'+esc(m.l)+(q>1?' × '+q:'')+'</button>'}).join('')+'</div>'});h+=murHtml(MP,+l.H||3000,250)+'<p class="mute" style="text-align:center">Aperçu à l’échelle'+(l.H?' · hauteur '+l.H+' mm':'')+'</p>'}
  if(l.comps){var CC=null;h+='<div class="sl">Composition</div><div class="row" style="flex-direction:column;align-items:stretch">'+l.comps.map(function(m){var q=+o[m.id]||0;if(q>0&&!CC)CC=m;return '<button class="chip'+(q>0?' on':'')+'" data-s="cqc" data-v="'+esc(m.id)+'" style="text-align:left;height:auto;min-height:40px;white-space:normal">'+esc(m.l)+(q>1?' × '+q:'')+'</button>'}).join('')+'</div>';var vv=s.vv||((l.visu&&l.visu[0])||[''])[0],hasV=CC&&CC.pp&&CC.pp.some(function(p){return /AFF/.test(p.r)});
@@ -914,7 +929,7 @@ $('#sh_p').onclick=function(e){if(e.target.dataset.z){zoom(e.target.src);return}
  if(a==='n'){var cur=k==='q'?(+s.q||0):k==='kq'?(inKit(l,id)?kqOf(s,id):(+(s.kq||{})[id]||0)):(+(s[k]||{})[id]||0),v=prompt('Quantité :',cur);if(v===null)return;v=Math.max(0,parseInt(String(v).replace(/\s/g,''),10)||0);if(k==='kq'){kqSet(s,id,v,!inKit(l,id));touch();drawSheet();return}if(k==='q')s.q=v;else{var mm=s[k]=s[k]||{};if(v)mm[id]=v;else delete mm[id]}touch();drawSheet();return}
  if(a==='p'||a==='m'){var d=a==='p'?1:-1;if(k==='kq'){if(inKit(l,id))kqSet(s,id,kqOf(s,id)+d);else kqSet(s,id,(+(s.kq||{})[id]||0)+d,1)}else if(k==='q')s.q=Math.max(0,(+s.q||0)+d);else{var m=s[k]=s[k]||{};m[id]=Math.max(0,(+m[id]||0)+d);if(!m[id])delete m[id]}}
  else if(a==='cp'){s.cp=s.cp||{};s.cp[k]=b.dataset.v;if(!s.q)s.q=1}
- else if(a==='fl'){if(s.fl===b.dataset.v)delete s.fl;else s.fl=b.dataset.v}
+ else if(a==='fl'){if(flId(s.fl)===b.dataset.v)delete s.fl;else s.fl=b.dataset.v}
  else if(a==='zn')s.z=b.dataset.v;else if(a==='vv')s.vv=b.dataset.v;
  else if(a==='rgadd'){var v=$('#rg_new').value.trim();if(!v)return;var key='c_'+v.toLowerCase().replace(/[^a-z0-9]/g,'');s.rgc=s.rgc||{};s.rgc[key]=v;s.rg=s.rg||{};s.rg[key]={b:1}}
  touch();drawSheet()};
@@ -968,7 +983,7 @@ function flat(d){var out=[];if(!LO){LO={};var z=0;CAT.nodes.forEach(function(n){
   if(l.id==='n_local_region'){var rg=s.rg||{};CAT.rg.concat(Object.keys(s.rgc||{}).map(function(k){return {k:k,name:s.rgc[k]}})).forEach(function(g){var x=rg[g.k]||{};if(x.b)op.push({id:g.k+'_b',l:g.name+' : bande de rive 1330×34',q:1,prix:''});if(x.a)op.push({id:g.k+'_a',l:g.name+' : adhésif bac froid 1250×150',q:1,prix:''})})}
   if(l.cp&&s.cp){var c=s.cp;r.composition={contenu:c.c==='t'?'texte seul':c.c==='c'?'complet':'?',eclairage:c.e==='l'?'lumineux':c.e==='i'?'inerte':'?',format:c.c==='t'?'':(c.f||'?')};var cdx=cpTxt(c);if(cdx&&(c.c==='t'||CPF[c.f]))r.composition.detail=cdx.d+((l.cpi&&l.cpi.fb&&c.c==='c')?' · '+l.cpi.fb:'')}
   if(l.contents){l.contents.forEach(function(x){var v=kqOf(s,x.id);if(v>0)op.push({id:x.id,l:x.l,q:v,prix:''})});kxIds(l,s).forEach(function(id){op.push({id:id,l:kxName(s,id)+' (ajouté au kit)',q:+s.kq[id],prix:''})});if(s.kq)r.kit_modifie=1}
-  if(l.fl&&s.fl)op.push({id:'fleche',l:'Flèche : '+flTxt(s.fl).toLowerCase(),q:1,prix:''});
+  if(l.fl&&s.fl)op.push({id:'fleche',l:flTxt(s.fl)||'Flèche à préciser',q:1,prix:''});
   if(hasPic(l)&&s.pc)CAT.pictos.forEach(function(m){if(s.pc[m.id])op.push({id:m.id,l:'Picto : '+m.l,q:1,prix:''})});
   if(l.pages&&l.pages.length&&!l.contents&&s.px){var np=l.pages.length+(l.img?1:0),kp=[];for(var pi=0;pi<np;pi++)if(!s.px[pi])kp.push(pi+1);op.push({id:'pages',l:'Pages retenues : '+(kp.join(', ')||'aucune')+' sur '+np,q:1,prix:''})}
   if(s.vv)r.visuel=s.vv;if(op.length)r.options=op;if(!q)r.a_voir=1;out.push(r)});return out}
