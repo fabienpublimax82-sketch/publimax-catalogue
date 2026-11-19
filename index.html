@@ -324,28 +324,74 @@ label.l{font-weight:600;color:var(--mute)}
 #toast.on{opacity:1;transform:translate(-50%,0)}
 
 /* ---- écran Récap : même présentation que la feuille imprimée ---- */
-#r_body .pv{background:#fff;border-radius:6px;box-shadow:0 1px 2px rgba(16,36,43,.08),0 14px 40px rgba(16,36,43,.14);padding:22px 24px 14px;color:#1E2124;font-size:14.5px;line-height:1.35}
-#r_body .dhead{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;border-bottom:4px solid #008099;padding:0 2px 10px;margin-bottom:6px}
-#r_body .dhead img{height:42px}#r_body .dhead .t{text-align:center}#r_body .dhead .t b{display:block;font-size:21px;color:#008099}#r_body .dhead .t span{font-size:13px;color:#555}
-#r_body .dhead .r{text-align:right;font-size:13.5px;line-height:1.45}#r_body .dhead .r b{font-size:16.5px}
-#r_body .dh2{font-size:15px;margin:16px 0 6px;padding:0 6px 0 12px;min-height:40px;background:#008099;color:#fff;letter-spacing:.04em;display:flex;justify-content:space-between;align-items:center;gap:10px}#r_body .dh2 small{font-weight:400;font-size:12.5px;opacity:.92;padding-right:6px}
-#r_body .dh2 .btn{height:30px;min-height:0;background:#fff;color:#00697C;box-shadow:none;font-size:13px;padding:0 12px;border-radius:5px}
-#r_body .cart{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid #D3D7DC;border-bottom:0;border-right:0}#r_body .cart div{border-right:1px solid #D3D7DC;border-bottom:1px solid #D3D7DC;padding:6px 10px;min-height:48px;overflow-wrap:anywhere}#r_body .cart label{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:#666}
-#r_body .kp{display:flex;gap:8px;margin-top:10px}#r_body .kp div{flex:1;min-width:0;border:1px solid #D3D7DC;border-radius:5px;padding:7px 4px;text-align:center}#r_body .kp b{display:block;font-size:24px;line-height:1.1;color:#008099}#r_body .kp span{font-size:10.5px;color:#666;text-transform:uppercase;letter-spacing:.04em}
-#r_body .kp .kS{border-bottom:4px solid #F6D94A}#r_body .kp .kM{border-bottom:4px solid #F28C28}#r_body .kp .kT{border-bottom:4px solid #EE8FB7}#r_body .kp .kL{border-bottom:4px solid #5AA7E8}#r_body .kp .kN{border-bottom:4px solid #C5CED2}
-#r_body .rblk{margin-top:10px;overflow-x:auto}#r_body .rh{background:#E2F0F3;color:#008099;font-weight:800;text-transform:uppercase;letter-spacing:.05em;font-size:13px;padding:7px 10px;border-left:6px solid #008099;display:flex;justify-content:space-between}#r_body .rh span{font-weight:400;text-transform:none;letter-spacing:0;color:#555}
-#r_body .lt{width:100%;border-collapse:collapse;table-layout:fixed}#r_body .lt th.vi{width:104px}#r_body .lt th.ca{width:128px}#r_body .lt th.q{width:62px}#r_body .lt .op,#r_body .lt .no{display:none}#r_body .lt th.pp{width:132px}#r_body .lt th.ac{width:122px}#r_body .lt td{overflow-wrap:anywhere}#r_body .lt .sub{display:block;margin-top:3px}#r_body .lt td.ac .ib{display:inline-flex;vertical-align:top}#r_body .lt th{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:#555;text-align:left;padding:5px 8px;border-bottom:2px solid #008099;background:#F5F7F8;white-space:nowrap}
-#r_body .lt td{padding:8px;border-bottom:1px solid #D3D7DC;vertical-align:top}
-#r_body .lt tr.rl{display:table-row;border-left:0;padding:0}
-#r_body .lt td.vi{width:96px}#r_body .lt td.vi img{max-width:88px;max-height:62px;display:block;cursor:zoom-in}
-#r_body .lt td.des b{font-size:15px}#r_body .lt small{display:block;color:#666;font-size:12.5px}
-#r_body .lt td.ca{width:104px}#r_body .lt td.q{width:58px;font-weight:800;font-size:17px;color:#008099;white-space:nowrap}
-#r_body .lt td.op,#r_body .lt td.no{font-size:13.5px}#r_body .lt td.pp{width:118px}#r_body .lt td.pp .ph{width:52px;height:52px;border-radius:4px;display:inline-block;margin:0 3px 3px 0}
-#r_body .lt td.ac{display:table-cell;white-space:nowrap;text-align:right}#r_body .lt td.ac .ib{margin-left:6px}
-#r_body .pt{display:inline-block;font-size:12px;font-weight:700;padding:3px 9px;border-radius:4px;background:#E3E8EA;color:#444}#r_body .pt.cS{background:#F6D94A;color:#4A3D00}#r_body .pt.cM{background:#F28C28;color:#fff}#r_body .pt.cT{background:#EE8FB7;color:#4A0F2B}#r_body .pt.cL{background:#5AA7E8;color:#08263F}
-#r_body .ment{color:#444;border:1px solid #D3D7DC;padding:12px;margin:8px 0 0}
-#r_body .dfoot{display:flex;justify-content:space-between;font-size:12px;color:#777;border-top:1px solid #D3D7DC;padding-top:8px;margin-top:14px}
-@media (max-width:900px){#r_body .pv{padding:16px 12px 10px}#r_body .cart{grid-template-columns:1fr 1fr}#r_body .kp{flex-wrap:wrap}#r_body .kp div{flex:1 0 21%}#r_body .lt th.pp{width:70px}#r_body .lt th.vi{width:84px}#r_body .lt td.vi img{max-width:70px}#r_body .lt th.ca{width:118px}}
+#r_body .pv,
+
+/* ---- écran Récap : même présentation que la feuille imprimée ---- */
+#deb_body .pv,
+
+/* ---- écran Récap : même présentation que la feuille imprimée ---- */
+#deb_print .pv{background:#fff;border-radius:6px;box-shadow:0 1px 2px rgba(16,36,43,.08),0 14px 40px rgba(16,36,43,.14);padding:22px 24px 14px;color:#1E2124;font-size:14.5px;line-height:1.35}
+#r_body .dhead,
+#deb_body .dhead,
+#deb_print .dhead{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;border-bottom:4px solid #008099;padding:0 2px 10px;margin-bottom:6px}
+#r_body .dhead img,
+#deb_body .dhead img,
+#deb_print .dhead img{height:42px}#r_body .dhead .t,#deb_body .dhead .t,#deb_print .dhead .t{text-align:center}#r_body .dhead .t b,#deb_body .dhead .t b,#deb_print .dhead .t b{display:block;font-size:21px;color:#008099}#r_body .dhead .t span,#deb_body .dhead .t span,#deb_print .dhead .t span{font-size:13px;color:#555}
+#r_body .dhead .r,
+#deb_body .dhead .r,
+#deb_print .dhead .r{text-align:right;font-size:13.5px;line-height:1.45}#r_body .dhead .r b,#deb_body .dhead .r b,#deb_print .dhead .r b{font-size:16.5px}
+#r_body .dh2,
+#deb_body .dh2,
+#deb_print .dh2{font-size:15px;margin:16px 0 6px;padding:0 6px 0 12px;min-height:40px;background:#008099;color:#fff;letter-spacing:.04em;display:flex;justify-content:space-between;align-items:center;gap:10px}#r_body .dh2 small,#deb_body .dh2 small,#deb_print .dh2 small{font-weight:400;font-size:12.5px;opacity:.92;padding-right:6px}
+#r_body .dh2 .btn,
+#deb_body .dh2 .btn,
+#deb_print .dh2 .btn{height:30px;min-height:0;background:#fff;color:#00697C;box-shadow:none;font-size:13px;padding:0 12px;border-radius:5px}
+#r_body .cart,
+#deb_body .cart,
+#deb_print .cart{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid #D3D7DC;border-bottom:0;border-right:0}#r_body .cart div,#deb_body .cart div,#deb_print .cart div{border-right:1px solid #D3D7DC;border-bottom:1px solid #D3D7DC;padding:6px 10px;min-height:48px;overflow-wrap:anywhere}#r_body .cart label,#deb_body .cart label,#deb_print .cart label{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:#666}
+#r_body .kp,
+#deb_body .kp,
+#deb_print .kp{display:flex;gap:8px;margin-top:10px}#r_body .kp div,#deb_body .kp div,#deb_print .kp div{flex:1;min-width:0;border:1px solid #D3D7DC;border-radius:5px;padding:7px 4px;text-align:center}#r_body .kp b,#deb_body .kp b,#deb_print .kp b{display:block;font-size:24px;line-height:1.1;color:#008099}#r_body .kp span,#deb_body .kp span,#deb_print .kp span{font-size:10.5px;color:#666;text-transform:uppercase;letter-spacing:.04em}
+#r_body .kp .kS,
+#deb_body .kp .kS,
+#deb_print .kp .kS{border-bottom:4px solid #F6D94A}#r_body .kp .kM,#deb_body .kp .kM,#deb_print .kp .kM{border-bottom:4px solid #F28C28}#r_body .kp .kT,#deb_body .kp .kT,#deb_print .kp .kT{border-bottom:4px solid #EE8FB7}#r_body .kp .kL,#deb_body .kp .kL,#deb_print .kp .kL{border-bottom:4px solid #5AA7E8}#r_body .kp .kN,#deb_body .kp .kN,#deb_print .kp .kN{border-bottom:4px solid #C5CED2}
+#r_body .rblk,
+#deb_body .rblk,
+#deb_print .rblk{margin-top:10px;overflow-x:auto}#r_body .rh,#deb_body .rh,#deb_print .rh{background:#E2F0F3;color:#008099;font-weight:800;text-transform:uppercase;letter-spacing:.05em;font-size:13px;padding:7px 10px;border-left:6px solid #008099;display:flex;justify-content:space-between}#r_body .rh span,#deb_body .rh span,#deb_print .rh span{font-weight:400;text-transform:none;letter-spacing:0;color:#555}
+#r_body .lt,
+#deb_body .lt,
+#deb_print .lt{width:100%;border-collapse:collapse;table-layout:fixed}#r_body .lt th.vi,#deb_body .lt th.vi,#deb_print .lt th.vi{width:104px}#r_body .lt th.ca,#deb_body .lt th.ca,#deb_print .lt th.ca{width:128px}#r_body .lt th.q,#deb_body .lt th.q,#deb_print .lt th.q{width:62px}#r_body .lt .op,#r_body .lt .no,#deb_body .lt .op,#deb_body .lt .no,#deb_print .lt .op,#deb_print .lt .no{display:none}#r_body .lt th.pp,#deb_body .lt th.pp,#deb_print .lt th.pp{width:132px}#r_body .lt th.ac,#deb_body .lt th.ac,#deb_print .lt th.ac{width:122px}#r_body .lt td,#deb_body .lt td,#deb_print .lt td{overflow-wrap:anywhere}#r_body .lt .sub,#deb_body .lt .sub,#deb_print .lt .sub{display:block;margin-top:3px}#r_body .lt td.ac .ib,#deb_body .lt td.ac .ib,#deb_print .lt td.ac .ib{display:inline-flex;vertical-align:top}#r_body .lt th,#deb_body .lt th,#deb_print .lt th{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:#555;text-align:left;padding:5px 8px;border-bottom:2px solid #008099;background:#F5F7F8;white-space:nowrap}
+#r_body .lt td,
+#deb_body .lt td,
+#deb_print .lt td{padding:8px;border-bottom:1px solid #D3D7DC;vertical-align:top}
+#r_body .lt tr.rl,
+#deb_body .lt tr.rl,
+#deb_print .lt tr.rl{display:table-row;border-left:0;padding:0}
+#r_body .lt td.vi,
+#deb_body .lt td.vi,
+#deb_print .lt td.vi{width:96px}#r_body .lt td.vi img,#deb_body .lt td.vi img,#deb_print .lt td.vi img{max-width:88px;max-height:62px;display:block;cursor:zoom-in}
+#r_body .lt td.des b,
+#deb_body .lt td.des b,
+#deb_print .lt td.des b{font-size:15px}#r_body .lt small,#deb_body .lt small,#deb_print .lt small{display:block;color:#666;font-size:12.5px}
+#r_body .lt td.ca,
+#deb_body .lt td.ca,
+#deb_print .lt td.ca{width:104px}#r_body .lt td.q,#deb_body .lt td.q,#deb_print .lt td.q{width:58px;font-weight:800;font-size:17px;color:#008099;white-space:nowrap}
+#r_body .lt td.op,#r_body .lt td.no,
+#deb_body .lt td.op,#deb_body .lt td.no,
+#deb_print .lt td.op,#deb_print .lt td.no{font-size:13.5px}#r_body .lt td.pp,#deb_body .lt td.pp,#deb_print .lt td.pp{width:118px}#r_body .lt td.pp .ph,#deb_body .lt td.pp .ph,#deb_print .lt td.pp .ph{width:52px;height:52px;border-radius:4px;display:inline-block;margin:0 3px 3px 0}
+#r_body .lt td.ac,
+#deb_body .lt td.ac,
+#deb_print .lt td.ac{display:table-cell;white-space:nowrap;text-align:right}#r_body .lt td.ac .ib,#deb_body .lt td.ac .ib,#deb_print .lt td.ac .ib{margin-left:6px}
+#r_body .pt,
+#deb_body .pt,
+#deb_print .pt{display:inline-block;font-size:12px;font-weight:700;padding:3px 9px;border-radius:4px;background:#E3E8EA;color:#444}#r_body .pt.cS,#deb_body .pt.cS,#deb_print .pt.cS{background:#F6D94A;color:#4A3D00}#r_body .pt.cM,#deb_body .pt.cM,#deb_print .pt.cM{background:#F28C28;color:#fff}#r_body .pt.cT,#deb_body .pt.cT,#deb_print .pt.cT{background:#EE8FB7;color:#4A0F2B}#r_body .pt.cL,#deb_body .pt.cL,#deb_print .pt.cL{background:#5AA7E8;color:#08263F}
+#r_body .ment,
+#deb_body .ment,
+#deb_print .ment{color:#444;border:1px solid #D3D7DC;padding:12px;margin:8px 0 0}
+#r_body .dfoot,
+#deb_body .dfoot,
+#deb_print .dfoot{display:flex;justify-content:space-between;font-size:12px;color:#777;border-top:1px solid #D3D7DC;padding-top:8px;margin-top:14px}
+@media (max-width:900px){#r_body .pv,#deb_body .pv,#deb_print .pv{padding:16px 12px 10px}#r_body .cart,#deb_body .cart,#deb_print .cart{grid-template-columns:1fr 1fr}#r_body .kp,#deb_body .kp,#deb_print .kp{flex-wrap:wrap}#r_body .kp div,#deb_body .kp div,#deb_print .kp div{flex:1 0 21%}#r_body .lt th.pp,#deb_body .lt th.pp,#deb_print .lt th.pp{width:70px}#r_body .lt th.vi,#deb_body .lt th.vi,#deb_print .lt th.vi{width:84px}#r_body .lt td.vi img,#deb_body .lt td.vi img,#deb_print .lt td.vi img{max-width:70px}#r_body .lt th.ca,#deb_body .lt th.ca,#deb_print .lt th.ca{width:118px}}
 
 #chaps.inf .seg,#chaps.inf .sep,#chaps.inf .prog{display:none}#chaps #b_recap{flex:none;margin-left:12px}#chaps.inf #b_recap,#chaps .prog[style]+#b_recap{margin-left:auto}
 @media(max-width:900px){#chaps #b_recap{margin-left:auto}}
@@ -420,6 +466,8 @@ body.edit #cat .top{box-shadow:0 0 0 3px #F0B429 inset}#b_edit:not(.sec){backgro
 details.kres{margin-top:10px}details.kres>summary{cursor:pointer;font-weight:600;color:var(--acc);padding:8px 2px}.kg0{font-size:12.5px;font-weight:700;color:#5B6B73;margin:10px 2px 4px;text-transform:none}
 .mur.mini{margin:0;gap:1px;width:auto}.mur.mini i,.mur.mini b{display:none}.mur.mini .mup{border-radius:1px;box-shadow:0 0 0 1px #0002}.lt td.vi .mup img{max-width:none;max-height:none;width:100%;height:100%;position:absolute;cursor:zoom-in}
 .pmini{display:flex;flex-wrap:wrap;gap:2px;justify-content:center;align-items:center;max-width:88px}.pmini span{flex:0 0 100%;display:flex;justify-content:center}.lt td.vi .pmini img{max-width:42px!important;max-height:30px!important;display:block;width:auto;height:auto}.lt td.vi .pmini span img{max-width:86px!important;max-height:22px!important}.lt td.vi .pmini.one span img{max-height:44px!important}
+#deb{position:fixed;inset:0;z-index:30;background:#EEF3F5;overflow:auto;display:flex;flex-direction:column}#deb.hid{display:none}#deb .top{position:sticky;top:0;z-index:2}#deb_body,#deb_print{padding:14px 12px 60px;max-width:900px;margin:0 auto;width:100%;box-sizing:border-box}
+.dbt{width:100%;border-collapse:collapse;font-size:13.5px;margin:0 0 4px}.dbt td{padding:6px 8px;border-bottom:1px solid #E3EAED;vertical-align:top}.dbt td.q{white-space:nowrap;font-weight:700;color:var(--acc);text-align:right;width:74px}.dbt td.po{color:#5B6B73;width:30%}.dbt tr.ar td{background:#F4F7F8;font-weight:700;border-bottom:0}.dbt .fl{display:block;color:#B3261E;font-size:12px;font-weight:600;margin-top:2px}.dbn{font-size:13px;color:#5B6B73;margin:10px 2px}
 /* ---- téléphone ---- */
 @media (max-width:640px){
  .top{padding:6px 10px;min-height:52px;gap:6px}.top .t{font-size:16px}.top .btn{height:40px;padding:0 12px;font-size:14px}
@@ -440,15 +488,33 @@ details.kres{margin-top:10px}details.kres>summary{cursor:pointer;font-weight:600
  .banner .inb{padding:18px 14px 10px}.banner h1{font-size:28px}.banner .btn{height:50px;font-size:16px;padding:0 18px}
  #dossiers .top .btn{padding:0 9px;font-size:13px}.dc{padding:14px;border-radius:16px}.dc b{font-size:19px}.dc .row{flex-wrap:wrap}
  #recap .row.noprint{gap:6px}#recap .row.noprint .btn{height:42px;padding:0 10px;font-size:13.5px}
- #r_body .pv{padding:10px 8px;font-size:13px}#r_body .dhead{flex-wrap:wrap;gap:6px}#r_body .dhead img{height:26px}#r_body .dhead .t{display:none}#r_body .dhead .r{font-size:12px}#r_body .dhead .r b{font-size:14px}
- #r_body .cart{grid-template-columns:1fr 1fr}#r_body .cart div{min-height:0;padding:4px 7px}#r_body .cart label{font-size:9px}#r_body .dh2{font-size:13px;min-height:34px}#r_body .dh2 small{font-size:11px}#r_body .rh{font-size:12px}#r_body .kp div{flex:1 0 22%}#r_body .kp b{font-size:18px}#r_body .kp span{font-size:9px;letter-spacing:0}
- #r_body .lt tr:first-child{display:none}#r_body .lt,#r_body .lt tbody{display:block}
- #r_body .lt tr.rl{display:grid;grid-template-columns:64px 1fr auto;gap:2px 8px;padding:8px 2px;border-bottom:1px solid #D3D7DC}
- #r_body .lt td{display:block;padding:0;border:0;width:auto!important}
- #r_body .lt td.vi{grid-row:1/4}#r_body .lt td.vi img{max-width:62px;max-height:50px}
- #r_body .lt td.des{grid-column:2/4}#r_body .lt td.des b{font-size:14px}
- #r_body .lt td.ca{grid-column:2}#r_body .lt td.q{grid-column:3;grid-row:2;text-align:right}
- #r_body .lt td.pp{grid-column:2}#r_body .lt td.ac{grid-column:3;grid-row:3;display:block}#r_body .lt td.ac .ib{width:40px;height:40px}
+ #r_body .pv,
+ #deb_body .pv,
+ #deb_print .pv{padding:10px 8px;font-size:13px}#r_body .dhead,#deb_body .dhead,#deb_print .dhead{flex-wrap:wrap;gap:6px}#r_body .dhead img,#deb_body .dhead img,#deb_print .dhead img{height:26px}#r_body .dhead .t,#deb_body .dhead .t,#deb_print .dhead .t{display:none}#r_body .dhead .r,#deb_body .dhead .r,#deb_print .dhead .r{font-size:12px}#r_body .dhead .r b,#deb_body .dhead .r b,#deb_print .dhead .r b{font-size:14px}
+ #r_body .cart,
+ #deb_body .cart,
+ #deb_print .cart{grid-template-columns:1fr 1fr}#r_body .cart div,#deb_body .cart div,#deb_print .cart div{min-height:0;padding:4px 7px}#r_body .cart label,#deb_body .cart label,#deb_print .cart label{font-size:9px}#r_body .dh2,#deb_body .dh2,#deb_print .dh2{font-size:13px;min-height:34px}#r_body .dh2 small,#deb_body .dh2 small,#deb_print .dh2 small{font-size:11px}#r_body .rh,#deb_body .rh,#deb_print .rh{font-size:12px}#r_body .kp div,#deb_body .kp div,#deb_print .kp div{flex:1 0 22%}#r_body .kp b,#deb_body .kp b,#deb_print .kp b{font-size:18px}#r_body .kp span,#deb_body .kp span,#deb_print .kp span{font-size:9px;letter-spacing:0}
+ #r_body .lt tr:first-child,
+ #deb_body .lt tr:first-child,
+ #deb_print .lt tr:first-child{display:none}#r_body .lt,#r_body .lt tbody,#deb_body .lt,#deb_body .lt tbody,#deb_print .lt,#deb_print .lt tbody{display:block}
+ #r_body .lt tr.rl,
+ #deb_body .lt tr.rl,
+ #deb_print .lt tr.rl{display:grid;grid-template-columns:64px 1fr auto;gap:2px 8px;padding:8px 2px;border-bottom:1px solid #D3D7DC}
+ #r_body .lt td,
+ #deb_body .lt td,
+ #deb_print .lt td{display:block;padding:0;border:0;width:auto!important}
+ #r_body .lt td.vi,
+ #deb_body .lt td.vi,
+ #deb_print .lt td.vi{grid-row:1/4}#r_body .lt td.vi img,#deb_body .lt td.vi img,#deb_print .lt td.vi img{max-width:62px;max-height:50px}
+ #r_body .lt td.des,
+ #deb_body .lt td.des,
+ #deb_print .lt td.des{grid-column:2/4}#r_body .lt td.des b,#deb_body .lt td.des b,#deb_print .lt td.des b{font-size:14px}
+ #r_body .lt td.ca,
+ #deb_body .lt td.ca,
+ #deb_print .lt td.ca{grid-column:2}#r_body .lt td.q,#deb_body .lt td.q,#deb_print .lt td.q{grid-column:3;grid-row:2;text-align:right}
+ #r_body .lt td.pp,
+ #deb_body .lt td.pp,
+ #deb_print .lt td.pp{grid-column:2}#r_body .lt td.ac,#deb_body .lt td.ac,#deb_print .lt td.ac{grid-column:3;grid-row:3;display:block}#r_body .lt td.ac .ib,#deb_body .lt td.ac .ib,#deb_print .lt td.ac .ib{width:40px;height:40px}
 }
 /* ---- impression : même présentation que le PV de réception ---- */
 #print{display:none}
@@ -492,7 +558,7 @@ details.kres{margin-top:10px}details.kres>summary{cursor:pointer;font-weight:600
 <button class="lnk" id="b_alt" style="display:none;color:#10242B;text-shadow:0 1px 8px rgba(255,255,255,.8)">J’ai un lien ou une clé d’accès</button>
 <div id="g_alt" class="pane hid"><label class="l" style="color:#1E2124;font-weight:600">Lien ou clé d’accès<input class="in" id="g_key" placeholder="Colle ici le lien reçu de Publimax"></label><button class="btn" id="b_key" style="width:100%">Continuer ›</button></div>
 <div id="g_msg" class="msg hid"></div>
-<p class="ver">Catalogue 20261118-171143 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261119-080249 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- CODE -->
@@ -504,7 +570,7 @@ details.kres{margin-top:10px}details.kres>summary{cursor:pointer;font-weight:600
 <button class="btn" id="b_pin">Ouvrir ›</button><div id="p_msg" class="msg err hid"></div>
 <button class="btn gr inst hid" data-inst>Installer l’application</button>
 <button class="lnk hid" id="b_forget">Code oublié ?</button></div>
-<p class="ver">Catalogue 20261118-171143 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261119-080249 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- DOSSIERS -->
@@ -548,9 +614,10 @@ details.kres{margin-top:10px}details.kres>summary{cursor:pointer;font-weight:600
 <!-- RÉCAP -->
 <div id="recap" class="scr hid" style="padding:0"><div class="top"><button class="btn sm sec" id="r_back">← Catalogue</button><span class="t" id="r_title"></span></div>
 <div style="padding:14px 12px 60px;max-width:900px;margin:0 auto">
-<div class="row noprint" style="margin-bottom:12px"><button class="btn" id="r_dep">Envoyer sur le Drive</button><button class="btn sec" id="r_exp">Exporter</button><button class="btn sec" id="r_share">Partager</button><button class="btn hid" id="r_take">Reprendre sur cet appareil</button><button class="btn hid" id="r_copy">En faire ma copie</button><button class="btn bad hid" id="r_delall">Supprimer partout</button><button class="btn sec" id="r_prt">Imprimer</button></div>
+<div class="row noprint" style="margin-bottom:12px"><button class="btn" id="r_dep">Envoyer sur le Drive</button><button class="btn sec" id="r_exp">Exporter</button><button class="btn sec" id="r_share">Partager</button><button class="btn hid" id="r_take">Reprendre sur cet appareil</button><button class="btn hid" id="r_copy">En faire ma copie</button><button class="btn bad hid" id="r_delall">Supprimer partout</button><button class="btn sec hid" id="r_deb">Débits</button><button class="btn sec" id="r_prt">Imprimer</button></div>
 <div id="r_msg" class="msg hid noprint" style="margin-bottom:12px"></div><div id="r_body"></div></div></div>
 
+<div id="deb" class="hid"><div class="top"><button class="btn sm sec" id="deb_back">← Récap</button><span class="t" id="deb_t"></span><button class="btn sm" id="deb_prt">Imprimer</button></div><div id="deb_body"></div></div>
 <div id="sheet" class="hid"><div class="p" id="sh_p"></div></div>
 <div id="zoom" class="hid"><img alt=""></div>
 <div id="pick" class="hid"><div class="pp"><div class="hd"><h2 id="pk_t"></h2><button class="btn sm sec" id="pk_x">Annuler</button></div><div id="pk_l"></div></div></div>
@@ -563,7 +630,7 @@ details.kres{margin-top:10px}details.kres>summary{cursor:pointer;font-weight:600
 (function(){'use strict';
 var $=function(s){return document.querySelector(s)},$$=function(s){return [].slice.call(document.querySelectorAll(s))};
 var CFG={apps:''},CAT=null,IMG={},KEY=null,DB={d:[],cur:null},NM={},CH={},PENDKEY=null,NSHARD=0,LB={};
-var KS='',VER='20261118-171143',NFILES=24,SYH='',SYB=false,SYT=null;
+var KS='',VER='20261119-080249',NFILES=24,SYH='',SYB=false,SYT=null;
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 var WIPE=false;
 function ls(k,v){if(WIPE&&v!==undefined&&v!==null)return true;try{if(v===undefined){var r=localStorage.getItem(k);return r?JSON.parse(r):null}if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v));return true}catch(e){if(v!==undefined&&k==='pm_dos')saveErr();return null}}
@@ -909,7 +976,7 @@ function expFull(d){return phLoad(d.id).then(function(ph){return expObj(d,ph)})}
 function fname(d){return (d.ville||'dossier').replace(/[^A-Za-z0-9]+/g,'_')+'_'+(d.date||'')+'.json'}
 function dl(d){return expFull(d).then(function(o){var t=JSON.stringify(o,null,1),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:'application/json'}));a.download=fname(d);document.body.appendChild(a);a.click();setTimeout(function(){a.remove()},500)})}
 function goRecap(){save();drawRecap();show('recap');phLoad(DB.cur.id).then(drawRecap)}$('#r_back').onclick=function(){if(DB.cur&&DB.cur.ro)openDossiers();else show('cat')};
-function drawRecap(){var d=DB.cur,i=d.info||{},F=flat(d),num=d.num||d.ville,ph=PH[d.id]||{},np=0,pcs=0,cc={S:0,M:0,T:0,L:0,N:0};F.forEach(function(r){np+=(ph[r.k]||[]).length;pcs+=+r.q||0;cc[r.cat||'N']++});var ro=!!d.ro;$('#r_title').textContent=(ro?'Survey de '+(d.aut||'l’équipe')+' · ':'Récap · ')+d.ville;['r_dep','r_exp','r_share'].forEach(function(x){$('#'+x).classList.toggle('hid',ro)});$('#r_copy').classList.toggle('hid',!ro);$('#r_take').classList.toggle('hid',!(ro&&d.own&&d.own===me()));$('#r_delall').classList.toggle('hid',!(ro&&d.own&&d.own===me()));$('#r_back').textContent=ro?'← Menu':'← Catalogue';
+function drawRecap(){var d=DB.cur,i=d.info||{},F=flat(d),num=d.num||d.ville,ph=PH[d.id]||{},np=0,pcs=0,cc={S:0,M:0,T:0,L:0,N:0};F.forEach(function(r){np+=(ph[r.k]||[]).length;pcs+=+r.q||0;cc[r.cat||'N']++});var ro=!!d.ro;$('#r_title').textContent=(ro?'Survey de '+(d.aut||'l’équipe')+' · ':'Récap · ')+d.ville;['r_dep','r_exp','r_share'].forEach(function(x){$('#'+x).classList.toggle('hid',ro)});$('#r_copy').classList.toggle('hid',!ro);$('#r_take').classList.toggle('hid',!(ro&&d.own&&d.own===me()));$('#r_delall').classList.toggle('hid',!(ro&&d.own&&d.own===me()));$('#r_deb').classList.toggle('hid',!cfg().ed);$('#r_back').textContent=ro?'← Menu':'← Catalogue';
  var n=1,H2=function(t,sm){return '<h2 class="dh2"><span>'+(n++)+' · '+t+'</span>'+(sm||'')+'</h2>'},cell=function(l,v){return '<div><label>'+l+'</label>'+(v||'&nbsp;')+'</div>'};
  var h='<div class="pv"><div class="dhead"><img src="'+$('#gate img.logo').src+'" alt="Publimax"><div class="t"><b>Relevé de magasin</b><span>Survey signalétique</span></div><div class="r"><b>Dossier '+esc(num)+'</b><br>'+esc(i.client||'Carrefour Market')+' — '+esc(d.ville)+'<br>Visite du '+esc(fdate(d.date))+'</div></div>';
  h+=H2('Cartouche',ro?'<small>lecture seule</small>':'<button class="btn sm" id="r_info">Modifier les infos</button>')+'<div class="cart">'+cell('Client / site',esc((i.client||'Carrefour Market')+' '+d.ville))+cell('Référence Publimax','Dossier '+esc(num))+cell('Visite du relevé',esc(fdate(d.date)))+cell('Pour Publimax',esc(d.aut||''))+cell('Interlocuteur magasin',esc([i.contact,i.tel,i.mail].filter(Boolean).join(' · ')))+cell('Adresse',esc([i.adresse,i.cp,i.commune].filter(Boolean).join(' ')))+cell('Pose souhaitée',esc(fdate(i.pose)))+cell('Accès / contraintes de pose',esc(i.acces||''))+cell('Remarques',esc(i.note||''))+'</div>';
@@ -946,6 +1013,177 @@ function printDoc(){var d=DB.cur,i=d.info||{},F=flat(d),num=d.num||d.ville,ph=PH
 $('#r_prt').onclick=function(){(DB.cur.ro?Promise.resolve():phLoad(DB.cur.id)).then(function(){printDoc();setTimeout(function(){window.print()},150)})};
 $('#r_share').onclick=function(){var d=DB.cur;expFull(d).then(function(o){var f=new File([JSON.stringify(o,null,1)],fname(d),{type:'application/json'});if(navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f],title:'Dossier '+d.ville}).catch(function(){});else{dl(d);msg('#r_msg','Partage non disponible ici : fichier exporté à la place.','ok')}})};
 $('#r_dep').onclick=function(){save();sync(false)};
+
+/* ---------- débits matière : calcul repris tel quel de la page « Débits matière » (fichier FAB) ---------- */
+var DEB=(function(){
+const DICO = {
+  cadrePvc30:   /encadrement[^.;]{0,25}pvc\s*30/,
+  soclePvc30:   /socle[^.;]{0,25}pvc\s*30/,
+  etagere:      /etager[ea]/,
+  texxalis:     /texxalis|cimaise/,
+  texEncadre:   /crossile/,                 // « profilé » en encadrement (coquille présente dans le tableur, conservée pour la détection)
+  texBlanc:     /crossline/,                // barre blanche de suspension du bandeau
+  bois:         /chene|casella|adhesiv[ea]?\s*bois|habill[ea]?\s*bois/,
+  crochets:     /(\d+)?\s*crochets?\s*de\s*suspension/,
+  bandeau:      /bandeau\s*aerien/,
+  canopee:      /alveolaire/,
+  rouge:        /rouge|ral\s*3020/,
+  lisse:        /lisse\s*bois|lisse\s*de\s*facade/,
+  fronton:      /fronton\s*tg/,
+  joueTg:       /joue\s*de\s*tg\s*bache/,
+  panneauRue:   /panneau\s*de\s*rue/,
+  rehausse:     /re?hausses?\s*de\s*tg/,
+  pochette:     /(\d+(?:\s*ou\s*\d+)?)\s*(cadres?\s+)?pochettes?\s*(a\d)/g,
+  joueMeuble:   /joue\s*de\s*meuble/,
+  pochetteA5:   /\bpochette\s*a5\b/,
+  enseigne:     /^enseigne/,
+  selonCdc:     /selon\s*(cahier\s*des\s*charges|charte)/,
+  suspect:      /pvc\s*30(?!\d)|texxalis|crossil|crossline|cimaise|alveolaire|canop|lisse|hausse|fronton|joue\s*de\s*tg|panneau\s*de\s*rue|pochette|socle|etager|crochet|bandeau/
+};
+const ORDER = ['La façade','Station service','Abris chariots / Totems extérieurs','SAS','Accueil','Caisses','Marché','Fournée','Poissonnerie','Fromagerie','Boucherie','Charcuterie','PIPV','Canopée PGC','Œufs et Lait','Enseignes rayons frais','Enseignes rayon PGC','Zone promos, actu, saison','TG Secs','Transverses'];
+const nf = n => Number(n).toLocaleString('fr-FR');
+const nrm = s => rNrm(s);
+const DEF = {socle:40, crochets:true, equerres:2, pattes:true, rehausses:10, visuelPlus:3, parBarre:2, CH:22, order:null, names:{}, hide:{}, barLen:3000, attParCadre:4, cabParCol:2, acc:'#008099', qcol:'#008099', fontPct:100, boldPre:true, parGrey:true, dotted:true, cardH:320,
+  crochetsRayon:'la cave à bières = 4\nanimalerie = 3\nbio = 2\nboucherie = 4\ncharcuterie = 4\nfournée = 3\nfromagerie = 4\nla cave = 2\nloisir = 2\nmarché = 3\nmode = 2\npoissonnerie = 4\nsurgelés = 2\nsnacking = 3\nbeauté = 2'};
+let SET = {...DEF}, INV = {};
+const BL = () => (SET.barLen || 3000) / 1000;
+const r3 = ml => Math.ceil(ml/BL()-1e-9)*BL();
+const crochetsTable = () => String(SET.crochetsRayon || '').split(/\n/).map(l => l.split('=')).filter(p => p.length === 2 && p[0].trim()).map(([k, v]) => [nrm(k.trim()), +v || 0]).sort((a, b) => b[0].length - a[0].length);
+const IN = () => INV;
+function computeDebits(pieces){
+  const rows = []; const matched = new Set();
+  let etag = null;
+  const add = (p, fam, art, det, q, unit='ex', flag=null, extra={}) => { rows.push({poste: p.poste, rep: p.rep, des: p.des, fam, art, det, q, unit, flag, img: extra.img ? p.img : null, w: p.w, h: p.h, pid: p.id}); matched.add(p.id); };
+  for (const p of pieces) {
+    const info = p.info, q = p.q, t = nrm(p.des + ' ' + info), ti = nrm(info);
+    if (q <= 0 && !DICO.canopee.test(ti)) continue;
+    if (DICO.cadrePvc30.test(ti)) add(p,'PVC 30 mm habillé bois','Cadre PVC 30x30 habillé chêne',`${p.des} — panneau ${nf(p.w)} × ${nf(p.h)} mm`,q,'cadre','Côtés à encadrer à définir sur le visuel',{img:true});
+    if (DICO.soclePvc30.test(ti)) add(p,'PVC 30 mm habillé bois','Socle PVC 30 mm rainuré habillé chêne',`longueur ${p.w + SET.socle} mm — pour ${p.des} (largeur ${nf(p.w)} + ${SET.socle})`,q,'ex');
+    if (DICO.etagere.test(ti)) { const I = IN(); const n = +I.etn || q, L = +I.etl || 0; etag = {n, L, q}; add(p,'PVC 30 mm habillé bois','Étagères « L » PVC 30 mm habillées chêne', L ? `${nf(L)} mm — pour ${p.des}` : `pour ${p.des} — longueur à saisir en haut de page`, n, 'ex', L ? null : 'Longueur à saisir'); }
+    if (DICO.enseigne.test(nrm(p.des)) && p.poste.startsWith('Enseignes') && q > 0 && !DICO.joueMeuble.test(t)) {
+      const sans = /sans visuels/.test(t), avec = /avec visuels/.test(t);
+      const taille = p.h === 700 ? 'B' : p.h === 550 ? 'C' : 'A';
+      const vis = sans ? 'texte seul' : `texte + visuel taille ${taille}${avec ? '' : ' (par défaut)'}`;
+      add(p,'Enseignes','Semelle enseigne PVC 30 mm habillée chêne',`${p.des} — ${vis}`,q,'ex');
+      { const nd = nrm(p.des); const hit = crochetsTable().find(([k]) => nd.includes(k)); const mt = ti.match(DICO.crochets); const base = hit ? hit[1] : (mt && mt[1] ? +mt[1] : 2); const n = base + (sans ? 0 : SET.visuelPlus);
+        const det = `${p.des} — ${base} (texte)${sans ? '' : ' + '+SET.visuelPlus+' (visuel)'}${q>1?' × '+q:''}`;
+        add(p,'Crochets et filins','Filins',det,n*q,'ex'); add(p,'Crochets et filins','Bloque-filins crochets',det,n*q,'ex'); }
+    }
+    if (DICO.texxalis.test(ti) && p.note === 'ml') { const ml = p.w/1000, bois = DICO.bois.test(ti); add(p,'Barres de cimaise',`Profilé Texxalis noir${bois?' habillé bois':''} — suspension`,`${ml} ml demandés → ${r3(ml)} ml (${r3(ml)/BL()} barres de ${BL()} m)`,r3(ml),'ml'); }
+    if (DICO.texEncadre.test(ti)) add(p,'Barres de cimaise','Profilé Texxalis noir habillé bois — encadrement',`${nf(p.w)} × ${nf(p.h)} mm (${p.des})`,q,'ex',null,{img:true});
+    if (DICO.texBlanc.test(ti)) for (const a of (p.parts.length ? p.parts : [{n:q,w:p.w,h:p.h}])) { const n3 = Math.floor(a.w/SET.barLen), r = a.w - SET.barLen*n3; const bars = (n3 + (r?1:0))*a.n; if (n3) { add(p,'Barres de cimaise','Profilé Texxalis blanc — suspension',`${nf(SET.barLen)} mm (bandeau de ${nf(a.w)}${a.n>1?', '+a.n+' ex':''})`,n3*a.n,'ex'); rows[rows.length-1].bars = bars; rows[rows.length-1].joints = Math.max(bars - a.n, 0); } if (r) { add(p,'Barres de cimaise','Profilé Texxalis blanc — suspension',`${nf(r)} mm (bandeau de ${nf(a.w)}${a.n>1?', '+a.n+' ex':''})`,a.n,'ex'); if (!n3) { rows[rows.length-1].bars = bars; rows[rows.length-1].joints = 0; } } }
+    { const mc = ti.match(DICO.crochets); if (mc) { const n = mc[1] ? +mc[1] : 2; add(p,'Barres de cimaise','Crochets de suspension',`${n} par panneau — ${p.des} × ${q}`,n*q,'ex'); } }
+    if (DICO.bandeau.test(t)) for (const a of (p.parts.length ? p.parts : [{n:q,w:p.w,h:p.h}])) { const n3 = Math.floor(a.w/SET.barLen), r = a.w - SET.barLen*n3; if (n3) add(p,'Bandeau « les offres market »','Bandeau dibond 3 mm rouge RAL 3020 / verso chêne',`${nf(SET.barLen)} × ${nf(a.h)} mm (bandeau de ${nf(a.w)}${a.n>1?', '+a.n+' ex':''})`,n3*a.n,'ex'); if (r) add(p,'Bandeau « les offres market »','Bandeau dibond 3 mm rouge RAL 3020 / verso chêne',`${nf(r)} × ${nf(a.h)} mm (bandeau de ${nf(a.w)}${a.n>1?', '+a.n+' ex':''})`,a.n,'ex'); }
+    if (DICO.canopee.test(ti)) { const rouge = DICO.rouge.test(ti); const art = `Canopée ${rouge?'rouge RAL 3020':'effet bois'} R/V`;
+      if (p.parts.length) { for (const a of p.parts) add(p,'Canopées carton alvéolaire 16 mm',art,`${nf(a.w)} × ${nf(a.h)} mm (${p.des})`,a.n,'ex',(q===0 && !p.qBlank && !p.parts.every(x=>x.nx))?'Quantité à 0 dans le tableur : à confirmer':null); }
+      else if (q > 0) add(p,'Canopées carton alvéolaire 16 mm',art,`${nf(p.w)} × ${nf(p.h)} mm (${p.des})`,q,'ex'); }
+    if (DICO.lisse.test(t) && q > 0) { const n3 = Math.floor(p.w/SET.barLen), r = p.w - SET.barLen*n3; if (n3) add(p,'Lisse de façade','Lisse de façade alu plié + habillage chêne',`${nf(SET.barLen)} × ${nf(p.h)} mm (lisse de ${nf(p.w)}${q>1?', '+q+' ex':''})`,n3*q,'ex'); if (r) add(p,'Lisse de façade','Lisse de façade alu plié + habillage chêne',`${nf(r)} × ${nf(p.h)} mm (lisse de ${nf(p.w)}${q>1?', '+q+' ex':''})`,q,'ex'); }
+    if (DICO.fronton.test(t)) add(p,'Sous-traitance','Frontons de TG','format selon taille TG',q,'ex','Format à mesurer');
+    if (DICO.joueTg.test(t)) add(p,'Sous-traitance','Joues de TG (bâche)',`${nf(p.w)} × ${nf(p.h)} mm`,q,'ex');
+    if (DICO.panneauRue.test(t)) add(p,'Sous-traitance','Panneaux de rue acier plié laqué blanc',`${p.L} mm, 1 pochette A3 portrait`,q,'ex');
+    if (DICO.rehausse.test(t)) add(p,'Sous-traitance','Rehausses de TG laquées noir','',SET.rehausses,'ex','À confirmer au lancement');
+    for (const m of ti.matchAll(DICO.pochette)) { const nums = m[1].match(/\d+/g).map(Number); const nn = Math.max(...nums); const cadre = !!m[2];
+      if (cadre) add(p,'Cadres pochettes',`Cadre pochette ${m[3].toUpperCase()}`,`${p.des} × ${q}`,nn*q,'ex');
+      else add(p,'Pochettes',`Pochette ${m[3].toUpperCase()}`,`${nums.length>1 ? m[1]+' (le plus grand retenu)' : nn} par panneau — ${p.des} × ${q}`,nn*q,'ex'); }
+    if (DICO.pochetteA5.test(ti)) add(p,'Pochettes','Pochette A5',`1 par panneau — ${p.des} × ${q}`,q,'ex');
+  }
+  rows.sort((a,b) => (ORDER.indexOf(a.poste)+1||99) - (ORDER.indexOf(b.poste)+1||99) || a.fam.localeCompare(b.fam) || a.art.localeCompare(b.art) || String(a.rep).localeCompare(String(b.rep)));
+  const unknown = pieces.filter(p => p.q > 0 && !matched.has(p.id) && DICO.suspect.test(nrm(p.des + ' ' + p.info)));
+  /* synthèses */
+  const syn = {etag};
+  const soc = {}; for (const r of rows) if (r.art.startsWith('Socle')) { const l = +r.det.match(/longueur (\d+)/)[1]; soc[l] = (soc[l]||0) + r.q; } syn.socles = Object.entries(soc).map(([l,q])=>[+l,q]).sort((a,b)=>a[0]-b[0]);
+  const cro = rows.filter(r=>r.art==='Crochets de suspension').reduce((s,r)=>s+r.q,0); syn.crochets = cro; syn.crochetsArr = SET.crochets ? Math.floor(cro/10)*10 + 10 : cro; syn.crochetsPanneaux = rows.filter(r=>r.art==='Crochets de suspension').reduce((s,r)=>s+ +r.det.split(' × ').pop(),0);
+  syn.texxalis = {}; for (const r of rows) if (r.art.startsWith('Profilé') && r.art.endsWith('suspension') && r.unit==='ml') (syn.texxalis[r.art.replace(' — suspension','')] ??= []).push([r.poste, r.det, r.q]);
+  const barres = rows.filter(r=>r.unit==='ml').reduce((s,r)=>s+r.q/BL(),0) + rows.reduce((s,r)=>s+(r.bars||0),0); syn.barres = barres; syn.equerres = barres*SET.equerres; syn.pattes = SET.pattes ? rows.filter(r=>r.unit==='ml').reduce((s,r)=>s+Math.max(r.q/BL()-1,0),0) + rows.reduce((s,r)=>s+(r.joints||0),0) : 0; syn.blancBars = rows.reduce((s,r)=>s+(r.bars||0),0);
+  if (barres) { for (const a of ['Filins','Bloque-filins filetés']) rows.push({poste:'Tous postes', rep:'', des:'', fam:'Crochets et filins', art:a, det:`${nf(barres)} barres Texxalis × ${SET.parBarre}`, q:barres*SET.parBarre, unit:'ex', flag:null, pid:'', order:1e6}); }
+  syn.filinsTot = rows.filter(r=>r.art==='Filins').reduce((s,r)=>s+r.q,0);
+  const can = {}; for (const r of rows) if (r.fam.startsWith('Canop')) { const k = [r.art, r.det.split(' (')[0], r.des==='Canopée'?r.poste:r.des, !!r.flag].join('|'); can[k] = (can[k]||0)+r.q; } syn.canopees = Object.entries(can).map(([k,q])=>{const [art,fmt,poste,flag]=k.split('|'); return {art,fmt,poste,q,flag:flag==='true'};});
+  const poc = {}; for (const r of rows) if (r.fam==='Pochettes') poc[r.art]=(poc[r.art]||0)+r.q; syn.pochettes = Object.entries(poc).sort();
+  const cad = {}; for (const r of rows) if (r.fam==='Cadres pochettes') cad[r.art]=(cad[r.art]||0)+r.q; syn.cadres = Object.entries(cad).sort();
+  const cadres = rows.filter(r=>r.fam==='Cadres pochettes').reduce((s,r)=>s+r.q,0); syn.attaches = cadres*SET.attParCadre; syn.cadresPoch = cadres;
+  if (cadres) { const I = IN(); const nc = +I.ncol || 0; const cpc = +I.ncpc || (nc ? Math.ceil(cadres/nc) : 0); const cad = nc && cpc ? nc*cpc : cadres; syn.cab = {nc, cpc, cad}; syn.attaches = cad*SET.attParCadre;
+    rows.push({poste:'Tous postes', rep:'', des:'', fam:'Cadres pochettes', art:'Câbles de fixation haut / bas', det:nc?`${nc} colonne${nc>1?'s':''} de cadres`:'nombre de colonnes à saisir en haut de page', q:nc*SET.cabParCol, unit:'ex', flag:nc?null:'À saisir'});
+    rows.push({poste:'Tous postes', rep:'', des:'', fam:'Cadres pochettes', art:'Attaches cadre-câbles', det:nc?`${nc} colonne${nc>1?'s':''} × ${cpc} cadres = ${cad} cadres`:`${cadres} cadres`, q:cad*SET.attParCadre, unit:'ex', flag:(nc && cad!==cadres)?`${cadres} cadres pochettes au dossier`:null}); }
+  syn.encadrements = rows.filter(r=>r.art.startsWith('Cadre PVC')).map(r=>({pid:r.pid,des:r.des,w:r.w,h:r.h,img:r.img,poste:r.poste,rep:r.rep}));
+  syn.tex_enc = rows.filter(r=>r.art.includes('encadrement')).map(r=>({des:r.des,w:r.w,h:r.h}));
+  syn.tex_blanc = rows.filter(r=>r.art.startsWith('Profilé Texxalis blanc')).map(r=>r.det);
+  syn.enseignes = rows.filter(r=>r.fam==='Enseignes').map(r=>({des:r.des,det:r.det.split(' — ').pop(),flag:r.flag}));
+  syn.bandeau = rows.filter(r=>r.fam.startsWith('Bandeau')).map(r=>r.det);
+  syn.st = rows.filter(r=>r.fam==='Sous-traitance').map(r=>[r.art,r.det,r.q,r.flag]);
+  syn.lisse = rows.filter(r=>r.fam==='Lisse de façade').map(r=>[r.det,r.q,r.flag]);
+  syn.etageres = rows.filter(r=>r.art.startsWith('Étag')).map(r=>[r.poste,r.det,r.flag]);
+  return {rows, syn, unknown};
+}
+const CATS = [
+  {name:'Cadres PVC 30×30 habillés bois', fams:['PVC 30 mm habillé bois'], only: r => r.art.startsWith('Cadre PVC'), arts:['Cadre PVC 30x30 habillé chêne']},
+  {name:'PVC 30 mm habillé bois — socles, étagères, semelles', fams:['PVC 30 mm habillé bois','Enseignes'], only: r => !r.art.startsWith('Cadre PVC'), arts:['Socle PVC 30 mm rainuré habillé chêne','Étagères « L » PVC 30 mm habillées chêne','Semelle enseigne PVC 30 mm habillée chêne']},
+  {name:'Barres de cimaise', fams:['Barres de cimaise'], arts:['Profilé Texxalis noir habillé bois — encadrement','Profilé Texxalis noir habillé bois — suspension','Profilé Texxalis noir — suspension','Profilé Texxalis blanc — suspension','Équerres de fixation Texxalis noir pré-percées','Pattes de jonction profilés Texxalis','Crochets de suspension']},
+  {name:'Filins et bloque-filins de suspension', fams:['Crochets et filins'], arts:['Filins','Bloque-filins crochets','Bloque-filins filetés']},
+  {name:'Bandeau « les offres market »', fams:['Bandeau « les offres market »'], arts:[]},
+  {name:'Canopées carton alvéolaire', fams:['Canopées carton alvéolaire 16 mm'], arts:['Canopée effet bois R/V','Canopée rouge RAL 3020 R/V']},
+  {name:'Lisse de façade extérieur', fams:['Lisse de façade'], arts:[]},
+  {name:'Éléments en sous-traitance', fams:['Sous-traitance'], arts:['Rehausses de TG laquées noir','Panneaux de rue acier plié laqué blanc','Frontons de TG','Joues de TG (bâche)']},
+  {name:'Cadres pochettes', fams:['Cadres pochettes'], arts:['Cadre pochette A3','Cadre pochette A4','Câbles de fixation haut / bas','Attaches cadre-câbles']},
+  {name:'Pochettes sur panneaux', fams:['Pochettes'], arts:['Pochette A3','Pochette A4','Pochette A5']}
+];
+const catOf = r => CATS.findIndex(c => c.fams.includes(r.fam) && (!c.only || c.only(r)));
+const artRank = (cat, art) => { const i = CATS[cat]?.arts.indexOf(art) ?? -1; return i < 0 ? 99 : i; };
+
+/* règle du catalogue -> ce qui la déclenche dans le calcul d'origine */
+const TRIG = {cadre30:['cadrePvc30','encadrement pvc 30'],socle:['soclePvc30','socle pvc 30'],etagere:['etagere','etagere'],texsusp:['texxalis','texxalis'],texenc:['texEncadre','crossile'],texbl:['texBlanc','crossline'],crochets:['crochets','2 crochets de suspension'],bandeau:['bandeau','bandeau aerien'],canopee:['canopee','alveolaire'],lisse:['lisse','lisse de facade'],rehausse:['rehausse','rehausses de tg'],fronton:['fronton','fronton tg'],joue:['joueTg','joue de tg bache'],rue:['panneauRue','panneau de rue'],pocha5:['pochetteA5','pochette a5']};
+const ONDES = {bandeau:1,lisse:1,rehausse:1,fronton:1,joue:1,rue:1};
+function strip(t, re){ return t.replace(new RegExp(re.source, 'g'), ' '); }
+function run(pieces, inp){ INV = inp || {}; SET = {...DEF};
+  pieces.forEach(function(p){ p.des0 = p.des; var ti = nrm(p.info), R = p.rules || {};
+    for (var id in TRIG) { var re = DICO[TRIG[id][0]], on = R[id];
+      if (on === false) { ti = strip(ti, re); if (ONDES[id] && re.test(nrm(p.des))) p.des = strip(nrm(p.des), re).replace(/\s+/g,' ').trim() || 'article'; }
+      else if (on === true && !new RegExp(re.source).test(ONDES[id] ? nrm(p.des)+' '+ti : ti)) ti += ' ; ' + TRIG[id][1]; }
+    if (R.pochette === false) ti = ti.replace(/(\d+(?:\s*ou\s*\d+)?)\s*pochettes?\s*(a\d)/g, ' ');
+    if (R.cadrepoch === false) ti = ti.replace(/(\d+(?:\s*ou\s*\d+)?)\s*cadres?\s+pochettes?\s*(a\d)/g, ' ');
+    if (R.pochette === true && !/\d\s*pochettes?\s*a\d/.test(ti)) { ti += ' ; 1 pochettes a4'; p.pochDef = 1; }
+    if (R.cadrepoch === true && !/\d\s*cadres?\s+pochettes?\s*a\d/.test(ti)) { ti += ' ; 1 cadres pochettes a4'; p.pochDef = 1; }
+    p.info = ti; });
+  var out = computeDebits(pieces), rows = out.rows, syn = out.syn, by = {};
+  pieces.forEach(function(p){ by[p.id] = p; });
+  rows = rows.filter(function(r){ var p = by[r.pid]; if (!p) return true; if (p.rules && p.rules.filins === false && r.fam === 'Crochets et filins') return false; return true; });
+  if (syn.barres) rows.push({poste:'Tous postes', rep:'', des:'', fam:'Barres de cimaise', art:'Équerres de fixation Texxalis noir pré-percées', det:SET.equerres+' par barre de 3 m, sur '+nf(syn.barres)+' barres de suspension', q:syn.equerres, unit:'ex', flag:null, pid:'', order:1e6});
+  if (syn.barres && SET.pattes) rows.push({poste:'Tous postes', rep:'', des:'', fam:'Barres de cimaise', art:'Pattes de jonction profilés Texxalis', det:'1 entre deux barres qui se suivent, poste par poste', q:syn.pattes, unit:'ex', flag:'Calcul à relire', pid:'', order:1e6});
+  var po = {}; pieces.forEach(function(p, i){ po[p.id] = i; });
+  rows.forEach(function(r){ var p = by[r.pid]; if (p) { r.des = p.des0; if (p.pochDef && /ochette/.test(r.art) && !r.flag) r.flag = 'Nombre et format de pochettes à préciser'; } r.cat = catOf(r); r.order = r.order != null ? r.order : (po[r.pid] != null ? po[r.pid] : 1e5); });
+  rows.sort(function(a, b){ return (a.cat - b.cat) || (artRank(a.cat, a.art) - artRank(b.cat, b.art)) || a.art.localeCompare(b.art) || (a.order - b.order); });
+  return {rows: rows, syn: syn, cats: CATS.map(function(c){ return c.name; }), unknown: out.unknown};
+}
+return {run: run, nf: nf};
+})();
+
+function debPieces(d){var P=[];flat(d).forEach(function(r){var s=entK(r.k)||{},l=CAT.byId[r.id];
+ if(!l||r.libre||r.orpheline){P.push({id:r.k,poste:r.rubrique,rep:'',des:r.des,info:r.mat||'',q:+r.q||0,w:+r.L||0,h:+r.H||0,L:+r.L||0,note:'',parts:[],rules:{},hors:1});return}
+ var R={};rSet(l).forEach(function(x){R[x.r.id]=!!x.on});var info=(l.info||'')+' '+(l.mat||''),poste=r.rubrique,w=+r.L||0,h=+r.H||0,note='';
+ if(R.semelle&&/^enseigne/.test(rNrm(l.des))){poste='Enseignes rayons';var c=s.cp;if(c){if(c.c==='t')info+=' sans visuels';else if(c.c==='c'){info+=' avec visuels';h={A:900,B:700,C:550}[c.f]||h}}}
+ if(R.texsusp&&!h&&w)note='ml';
+ P.push({id:r.k,poste:poste,rep:'',des:l.des,info:info,q:+r.q||0,w:w,h:h,L:w,note:note,parts:[],rules:R,img:l.img});
+ var can=function(id,nm,n,len,hh){if(n>0)P.push({id:r.k+'|'+id,poste:r.rubrique,rep:'',des:nm,info:'carton alveolaire 16mm '+(/^r/.test(id)?'rouge ral 3020':'chene casella'),q:n,w:+len||0,h:+hh||150,L:+len||0,note:'',parts:[],rules:{}})};
+ if(l.canopy&&s.can)CAT.cano.forEach(function(c){can(c[0],'Canopée '+l.des.replace(/^Enseigne\s+/i,''),+s.can[c[0]]||0,c[2],150)});
+ if(l.id==='n_can13')(l.opts||[]).forEach(function(o){can(o.id,'Canopée zone promo',+(s.o||{})[o.id]||0,o.L,o.H)})});
+ return P}
+function debHtml(d){var P=debPieces(d),O=DEB.run(P,{}),rows=O.rows,nf=DEB.nf,i=d.info||{},num=d.num||d.ville,used={},nfl=0;var HORS={};P.forEach(function(p){if(p.hors)HORS[p.id]=1});rows.forEach(function(r){if(r.pid&&HORS[r.pid]&&!r.flag)r.flag='Article hors catalogue : règle déduite du texte saisi, à confirmer';if(r.pid)used[String(r.pid).split('|')[0]]=1;if(r.flag)nfl++});
+ var nFi=(d.e||[]).length,nU=Object.keys(used).length;
+ var h='<div class="pv"><div class="dhead"><img src="'+$('#gate img.logo').src+'" alt="Publimax"><div class="t"><b>Liste de débits matière</b><span>calculée depuis le survey · à vérifier avant lancement</span></div><div class="r"><b>Dossier '+esc(num)+'</b><br>'+esc(i.client||'Carrefour Market')+' — '+esc(d.ville)+'<br>Visite du '+esc(fdate(d.date))+'</div></div>';
+ h+='<div class="kp"><div><b>'+nFi+'</b><span>fiches au survey</span></div><div><b>'+nU+'</b><span>fiches avec règle</span></div><div><b>'+rows.length+'</b><span>lignes de débit</span></div><div class="kT"><b>'+nfl+'</b><span>à vérifier</span></div></div>';
+ if(!rows.length)h+='<p class="dbn">Aucune règle de débit ne s’applique aux fiches de ce survey.</p>';
+ O.cats.forEach(function(nm,ci){var L=rows.filter(function(r){return r.cat===ci});if(!L.length)return;var last='';
+  h+='<div class="rblk"><div class="rh">'+esc(nm)+'<span>'+L.length+' ligne'+(L.length>1?'s':'')+'</span></div><table class="dbt">';
+  L.forEach(function(r){if(r.art!==last){last=r.art;var tot=0,un='';L.forEach(function(x){if(x.art===r.art){tot+=+x.q||0;un=x.unit}});h+='<tr class="ar"><td colspan="2">'+esc(r.art)+'</td><td class="q">'+(tot?nf(tot)+' '+esc(un||''):'')+'</td></tr>'}
+   h+='<tr><td class="po">'+esc(r.poste||'')+'</td><td>'+esc(r.det||r.des||'')+(r.flag?'<span class="fl">'+esc(r.flag)+'</span>':'')+'</td><td class="q">'+(r.q?nf(r.q)+' '+esc(r.unit||''):'à saisir')+'</td></tr>'});
+  h+='</table></div>'});
+ var rest=P.filter(function(p){return !/\|/.test(p.id)&&!used[p.id]}),hors=rest.filter(function(p){return p.hors}).length;
+ h+='<p class="dbn"><b>'+rest.length+' fiche'+(rest.length>1?'s':'')+' sans règle de débit</b> (plaques, adhésifs, PVC… : dimensions et quantités dans le récap)'+(hors?', dont '+hors+' hors catalogue':'')+'.</p>';
+ if(O.unknown&&O.unknown.length)h+='<p class="dbn"><b>À regarder :</b> le descriptif évoque une règle, mais rien n’a été calculé pour '+O.unknown.map(function(p){return esc(p.des0||p.des)}).filter(function(x,k,a){return a.indexOf(x)===k}).join(', ')+'.</p>';
+ h+='<p class="dbn">Règles suivies : celles cochées sur chaque article dans le mode édition du catalogue. Les dimensions sont celles des fiches ; les remarques ne sont pas lues.</p></div>';
+ return h}
+function openDeb(){var d=DB.cur;if(!d)return;try{$('#deb_body').innerHTML=debHtml(d)}catch(e){alert('Liste de débits non calculée : '+(e&&e.message||e));return}$('#deb_t').textContent='Débits · '+d.ville;$('#deb').classList.remove('hid');$('#deb').scrollTop=0}
+$('#r_deb').onclick=openDeb;$('#deb_back').onclick=function(){$('#deb').classList.add('hid')};
+$('#deb_prt').onclick=function(){$('#print').innerHTML='<div id="deb_print">'+$('#deb_body').innerHTML+'</div>';setTimeout(function(){window.print()},150)};
 /* ---------- démarrage ---------- */
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(PAN){PAN='';drawSubs();drawCrumbState();return}if(!$('#zoom').classList.contains('hid'))$('#zoom').click();else if(SL)doneSheet()}});
 function verTxt(){var m=/^(\d{4})(\d\d)(\d\d)-(\d\d)(\d\d)/.exec(VER);return m?'mise à jour du '+m[3]+'/'+m[2]+'/'+m[1]+' à '+m[4]+' h '+m[5]:VER}
@@ -1231,7 +1469,8 @@ function backAct(){var vis=function(q){var e=$(q);return e&&!e.classList.contain
  if(vis('#pick')){$('#pick').classList.add('hid');return true}
  if(vis('#setp')){$('#setp').classList.add('hid');return true}
  if(vis('#sheet')){doneSheet();return true}
- if(vis('#recap')){$('#r_back').click();return true}
+ if(vis('#deb')){$('#deb').classList.add('hid');return true}
+      if(vis('#recap')){$('#r_back').click();return true}
  if(vis('#edit')){$('#ed_back').click();return true}
  if(vis('#cat')){if(PAN){PAN='';drawSubs();drawCrumbState();return true}$('#b_back').click();return true}
  return false}
