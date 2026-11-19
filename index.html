@@ -561,7 +561,7 @@ details.kres{margin-top:10px}details.kres>summary{cursor:pointer;font-weight:600
 <button class="lnk" id="b_alt" style="display:none;color:#10242B;text-shadow:0 1px 8px rgba(255,255,255,.8)">J’ai un lien ou une clé d’accès</button>
 <div id="g_alt" class="pane hid"><label class="l" style="color:#1E2124;font-weight:600">Lien ou clé d’accès<input class="in" id="g_key" placeholder="Colle ici le lien reçu de Publimax"></label><button class="btn" id="b_key" style="width:100%">Continuer ›</button></div>
 <div id="g_msg" class="msg hid"></div>
-<p class="ver">Catalogue 20261119-095149 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261119-095703 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- CODE -->
@@ -573,7 +573,7 @@ details.kres{margin-top:10px}details.kres>summary{cursor:pointer;font-weight:600
 <button class="btn" id="b_pin">Ouvrir ›</button><div id="p_msg" class="msg err hid"></div>
 <button class="btn gr inst hid" data-inst>Installer l’application</button>
 <button class="lnk hid" id="b_forget">Code oublié ?</button></div>
-<p class="ver">Catalogue 20261119-095149 · fonctionne sans réseau</p>
+<p class="ver">Catalogue 20261119-095703 · fonctionne sans réseau</p>
 </div></div>
 
 <!-- DOSSIERS -->
@@ -633,7 +633,7 @@ details.kres{margin-top:10px}details.kres>summary{cursor:pointer;font-weight:600
 (function(){'use strict';
 var $=function(s){return document.querySelector(s)},$$=function(s){return [].slice.call(document.querySelectorAll(s))};
 var CFG={apps:''},CAT=null,IMG={},KEY=null,DB={d:[],cur:null},NM={},CH={},PENDKEY=null,NSHARD=0,LB={};
-var KS='',VER='20261119-095149',NFILES=25,SYH='',SYB=false,SYT=null;
+var KS='',VER='20261119-095703',NFILES=25,SYH='',SYB=false,SYT=null;
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 var WIPE=false;
 function ls(k,v){if(WIPE&&v!==undefined&&v!==null)return true;try{if(v===undefined){var r=localStorage.getItem(k);return r?JSON.parse(r):null}if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v));return true}catch(e){if(v!==undefined&&k==='pm_dos')saveErr();return null}}
@@ -873,7 +873,8 @@ function miniOf(l,s,pr){if(!l||!s)return '';var o=s.o||{},P=[],H=0,im=function(g
  if(l.slots){H=+l.H||3000;l.slots.forEach(function(sl){sl.o.forEach(function(m){var q=+o[m.id]||0;for(var z=0;z<Math.min(q,6);z++)[].concat(m.w||[]).forEach(function(w){P.push({w:+w||725,r:sl.s,c:sl.c,img:m.img})})})})}
  else if(l.comps){var C=l.comps.filter(function(m){return +o[m.id]>0})[0];if(C&&C.pp){var vv=s.vv||((l.visu&&l.visu[0])||[''])[0],v2=((l.visu||[])[1]||[])[0];H=C.pp[0].h;P=C.pp.map(function(p){return {w:p.w,h:p.h,r:p.r,img:(v2&&vv===v2&&p.alt&&p.alt.img)?p.alt.img:p.img}})}}
  else if(l.cpi&&s.cp){var c=s.cp,K=l.cpi,a=im((c.e==='l'?K.l:K.i).img,1),full=c.c==='c'&&CPF[c.f];if(!a&&!full)return '';return '<div class="pmini'+(full?'':' one')+'"><span>'+a+'</span>'+(full?im((K.t[c.f]||{}).img,1)+im((K.v[c.f]||{}).img,1):'')+'</div>'}
- if(!P.length)return '';var tot=0;P.forEach(function(p){tot+=p.w});var mh=Math.min(60,86*H/tot);
+ if(!P.length){var G=[];if(!l.slots&&!l.comps&&l.opts&&l.opts.length<40)l.opts.forEach(function(x){if(+o[x.id]>0&&x.img&&G.indexOf(x.img)<0)G.push(x.img)});if(!G.length)return '';return '<div class="pmini'+(G.length===1?' one':'')+'">'+(G.length===1?'<span>'+im(G[0],1)+'</span>':G.slice(0,4).map(function(g){return im(g,1)}).join(''))+'</div>'}
+ var tot=0;P.forEach(function(p){tot+=p.w});var mh=Math.min(60,86*H/tot);
  return '<div class="mur mini" style="width:'+Math.round(tot/H*mh)+'px">'+P.map(function(p){return '<div class="mup" style="flex:'+p.w+' 1 0;aspect-ratio:'+p.w+'/'+(p.h||H)+(p.c?';background:'+p.c:'')+'">'+im(p.img,1)+'</div>'}).join('')+'</div>'}
 function murHtml(P,H,mh){if(!P.length)return '<div class="murv">Rien de choisi pour l’instant : l’aperçu se dessine ici.</div>';var tot=0;P.forEach(function(p){tot+=p.w});return '<div class="mur" style="max-width:'+Math.round(tot/H*(mh||250))+'px">'+P.map(function(p){return '<div class="mup" style="flex:'+p.w+' 1 0;aspect-ratio:'+p.w+'/'+(p.h||H)+(p.c?';background:'+p.c:'')+'">'+(p.img?'<img data-i="'+p.img+'" alt="">':'')+'<i>'+p.w+(p.h?' × '+p.h:'')+'</i><b>'+esc(p.r)+'</b></div>'}).join('')+'</div>'}
 function kqOf(s,id){var m=(s||{}).kq||{};return m[id]!=null?(+m[id]||0):(+(s||{}).q||0)}
